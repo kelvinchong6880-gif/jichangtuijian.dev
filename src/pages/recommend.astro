@@ -22,32 +22,69 @@ const providers = getProviders();
 
         <Disclosure />
 
-        <div style="margin-bottom: 3rem; margin-top: 2rem;">
-            <h2>快速对比表格</h2>
-            <div class="table-container" style="overflow-x: auto; margin-top: 1rem;">
-                <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+        <div style="background: #f8fafc; padding: 0.75rem 1rem; border-radius: 6px; margin: 1.5rem 0 1rem 0; font-size: 0.85rem; color: #64748b; border: 1px solid var(--border-color);">
+            <strong>推广说明：</strong> 本页部分服务商链接属于推广链接。如果您通过这些链接注册或购买，本站可能获得佣金，但这不会增加您的购买价格。推荐顺序不应被理解为对速度、稳定性或服务质量的绝对保证。
+        </div>
+
+        <div style="background: #f0f9ff; padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 2rem; font-size: 0.85rem; color: #0284c7; border: 1px solid #bae6fd;">
+            <strong>数据说明：</strong> 本页套餐价格、流量、线路及功能信息主要根据各服务商官方公开资料整理。服务商可能随时调整套餐，实际请以其最新官方页面为准。除非明确标注为本站实测，否则相关线路、速度、解锁等描述均不代表本站独立测试结果。
+        </div>
+
+        <div style="margin-bottom: 4rem; margin-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h2 style="margin: 0 0 0.5rem 0;">快速对比表格</h2>
+                    <p style="margin: 0; color: var(--text-muted);">基于各服务商官方公开套餐资料整理，方便快速比较价格、流量与基础信息。</p>
+                </div>
+                <div style="background: #f1f5f9; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem; color: #475569; max-width: 400px; border-left: 3px solid var(--primary);">
+                    以下信息根据服务商官方公开资料整理，价格和套餐可能调整，请以服务商最新信息为准。
+                </div>
+            </div>
+            
+            <div class="table-container" style="overflow-x: auto; margin-top: 1rem; background: #ffffff; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.02); padding: 0.5rem;">
+                <p style="margin: 0.5rem 1rem 1rem 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                    <strong>信息优势：</strong> 本页不是只比较一个宣传价格，而是基于本站整理的 8 家服务商共 51 个真实套餐资料进行归纳。不同服务商的计费周期并不完全一致，因此“最低套餐”仅用于快速筛选，最终仍应查看具体套餐周期与流量。
+                </p>
+                <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
                     <thead>
-                        <tr style="background-color: var(--card-bg); border-bottom: 2px solid var(--border-color); text-align: left;">
-                            <th style="padding: 1rem;">排名</th>
-                            <th style="padding: 1rem;">机场名称</th>
-                            <th style="padding: 1rem;">最低套餐 | 月付参考</th>
-                            <th style="padding: 1rem;">基础流量</th>
-                            <th style="padding: 1rem;">快速结论</th>
+                        <tr style="background-color: #f8fafc; text-align: left;">
+                            <th style="padding: 1.25rem 1rem; font-weight: 600; color: #475569; border-bottom: 2px solid var(--border-color); border-top-left-radius: 8px;">排名</th>
+                            <th style="padding: 1.25rem 1rem; font-weight: 600; color: #475569; border-bottom: 2px solid var(--border-color);">机场名称</th>
+                            <th style="padding: 1.25rem 1rem; font-weight: 600; color: #475569; border-bottom: 2px solid var(--border-color);">最低套餐 | 月付参考</th>
+                            <th style="padding: 1.25rem 1rem; font-weight: 600; color: #475569; border-bottom: 2px solid var(--border-color);">基础流量</th>
+                            <th style="padding: 1.25rem 1rem; font-weight: 600; color: #475569; border-bottom: 2px solid var(--border-color);">官方资料摘要</th>
+                            <th style="padding: 1.25rem 1rem; font-weight: 600; color: #475569; border-bottom: 2px solid var(--border-color); border-top-right-radius: 8px; text-align: right;">操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         {providers.map((p, i) => (
                             <tr style="border-bottom: 1px solid var(--border-color);">
-                                <td style="padding: 1rem;">#{i + 1}</td>
-                                <td style="padding: 1rem;">
-                                    <a href={`/review/${p.slug}`} style="font-weight: 600;">{p.name}</a>
+                                <td style="padding: 1.25rem 1rem;">
+                                    {i === 0 ? 
+                                        <span style="background: var(--primary); color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-weight: 600; font-size: 0.85rem; display: inline-block; text-align: center; min-width: 40px;">#{i + 1}</span> :
+                                        <span style="background: #f1f5f9; color: #475569; padding: 0.25rem 0.75rem; border-radius: 12px; font-weight: 600; font-size: 0.85rem; display: inline-block; text-align: center; min-width: 40px;">#{i + 1}</span>
+                                    }
                                 </td>
-                                <td style="padding: 1rem; color: var(--primary); font-weight: bold;">{p.price}</td>
-                                <td style="padding: 1rem;">{p.traffic}</td>
-                                <td style="padding: 1rem; font-size: 0.9rem;">
-                                    {i === 0 ? "支持 IPLC，提供多档套餐" : 
-                                     i === 1 ? "提供专线，适合日常和流媒体" : 
-                                     i === 2 ? "高性价比，多种协议支持" : "根据官方资料，提供稳定接入"}
+                                <td style="padding: 1.25rem 1rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        {p.logo && (
+                                            <div style="height: 32px; width: 64px; display: flex; align-items: center; justify-content: flex-start; flex-shrink: 0;">
+                                                <img src={p.logo} alt={`${p.name} Logo`} style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                            </div>
+                                        )}
+                                        <a href={`/review/${p.slug}/`} style="font-weight: 600; font-size: 1.05rem; color: var(--text-color);">{p.name}</a>
+                                    </div>
+                                </td>
+                                <td style="padding: 1.25rem 1rem;">
+                                    <span style="color: var(--primary); font-weight: 600; font-size: 1.15rem;">{p.price}</span>
+                                    <span style="font-size: 0.85rem; color: var(--text-muted); margin-left: 0.25rem;">{p.priceUnit}</span>
+                                </td>
+                                <td style="padding: 1.25rem 1rem; font-weight: 500; color: #334155;">{p.traffic}</td>
+                                <td style="padding: 1.25rem 1rem; font-size: 0.95rem; color: var(--text-muted); max-width: 250px; line-height: 1.5;">
+                                    {p.routeInfo ? (p.routeInfo.length > 40 ? p.routeInfo.substring(0, 40) + '...' : p.routeInfo) : "查看套餐与官方资料"}
+                                </td>
+                                <td style="padding: 1.25rem 1rem; text-align: right;">
+                                    <a href={`/review/${p.slug}/`} class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; white-space: nowrap; border-radius: 6px;">查看测评 &rarr;</a>
                                 </td>
                             </tr>
                         ))}
@@ -57,12 +94,102 @@ const providers = getProviders();
         </div>
 
         <div style="margin-bottom: 3rem;">
+            <h2>不同需求怎么选？</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.25rem;">以下推荐仅基于收集的官方客观套餐数字，帮助不同倾向的用户快速进行初步筛选，并非对稳定性和速度的保证。</p>
+            <div class="decision-grid">
+                <div style="background: white; padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <h3 style="margin-top: 0; font-size: 1.05rem; color: var(--primary);">💰 预算优先</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">如果您希望入门门槛较低，可关注 <strong>SOGOCloud</strong> 和 <strong>微风</strong>，它们均提供单价 10 元左右起步的选项（注：SOGOCloud 最低价格套餐需年付）。</p>
+                </div>
+                <div style="background: white; padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <h3 style="margin-top: 0; font-size: 1.05rem; color: var(--primary);">📈 流量优先</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">如果您需要大流量，<strong>飞猫云</strong>、<strong>SOGOCloud</strong> 和 <strong>闪跃</strong> 的顶级套餐均可提供 1TB 甚至 2TB 级别的大流量选项。</p>
+                </div>
+                <div style="background: white; padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <h3 style="margin-top: 0; font-size: 1.05rem; color: var(--primary);">🗂 套餐选择优先</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;"><strong>SOGOCloud</strong> 提供了多达 9 款不同的细分套餐（包含不限时版），<strong>跨界云</strong> 和 <strong>闪跃</strong> 也提供 6 款以上的档位选择，方便精准匹配需求。</p>
+                </div>
+                <div style="background: white; padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <h3 style="margin-top: 0; font-size: 1.05rem; color: var(--primary);">⏳ 不限时需求</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;"><strong>SOGOCloud</strong> 和 <strong>微风</strong> 等提供了按流量计费的一次性套餐（请注意：不限时 ≠ 无限流量，流量耗尽后仍需重新购买）。</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 4rem;">
+            <h2>我们如何整理这份机场推荐？</h2>
+            <div style="background: #ffffff; padding: 1.25rem 1.5rem; border-radius: 8px; font-size: 0.95rem; border: 1px solid var(--border-color);">
+                <p style="margin: 0 0 0.5rem 0;">当前排名综合参考以下客观因素整理，但由于本站目前没有在统一网络环境下对全部 8 家服务商进行长期独立测速，因此排名不代表严格的速度或稳定性实验室排名：</p>
+                <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-muted);">
+                    <li>官方公开套餐价格、流量配置与套餐周期</li>
+                    <li>官方公开线路/功能资料的完整程度</li>
+                    <li>对不同预算用户的可选择性</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
             <h2>详细介绍</h2>
+            
             <div class="provider-list">
                 {providers.map((provider, index) => (
                     <ProviderCard provider={provider} rank={index + 1} />
                 ))}
             </div>
         </div>
+
+        <div style="margin-bottom: 4rem; padding: 1.5rem; background: #fefce8; border-radius: 12px; border: 1px solid #fef08a;">
+            <h2 style="margin-top: 0; font-size: 1.25rem; color: #a16207;">选择机场前需要注意什么？</h2>
+            <ul style="color: #854d0e; padding-left: 1.5rem; margin-bottom: 0; font-size: 0.95rem;">
+                <li style="margin-bottom: 0.5rem;">服务商套餐、节点和运营状态可能随时变化。购买前请重新确认服务商的最新套餐说明。</li>
+                <li style="margin-bottom: 0.5rem;">长周期付款意味着一次性预付金额更高，购买前建议确认服务商最新套餐与运营情况，<a href="/knowledge/risk-guide/" style="color: #b45309; text-decoration: underline;">了解更多风险提示</a>。</li>
+                <li style="margin-bottom: 0.5rem;">不要把“不限时套餐”理解为无限流量。详细计费逻辑可参考<a href="/knowledge/unlimited/" style="color: #b45309; text-decoration: underline;">不限时套餐指南</a>。</li>
+                <li>不同服务商之间的线路倍率和结算方式可能不同，挑选时建议参考<a href="/knowledge/plan-selection/" style="color: #b45309; text-decoration: underline;">套餐选择指南</a>。</li>
+            </ul>
+        </div>
+
+        <div style="margin-top: 4rem; margin-bottom: 4rem;">
+            <h2>常见问题解答 (FAQ)</h2>
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+                <div style="background: white; padding: 1.25rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h3 style="margin-top: 0; font-size: 1.1rem;">机场推荐应该看哪些因素？</h3>
+                    <p style="margin-bottom: 0; font-size: 0.95rem; color: var(--text-muted);">新手用户建议综合考虑四个维度：1) 预算与真实月付价格；2) 基础流量与流量倍率；3) 官方承诺的协议支持和<a href="/knowledge/what-is-jichang/">线路类型</a>；4) 晚高峰的实际表现（需要根据自身网络环境月付实测）。</p>
+                </div>
+                <div style="background: white; padding: 1.25rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h3 style="margin-top: 0; font-size: 1.1rem;">机场越贵就一定越稳定吗？</h3>
+                    <p style="margin-bottom: 0; font-size: 0.95rem; color: var(--text-muted);">不一定。价格受运营成本、线路带宽资源和溢价等因素影响。高价格通常意味着更高的带宽冗余，但不代表绝对稳定，不同地区的运营商也会影响体验。</p>
+                </div>
+                <div style="background: white; padding: 1.25rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h3 style="margin-top: 0; font-size: 1.1rem;">IPLC / IEPL 就一定比普通线路快吗？</h3>
+                    <p style="margin-bottom: 0; font-size: 0.95rem; color: var(--text-muted);">不一定。IPLC / IEPL 与普通公网线路的网络架构和路由方式不同，在部分网络环境下可能具有延迟、拥塞控制或路由方面的优势，但实际速度和稳定性仍取决于服务商资源、线路容量、用户所在地、网络拥塞和具体路由情况。因此不能仅凭 IPLC / IEPL 标签判断实际体验。详细了解 <a href="/knowledge/iplc-iepl/">IPLC/IEPL 专线</a>。</p>
+                </div>
+                <div style="background: white; padding: 1.25rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h3 style="margin-top: 0; font-size: 1.1rem;">机场应该买月付还是年付？</h3>
+                    <p style="margin-bottom: 0; font-size: 0.95rem; color: var(--text-muted);">新用户可以先根据自己的预算、使用需求和可接受的预付风险选择合适的付款周期。较长周期通常意味着一次性预付金额更高，购买前建议确认服务商最新套餐与运营情况。</p>
+                </div>
+                <div style="background: white; padding: 1.25rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h3 style="margin-top: 0; font-size: 1.1rem;">不限时机场是不是无限流量？</h3>
+                    <p style="margin-bottom: 0; font-size: 0.95rem; color: var(--text-muted);">不是。“不限时”仅指套餐没有过期时间的硬性限制，但其包含的流量总额是固定的。另外需要注意<a href="/knowledge/traffic-multiplier/">节点倍率计算</a>带来的实际可用流量折损。</p>
+                </div>
+            </div>
+        </div>
     </div>
 </BaseLayout>
+
+<style>
+    .decision-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+    @media (max-width: 1199px) {
+        .decision-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 767px) {
+        .decision-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

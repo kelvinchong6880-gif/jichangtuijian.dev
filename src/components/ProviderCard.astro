@@ -26,21 +26,38 @@ const { provider } = Astro.props;
       <strong>有效期：</strong>{provider.validity}
     </div>
     <div style="grid-column: 1 / -1;">
-      <strong>线路特色：</strong>{provider.routeInfo}
+      <strong>官方线路资料：</strong>{provider.routeInfo}
     </div>
   </div>
   
   <div style="margin-bottom: 1.5rem;">
-    <strong>主要优点：</strong>
-    <ul style="list-style-type: disc; margin-left: 1.5rem; color: var(--text-muted);">
+    <strong>官方资料重点：</strong>
+    <ul style="list-style-type: disc; margin-left: 1.5rem; color: var(--text-muted); margin-bottom: 1rem;">
       {provider.features.map((feature: string) => (
         <li>{feature}</li>
       ))}
     </ul>
+
+    <strong>需求建议：</strong>
+    <ul style="list-style-type: disc; margin-left: 1.5rem; color: var(--text-muted); margin-bottom: 1rem;">
+      {parseFloat(provider.price) <= 12 && <li>最低入门价格较低，预算敏感用户可进一步比较。</li>}
+      {provider.traffic.includes('TB') && <li>最大流量包含 TB 级别，大流量需求用户可进一步查看。</li>}
+      {(provider.validity.includes('一次性') || provider.validity.includes('不限时')) && <li>提供不限时套餐，不希望固定月度周期的用户可进一步了解。</li>}
+      {provider.plans && provider.plans.length >= 6 && <li>提供 {provider.plans.length} 种套餐，希望比较更多套餐档位的用户可进一步查看。</li>}
+    </ul>
+
+    <strong>资料限制：</strong>
+    <p style="margin: 0.25rem 0 0 0; color: var(--text-muted); font-size: 0.9rem;">
+      官方资料未详细说明具体的 SLA 补偿政策或完整的退款条款，请在购买前自行查阅其最新服务条款。
+    </p>
   </div>
   
+  <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1rem;">
+    注：本页部分前往服务商的链接属于推广链接，请查阅页面顶部的推广说明。
+  </p>
+
   <div style="display: flex; gap: 1rem;">
-    <a href={`/review/${provider.slug}`} class="btn btn-outline" style="flex: 1;">详细测评</a>
+    <a href={`/review/${provider.slug}/`} class="btn btn-outline" style="flex: 1;">详细测评</a>
     <a href={provider.affiliateUrl} target="_blank" rel="nofollow noopener" class="btn" style="flex: 1;">访问官网注册</a>
   </div>
 </div>

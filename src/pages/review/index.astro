@@ -5,14 +5,162 @@ const providers = getProviders();
 ---
 <BaseLayout title="机场测评 | 2026 最新各服务商评测" description="全面、客观的各大机场测评，为您提供选购指南。">
   <div class="container">
-    <div style="margin-bottom: 2rem;"><h1>机场测评目录</h1></div>
-    <ul style="list-style: none; padding: 0;">
-      {providers.map(p => (
-        <li style="margin-bottom: 1rem;">
-          <a href={`/review/${p.slug}`} style="font-size: 1.25rem;">{p.name} 怎么样？</a>
-          <p style="color: var(--text-muted); margin-top: 0.25rem;">起步价格：{p.price} | 流量：{p.traffic}</p>
-        </li>
+    <div style="margin-bottom: 3rem; text-align: center;">
+      <h1 style="margin-bottom: 1rem;">机场测评目录</h1>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">查看 8 家机场服务商的套餐价格、流量、线路资料与详细测评。</p>
+    </div>
+    
+    <div class="review-grid">
+      {providers.map((p, i) => (
+        <div class="review-card">
+          <div class="card-header">
+            {p.logo ? (
+              <div class="logo-container">
+                <img src={p.logo} alt={`${p.name} Logo`} />
+              </div>
+            ) : <div class="logo-placeholder"></div>}
+            <div class="rank-badge">#{i + 1}</div>
+          </div>
+          <h2 class="provider-name">{p.name}</h2>
+          <p class="provider-summary">{p.routeInfo ? (p.routeInfo.length > 40 ? p.routeInfo.substring(0, 40) + '...' : p.routeInfo) : "查看套餐与官方资料"}</p>
+          
+          <div class="price-traffic">
+            <div class="info-block">
+              <span class="info-label">最低价格</span>
+              <div class="info-value"><span class="price">{p.price}</span><span class="unit">{p.priceUnit}</span></div>
+            </div>
+            <div class="info-block">
+              <span class="info-label">流量范围</span>
+              <div class="info-value">{p.traffic}</div>
+            </div>
+          </div>
+          
+          <a href={`/review/${p.slug}/`} class="btn review-btn">查看完整测评 &rarr;</a>
+        </div>
       ))}
-    </ul>
+    </div>
   </div>
 </BaseLayout>
+
+<style>
+  .review-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+  @media (max-width: 1024px) {
+    .review-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .review-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .review-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .review-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    height: 36px;
+  }
+  .logo-container {
+    height: 100%;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .logo-container img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+  .rank-badge {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .review-card:first-child .rank-badge {
+    background: var(--primary);
+    color: white;
+  }
+  
+  .provider-name {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color);
+  }
+  .provider-summary {
+    margin: 0 0 1.25rem 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  
+  .price-traffic {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  .info-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .info-label {
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+  .info-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #334155;
+  }
+  .price {
+    color: var(--primary);
+    font-size: 1.1rem;
+  }
+  .unit {
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: #64748b;
+    margin-left: 0.2rem;
+  }
+  
+  .review-btn {
+    margin-top: auto;
+    width: 100%;
+    text-align: center;
+    padding: 0.6rem;
+    border-radius: 6px;
+    font-weight: 500;
+    box-sizing: border-box;
+  }
+</style>
