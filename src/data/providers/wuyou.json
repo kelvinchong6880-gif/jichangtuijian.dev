@@ -1,0 +1,61 @@
+{
+  "id": "wuyou",
+  "name": "无忧链接",
+  "slug": "wuyou",
+  "rank": 5,
+  "officialUrl": "https://wep01.worryfreeaff.com/#/?code=s1kH64A8",
+  "affiliateUrl": "https://wep01.worryfreeaff.com/#/?code=s1kH64A8",
+  "price": "6.58",
+  "priceUnit": "元/月起 (按年付)",
+  "traffic": "40GB - 1.0TB",
+  "validity": "年付/月付/一次性",
+  "routeInfo": "全IPLC专线，节点速率×1",
+  "features": [
+    "稳定全球 Chatgpt，Gemini 等 AI 支持",
+    "4K流畅 Netflix 等流媒体体验",
+    "订单日自动重置",
+    "百兆级稳定带宽"
+  ],
+  "deviceInfo": "未提及限制",
+  "officialDescription": "专注于流媒体 4K 体验与全球 AI 工具稳定解锁，套餐选择覆盖不同需求群体。",
+  "source": "Desktop/官网套餐价格和基本资料",
+  "lastVerified": "2026-09",
+  "plans": [
+    {
+      "name": "MINI链接",
+      "price": "¥79.00/年",
+      "traffic": "40GB/月"
+    },
+    {
+      "name": "舒心链接",
+      "price": "¥19.00/月",
+      "traffic": "100GB/月"
+    },
+    {
+      "name": "省心链接",
+      "price": "¥33.00/月",
+      "traffic": "200GB/月"
+    },
+    {
+      "name": "随心链接",
+      "price": "¥77.00/月",
+      "traffic": "500GB/月"
+    },
+    {
+      "name": "忘忧链接",
+      "price": "¥117.00/月",
+      "traffic": "1.0TB/月"
+    },
+    {
+      "name": "100G永久不限时",
+      "price": "¥108.00/次",
+      "traffic": "100GB永久"
+    },
+    {
+      "name": "300G永久不限时 无忧链接",
+      "price": "¥298.00/一次性",
+      "traffic": "300GB"
+    }
+  ],
+  "logo": "/images/providers/wuyou.jpg"
+}

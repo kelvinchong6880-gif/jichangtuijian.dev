@@ -1,0 +1,56 @@
+{
+  "id": "lingmao",
+  "name": "灵猫",
+  "slug": "lingmao",
+  "rank": 7,
+  "officialUrl": "https://edp01.civetaff.com/#/?code=CYg7QSJo",
+  "affiliateUrl": "https://edp01.civetaff.com/#/?code=CYg7QSJo",
+  "price": "7.08",
+  "priceUnit": "元/月起 (按年付)",
+  "traffic": "45GB - 300GB",
+  "validity": "年付/季付/月付",
+  "routeInfo": "全IPLC专线，最大带宽 1000 Mbps",
+  "features": [
+    "原生IP解锁 Netflix 等流媒体及 AI",
+    "不限速，不限制客户端",
+    "订单日自动重置或者购买加油包补充",
+    "客服全天在线指导"
+  ],
+  "deviceInfo": "不限制客户端",
+  "officialDescription": "专注于优质网络体验，千兆带宽支持，适合需要高品质原生 IP 解锁服务的用户。",
+  "source": "Desktop/官网套餐价格和基本资料",
+  "lastVerified": "2026-09",
+  "plans": [
+    {
+      "name": "灵猫·年付小包",
+      "price": "¥85.00/年",
+      "traffic": "45GB/月"
+    },
+    {
+      "name": "年付Small",
+      "price": "¥195.00/年",
+      "traffic": "150GB/月"
+    },
+    {
+      "name": "年付Big",
+      "price": "¥295.00/年",
+      "traffic": "300GB/月"
+    },
+    {
+      "name": "季付Big",
+      "price": "¥125.00/季",
+      "traffic": "300GB/月"
+    },
+    {
+      "name": "月付Small",
+      "price": "¥25.00/月",
+      "traffic": "150GB/月"
+    },
+    {
+      "name": "月付Big",
+      "price": "¥45.00/月",
+      "traffic": "300GB/月"
+    }
+  ],
+  "logo": "/images/providers/lingmao.png"
+}

@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="机场订阅链接是什么？怎么用？安全注意事项"
+    description="机场订阅链接（Subscribe Link）是获取节点的关键。本文解答订阅链接的作用、导入方式以及切勿泄露订阅链接的安全风险。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/knowledge/" style="color: var(--primary); text-decoration: none;">机场知识</a> &gt; <span>机场订阅</span>
+            </div>
+            <h1>机场订阅链接详解：作用、用法与安全防范</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>订阅链接是一串包含您机场账户所有可用节点信息的长链接（URL）。通过将它粘贴到代理客户端中，软件就能自动下载并配置好所有节点，免去手动填写的麻烦。
+            </div>
+
+            <h2>什么是订阅链接 (Subscribe Link)？</h2>
+            <p>过去，配置代理节点需要手动输入服务器 IP、端口、密码和加密方式，非常繁琐且容易出错。为了解决这个问题，“订阅”机制应运而生。</p>
+            <p>机场服务商会将您账号下所有可用的<a href="/knowledge/node/">节点</a>打包生成一个特定的网址（类似于 <code>https://api.example.com/sub?token=xxxx</code>）。这个网址就是订阅链接。客户端软件访问这个网址，就能自动读取并配置好几百个节点。</p>
+
+            <h2>如何使用订阅链接？</h2>
+            <p>使用过程通常只需简单的两步：</p>
+            <ol>
+                <li>登录您的机场官网后台，找到类似于“一键订阅”、“复制 Clash 订阅”、“复制 v2ray 订阅”的按钮，点击复制该链接。</li>
+                <li>打开您的客户端软件（如 Clash、Shadowrocket、v2rayN），找到“订阅”、“配置”或“URL”选项，粘贴刚才复制的链接并点击下载/更新。</li>
+            </ol>
+            <p>如果您不知道如何在具体的设备上操作，请参考我们的<a href="/tutorial/">全平台使用教程</a>。</p>
+
+            <h2>自动更新机制</h2>
+            <p>订阅链接不仅用于初次导入。机场的节点 IP 可能会随时变动（比如遇到维护或被墙封锁）。当节点失效时，您只需要在客户端中点击<strong>“更新订阅 (Update)”</strong>，软件就会再次访问该链接，拉取最新的可用节点列表。优秀的客户端可以设置每天自动更新订阅。</p>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">安全防范：绝不要泄露您的订阅链接！</h3>
+                <p>订阅链接相当于您机场账号的<strong>最高权限密码</strong>。链接中通常包含您独一无二的 token 密钥。</p>
+                <ul>
+                    <li>如果他人获得了您的订阅链接，他们就可以免费使用您的节点，消耗您的<a href="/knowledge/traffic/">套餐流量</a>。</li>
+                    <li>更严重的是，机场后台通常有防滥用机制，如果检测到您的订阅链接在多个异常 IP 地址同时使用，可能会直接<strong>封禁您的账号</strong>。</li>
+                </ul>
+                <p>如果不小心泄露，请立即登录机场官网后台，找到“重置订阅链接 (Reset Subscribe Link)”按钮。重置后，旧的链接将立即失效，您必须将新链接重新导入到所有设备中。</p>
+            </div>
+
+            <h2>常见问题 (FAQ)</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 为什么我导入订阅链接后提示下载失败？</strong>
+                <p style="margin-top: 0.5rem;">A: 常见原因有两点：1. 您当前的网络环境（如公司内网）屏蔽了该机场的订阅域名；2. 您的套餐已经过期或流量耗尽。如果是前者，请尝试在不使用 Wi-Fi 的情况下用手机 4G/5G 网络更新订阅。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

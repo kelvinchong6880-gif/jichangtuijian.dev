@@ -1,0 +1,48 @@
+---
+import { SITE } from '../data/config';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+}
+
+const { 
+  title = SITE.title, 
+  description = SITE.description,
+  canonicalUrl = new URL(Astro.url.pathname, SITE.domain).href,
+  noindex = false
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{title}</title>
+  {noindex && <meta name="robots" content="noindex, follow" />}
+
+  <meta name="description" content={description} />
+  
+  <link rel="canonical" href={canonicalUrl} />
+  
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content="website" />
+</head>
+<body>
+  <Header />
+  <main class="main-content">
+    <slot />
+  </main>
+  <Footer />
+</body>
+</html>

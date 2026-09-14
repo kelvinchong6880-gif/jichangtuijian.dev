@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="macOS (Mac) 配置与使用指南"
+    description="如何在 MacBook 或 iMac 上配置网络客户端？解决“无法验证开发者”提示，完成订阅导入与系统网络扩展授权。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/tutorial/" style="color: var(--primary); text-decoration: none;">使用教程</a> &gt; <span>macOS (Mac)</span>
+            </div>
+            <h1>macOS 苹果电脑网络配置教程</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速说明：</strong>本教程适用于使用 MacBook、iMac 或 Mac mini 的用户。涵盖客户端下载、macOS 权限许可及配置连接流程。
+            </div>
+
+            <h2>一、准备工作</h2>
+            <ul>
+                <li><strong>有效订阅：</strong> 确保从服务商后台获取了适用于 Mac 客户端的订阅链接。</li>
+                <li><strong>兼容性确认：</strong> Mac 分为 Intel 芯片和 Apple Silicon (M1/M2/M3) 芯片。大部分现代客户端同时提供通用版（Universal），但如果是单独区分的版本，请根据系统信息（点击左上角苹果菜单 -> 关于本机）下载正确架构的安装包。</li>
+            </ul>
+
+            <h2>二、客户端下载与安装</h2>
+            <p>请认准服务商提供的官方渠道，或开源项目的官方 <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub Release</a> 进行下载（通常是 <code>.dmg</code> 或 <code>.zip</code> 格式）。</p>
+            <ol>
+                <li>双击下载好的 <code>.dmg</code> 文件。</li>
+                <li>在弹出的窗口中，将应用程序图标拖拽到旁边的 <strong>Applications (应用程序)</strong> 文件夹快捷方式中完成安装。</li>
+            </ol>
+            
+            <div style="background: #fff3cd; color: #856404; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <strong>如何应对“无法打开，因为无法验证开发者”：</strong><br>
+                由于部分开源项目没有缴纳 Apple 开发者费用并进行应用公证，macOS 的安全机制（Gatekeeper）会默认拦截应用启动。<br>
+                <ul>
+                    <li><strong>正确做法：</strong> 使用 macOS 提供的单次授权方式：打开系统 <strong>系统设置 (System Settings) -> 隐私与安全性 (Privacy & Security)</strong>，向下滑动找到被拦截的应用提示，点击 <strong>“仍要打开 (Open Anyway)”</strong> 并输入 Mac 密码进行一次性放行。</li>
+                    <li><strong>错误做法：</strong> 绝对不要在终端 (Terminal) 中运行网上流传的 <code>sudo spctl --master-disable</code> 命令来永久彻底关闭整个 Gatekeeper 安全机制，这会让您的电脑暴露在严重的安全风险中。</li>
+                </ul>
+            </div>
+
+            <h2>三、导入订阅与授权</h2>
+            <ol>
+                <li>在应用程序文件夹中找到并启动客户端。它通常会在屏幕右上角的菜单栏出现一个状态图标。</li>
+                <li>点击菜单栏图标，找到类似于 <strong>配置 (Profiles)</strong> 或 <strong>订阅设置</strong>。</li>
+                <li>选择“从剪贴板导入 (Import from Clipboard)” 或手动输入 URL 下载配置。</li>
+                <li><strong>Network Extension 授权：</strong> 某些客户端如果支持增强型网络接管（类似 TUN 模式），首次启动或连接时系统会弹窗提示“某某应用想要添加 VPN 配置”或系统扩展被阻止。请前往“隐私与安全性”中给予授权（Allow）。</li>
+            </ol>
+
+            <h2>四、选择节点与连接</h2>
+            <p>当订阅配置文件成功加载后：</p>
+            <ol>
+                <li>在节点列表或菜单中选择一个目标地区节点（如果对节点概念陌生，请阅读 <a href="/knowledge/node/">节点知识</a>）。</li>
+                <li>勾选 <strong>“设为系统代理 (Set as System Proxy)”</strong> 即可启动连接。</li>
+            </ol>
+
+            <h2>五、验证与排障</h2>
+            <p>通过浏览器访问查 IP 的网站验证出口（详见 <a href="/vpn/vpn-check/">连接验证指南</a>）。IP 变更不代表绝对匿名，请知悉。</p>
+            <ul>
+                <li><strong>连接显示成功但无网络：</strong> 通常是当前选中节点不可用，或 Mac 系统时间误差导致证书校验失败。请换节点并确保系统时间自动同步。详见 <a href="/vpn/vpn-not-working/">无网络排障</a>。</li>
+                <li><strong>网页能开但某 App 连不上：</strong> 绝大部分 App 遵循系统代理，但如终端（Terminal）等工具默认不走代理。这需要在客户端中开启增强型网卡接管（TUN/Enhanced Mode），或者在终端内手动设置代理环境变量。</li>
+                <li><strong>断线或速度慢：</strong> 请参考 <a href="/vpn/vpn-slow/">网速慢排障</a> 和 <a href="/vpn/vpn-disconnect/">频繁断线排障</a>，通常通过更换负载较低的节点即可解决。</li>
+            </ul>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">安全提示</h3>
+                <p>不要为了使用来源不明的所谓“加速版”或“破解版”客户端，而随意修改 macOS 的核心安全文件或降低 SIP（系统完整性保护）等级。</p>
+            </div>
+    
+        </div>
+    </div>
+</BaseLayout>

@@ -1,0 +1,688 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getProviders } from '../data/providers';
+import fs from 'fs';
+import path from 'path';
+
+const providers = getProviders();
+
+// Dynamic counts for Information Strip
+let totalPlans = 0;
+providers.forEach(p => totalPlans += p.plans?.length || 0);
+
+const getPageCount = (dirPath) => {
+    try {
+        const fullPath = path.join(process.cwd(), 'src/pages', dirPath);
+        return fs.readdirSync(fullPath).filter(f => f.endsWith('.astro') || f.endsWith('.md')).filter(f => !f.startsWith('index')).length;
+    } catch(e) {
+        return 0;
+    }
+};
+
+const knowledgeCount = getPageCount('knowledge');
+const vpnCount = getPageCount('vpn');
+const tutorialCount = getPageCount('tutorial');
+---
+
+<BaseLayout 
+    title="机场推荐与网络工具指南 | 机场知识、套餐测评与使用教程"
+    description="本站提供：机场套餐资料、Provider Review、机场知识、VPN 基础、Windows / macOS / iPhone / Android 教程。服务商线路、功能、价格等资料以官方整理为基础；实际体验可能因网络环境而异。"
+>
+    <!-- HERO SECTION -->
+    <div class="hero-section">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-eyebrow">2026 网络工具与机场资料库</div>
+                <h1 class="hero-title">机场推荐与网络工具新手指南</h1>
+                <p class="hero-desc">
+                    帮助新手了解机场、比较套餐、查看服务商资料并完成客户端配置。本站基于各服务商官方公开资料进行聚合整理，为您提供客观的选择参考。
+                </p>
+                <div class="hero-ctas">
+                    <a href="/recommend/" class="btn hero-btn-primary">查看 2026 机场推荐</a>
+                    <a href="/knowledge/what-is-jichang/" class="btn btn-outline hero-btn-secondary">新手先了解机场是什么</a>
+                </div>
+                
+                <!-- Information Strip -->
+                <div class="info-strip">
+                    <div class="info-item">
+                        <span class="info-num">{providers.length}</span>
+                        <span class="info-label">家服务商</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-num">{totalPlans}</span>
+                        <span class="info-label">个套餐整理</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-num">{knowledgeCount}</span>
+                        <span class="info-label">篇机场知识</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-num">{vpnCount}</span>
+                        <span class="info-label">篇VPN指南</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-num">{tutorialCount}</span>
+                        <span class="info-label">个设备教程</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" class="network-svg">
+                    <!-- Soft Background Glows -->
+                    <circle cx="200" cy="200" r="150" fill="url(#glow1)" opacity="0.4" />
+                    <circle cx="280" cy="120" r="100" fill="url(#glow2)" opacity="0.3" />
+                    
+                    <!-- Network Connections -->
+                    <g stroke="#94a3b8" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="4,4">
+                        <line x1="100" y1="200" x2="200" y2="100" />
+                        <line x1="200" y1="100" x2="320" y2="180" />
+                        <line x1="320" y1="180" x2="250" y2="300" />
+                        <line x1="250" y1="300" x2="150" y2="280" />
+                        <line x1="150" y1="280" x2="100" y2="200" />
+                        <line x1="200" y1="100" x2="250" y2="300" />
+                    </g>
+                    
+                    <!-- Nodes -->
+                    <g fill="#ffffff" stroke="#2563eb" stroke-width="4">
+                        <circle cx="100" cy="200" r="10" />
+                        <circle cx="200" cy="100" r="12" />
+                        <circle cx="320" cy="180" r="14" stroke="#f59e0b" />
+                        <circle cx="250" cy="300" r="12" />
+                        <circle cx="150" cy="280" r="10" />
+                    </g>
+                    
+                    <!-- Mini Labels -->
+                    <g font-size="12" font-family="sans-serif" fill="#475569" font-weight="600">
+                        <rect x="115" y="190" width="40" height="20" rx="4" fill="#ffffff" opacity="0.8"/>
+                        <text x="120" y="204">节点</text>
+                        
+                        <rect x="215" y="90" width="40" height="20" rx="4" fill="#ffffff" opacity="0.8"/>
+                        <text x="220" y="104">订阅</text>
+                        
+                        <rect x="250" y="190" width="40" height="20" rx="4" fill="#ffffff" opacity="0.8"/>
+                        <text x="255" y="204">线路</text>
+                        
+                        <rect x="150" y="300" width="40" height="20" rx="4" fill="#ffffff" opacity="0.8"/>
+                        <text x="155" y="314">流量</text>
+                    </g>
+
+                    <defs>
+                        <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#bfdbfe" stop-opacity="1" />
+                            <stop offset="100%" stop-color="#bfdbfe" stop-opacity="0" />
+                        </radialGradient>
+                        <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#e0e7ff" stop-opacity="1" />
+                            <stop offset="100%" stop-color="#e0e7ff" stop-opacity="0" />
+                        </radialGradient>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROVIDER SECTION -->
+    <div class="section-neutral">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2>2026 热门机场快速查看</h2>
+                    <p class="section-subtitle">基于官方公开价格与线路资料整理的服务商摘要</p>
+                </div>
+                <a href="/recommend/" class="view-all-link">查看完整 8 家套餐、价格和流量对比 &rarr;</a>
+            </div>
+            
+            <div class="provider-grid">
+                {providers.map((provider) => (
+                    <div class={`provider-card-modern ${provider.rank === 1 ? 'provider-card-highlight' : ''}`}>
+                        {provider.rank === 1 && <div class="highlight-badge">重点查看</div>}
+                        <div class="provider-card-header">
+                            {provider.logo && 
+                                <div class="provider-logo-container">
+                                    <img src={provider.logo} alt={`${provider.name} Logo`} class="provider-logo" />
+                                </div>
+                            }
+                            <h3 class="provider-title">{provider.name}</h3>
+                        </div>
+                        <div class="provider-card-price">
+                            <span class="price-value">{provider.price}</span> 
+                            <span class="price-unit">{provider.priceUnit}</span>
+                        </div>
+                        <p class="provider-summary">
+                            {provider.routeInfo.length > 35 ? provider.routeInfo.substring(0, 35) + '...' : provider.routeInfo}
+                        </p>
+                        <a href={`/review/${provider.slug}/`} class="btn provider-card-btn">查看 {provider.name} 详情</a>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW USER JOURNEY -->
+    <div class="section-white">
+        <div class="container">
+            <h2 class="text-center" style="margin-bottom: 2.5rem; text-align: center;">第一次使用？从这里开始</h2>
+            <div class="journey-steps">
+                <a href="/knowledge/what-is-jichang/" class="journey-step">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <div class="step-title">了解机场是什么</div>
+                        <div class="step-desc">初学者必读的基础概念指南</div>
+                    </div>
+                </a>
+                <div class="step-arrow">&rarr;</div>
+                <a href="/knowledge/subscription/" class="journey-step">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <div class="step-title">了解订阅与节点</div>
+                        <div class="step-desc">明白如何导入配置与切换线路</div>
+                    </div>
+                </a>
+                <div class="step-arrow">&rarr;</div>
+                <a href="/tutorial/" class="journey-step">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <div class="step-title">选择你的设备</div>
+                        <div class="step-desc">Windows, Mac, iOS, Android</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORE TOPIC SECTION -->
+    <div class="section-blue-gray">
+        <div class="container">
+            <h2 style="margin-bottom: 2rem;">网站核心栏目</h2>
+            <div class="topic-grid">
+                
+                <a href="/knowledge/" class="topic-card topic-card-blue">
+                    <div class="topic-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                    </div>
+                    <h3>机场知识科普</h3>
+                    <p>什么是 IPLC/IEPL？什么是节点流量倍率？帮助新手快速了解机场领域的专有名词。</p>
+                    <div class="topic-link">浏览专栏 &rarr;</div>
+                </a>
+                
+                <a href="/tutorial/" class="topic-card topic-card-green">
+                    <div class="topic-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <h3>客户端使用教程</h3>
+                    <p>提供 Windows、macOS、iOS (iPhone)、Android (安卓) 等全平台客户端的下载与配置指南。</p>
+                    <div class="topic-link">浏览专栏 &rarr;</div>
+                </a>
+                
+                <a href="/vpn/" class="topic-card topic-card-purple">
+                    <div class="topic-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3>VPN 基础与排障</h3>
+                    <p>VPN 经常断线、速度慢怎么办？VPN 和机场（Proxy）有什么区别？</p>
+                    <div class="topic-link">浏览专栏 &rarr;</div>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- TRUST / METHODOLOGY BLOCK -->
+    <div class="section-neutral" style="padding-bottom: 4rem;">
+        <div class="container">
+            <div class="trust-block">
+                <div class="trust-content">
+                    <h2>本站如何整理资料</h2>
+                    <ul class="trust-list">
+                        <li><strong>客观呈现：</strong> 所有价格、流量与线路信息均采集自服务商官方公开套餐。</li>
+                        <li><strong>统一度量：</strong> 换算并统一月付/年付逻辑，方便直观横向比较。</li>
+                        <li><strong>内容分离：</strong> 基础网络知识教程与商业推荐隔离，确保信息学习的纯粹性。</li>
+                        <li><strong>风险提示：</strong> 实际连接速度因当地网络环境而异，我们不作过度的全球绝对稳定性承诺。</li>
+                    </ul>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="/recommend/" class="btn btn-outline" style="background-color: white;">查看完整机场对比</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    /* HERO */
+    .hero-section {
+        background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
+        padding: 4rem 0 3rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .hero-container {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 2rem;
+        align-items: center;
+    }
+    .hero-eyebrow {
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+    .hero-title {
+        font-size: clamp(1.75rem, 4vw, 2.75rem);
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.02em;
+        border: none;
+        padding-bottom: 0;
+    }
+    .hero-desc {
+        font-size: 1.15rem;
+        color: var(--text-muted);
+        line-height: 1.7;
+        margin-bottom: 2.5rem;
+        max-width: 90%;
+    }
+    .hero-ctas {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 3rem;
+    }
+    .hero-btn-primary {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.05rem;
+    }
+    .hero-btn-secondary {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.05rem;
+        background: white;
+    }
+    
+    /* INFO STRIP */
+    .info-strip {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        border-top: 1px solid var(--border-color);
+        padding-top: 2rem;
+    }
+    .info-item {
+        display: flex;
+        flex-direction: column;
+    }
+    .info-num {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1;
+        margin-bottom: 0.25rem;
+    }
+    .info-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    /* VISUAL */
+    .hero-visual {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    .network-svg {
+        width: 100%;
+        height: auto;
+    }
+
+    /* SECTION RHYTHM */
+    .section-neutral {
+        background-color: #ffffff;
+        padding: 4rem 0;
+    }
+    .section-white {
+        background-color: #ffffff;
+        padding: 4rem 0;
+        border-top: 1px solid var(--border-color);
+    }
+    .section-blue-gray {
+        background-color: #f8fafc;
+        padding: 4rem 0;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 2.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .section-header h2 {
+        margin: 0 0 0.5rem 0;
+        border: none;
+        padding: 0;
+        font-size: 2rem;
+    }
+    .section-subtitle {
+        color: var(--text-muted);
+        margin: 0;
+        font-size: 1.05rem;
+    }
+    .view-all-link {
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    /* PROVIDER CARDS */
+    .provider-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+    .provider-card-modern {
+        background: #ffffff;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    .provider-card-modern:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+    }
+    .provider-card-highlight {
+        border-color: #bfdbfe;
+        background: #f8fafc;
+    }
+    .highlight-badge {
+        position: absolute;
+        top: -12px;
+        right: 1.5rem;
+        background: var(--primary);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.3rem 0.75rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        z-index: 10;
+    }
+    .provider-card-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 1.25rem;
+        gap: 0.75rem;
+    }
+    .provider-logo-container {
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .provider-logo {
+        max-height: 100%;
+        width: auto;
+        max-width: 160px;
+        object-fit: contain;
+    }
+    .provider-title {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+    .provider-card-price {
+        margin-bottom: 0.75rem;
+    }
+    .price-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+    .price-unit {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    .provider-summary {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+    .provider-card-btn {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        padding: 0.6rem;
+        margin-top: auto;
+    }
+
+    /* JOURNEY STEPS */
+    .journey-steps {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    .journey-step {
+        flex: 1;
+        background: #ffffff;
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .journey-step:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .step-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #e2e8f0;
+        line-height: 1;
+    }
+    .step-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: var(--text-color);
+        margin-bottom: 0.25rem;
+    }
+    .step-desc {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    .step-arrow {
+        color: #cbd5e1;
+        font-size: 1.5rem;
+    }
+
+    /* TOPIC CARDS */
+    .topic-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    .topic-card {
+        padding: 2rem;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid transparent;
+        display: flex;
+        flex-direction: column;
+    }
+    .topic-card:hover {
+        transform: translateY(-4px);
+    }
+    .topic-card h3 {
+        margin: 1rem 0 0.5rem 0;
+        font-size: 1.25rem;
+        border: none;
+        padding: 0;
+    }
+    .topic-card p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+    .topic-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+    }
+    .topic-link {
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+    
+    .topic-card-blue {
+        background-color: #eff6ff;
+        border-color: #dbeafe;
+    }
+    .topic-card-blue .topic-icon { background: #dbeafe; color: #2563eb; }
+    .topic-card-blue h3 { color: #1e3a8a; }
+    .topic-card-blue .topic-link { color: #2563eb; }
+    
+    .topic-card-green {
+        background-color: #f0fdf4;
+        border-color: #dcfce7;
+    }
+    .topic-card-green .topic-icon { background: #dcfce7; color: #16a34a; }
+    .topic-card-green h3 { color: #14532d; }
+    .topic-card-green .topic-link { color: #16a34a; }
+    
+    .topic-card-purple {
+        background-color: #f5f3ff;
+        border-color: #ede9fe;
+    }
+    .topic-card-purple .topic-icon { background: #ede9fe; color: #7c3aed; }
+    .topic-card-purple h3 { color: #4c1d95; }
+    .topic-card-purple .topic-link { color: #7c3aed; }
+
+    /* TRUST BLOCK */
+    .trust-block {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 3rem;
+    }
+    .trust-content h2 {
+        margin-top: 0;
+        border: none;
+        padding: 0;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+    .trust-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    .trust-list li {
+        color: var(--text-muted);
+        line-height: 1.6;
+        position: relative;
+        padding-left: 1.5rem;
+    }
+    .trust-list li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--primary);
+        font-weight: bold;
+    }
+    .trust-list li strong {
+        color: var(--text-color);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+        .provider-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .hero-title { font-size: 2.25rem; }
+    }
+    @media (max-width: 768px) {
+        .hero-container {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+        .hero-desc {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-ctas {
+            justify-content: center;
+        }
+        .info-strip {
+            justify-content: center;
+        }
+        .hero-visual {
+            display: none; /* Hide on mobile per request */
+        }
+        
+        .provider-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .journey-steps {
+            flex-direction: column;
+        }
+        .step-arrow {
+            transform: rotate(90deg);
+        }
+        .topic-grid {
+            grid-template-columns: 1fr;
+        }
+        .trust-list {
+            grid-template-columns: 1fr;
+        }
+    }
+    @media (max-width: 480px) {
+        .provider-grid {
+            grid-template-columns: 1fr;
+        }
+        .hero-ctas {
+            flex-direction: column;
+        }
+        .info-strip {
+            gap: 1rem;
+        }
+    }
+</style>

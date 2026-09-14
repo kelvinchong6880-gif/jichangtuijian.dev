@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="什么是节点流量倍率？机场倍率如何计算？"
+    description="为什么刚用了几 GB 流量，后台却扣了十几 GB？本文为您详解机场节点流量倍率的计算方式与避坑指南。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/knowledge/" style="color: var(--primary); text-decoration: none;">机场知识</a> &gt; <span>机场流量倍率</span>
+            </div>
+            <h1>什么是节点流量倍率？</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>节点倍率是机场计算您<a href="/knowledge/traffic/">消耗流量</a>的乘数。如果您使用 1x (一倍) 节点下载 1GB，扣 1GB。但如果您使用 5x (五倍) 节点下载 1GB，则会扣除 5GB 套餐流量。
+            </div>
+
+            <h2>为什么会有流量倍率？</h2>
+            <p>机场在不同国家和线路上部署<a href="/knowledge/node/">节点</a>的成本是完全不同的。普通的海外 VPS 非常便宜，而深港 <a href="/knowledge/iplc-iepl/">IPLC 专线</a>等优质带宽的成本极高。</p>
+            <p>为了让不同成本的节点能够在同一个套餐内供用户自由选择，机场引入了“倍率”概念：成本低廉的节点设置为 0.5x 或 1x；而成本极其昂贵的专线或稀缺地区节点，则设置为 2x 甚至 5x。</p>
+
+            <h2>倍率计算实例演示</h2>
+            <p>假设您当前套餐剩余 <strong>100GB</strong> 流量：</p>
+            <ul>
+                <li><strong>场景 A：使用 0.5x 节点传输 10GB 数据。</strong><br>
+                扣费公式：10GB × 0.5 = 5GB。<br>
+                套餐剩余：95GB。（相当于流量变多了）</li>
+                
+                <li><strong>场景 B：使用 1.0x 节点传输 10GB 数据。</strong><br>
+                扣费公式：10GB × 1.0 = 10GB。<br>
+                套餐剩余：90GB。（所见即所得）</li>
+                
+                <li><strong>场景 C：使用 5.0x 节点传输 10GB 数据。</strong><br>
+                扣费公式：10GB × 5.0 = 50GB。<br>
+                套餐剩余：50GB。（流量急剧消耗）</li>
+            </ul>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">选购注意事项</h3>
+                <p>部分套餐可能提供极大的标称总流量（如“10元 1000GB”），但常用节点均设有较高的倍率（如 5x 甚至 10x），这意味着 1000GB 实际上能传输的数据量大打折扣。</p>
+                <p>因此，在购买前，不要只看总流量，还应同时查看常用节点的倍率规则，具体计费标准请以服务商说明为准。在我们的 <a href="/recommend/">机场推荐清单</a> 中，我们通常更青睐采用“全节点 1x 倍率”且定价透明的机场。</p>
+            </div>
+
+            <h2>常见问题 (FAQ)</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 如何知道当前连接节点的倍率？</strong>
+                <p style="margin-top: 0.5rem;">A: 大部分机场会在客户端的节点名称中直接标明（例如：<code>🇭🇰 香港 IEPL专线 | 1x</code>）。如果没有标明，通常可以在机场官网的面板“节点列表”处查看到对应倍率。</p>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 高倍率节点一定速度更快吗？</strong>
+                <p style="margin-top: 0.5rem;">A: 不一定。高倍率通常是因为该线路的带宽成本高或 IP 稀缺（如原生住宅 IP）。如果只是为了看普通的 YouTube 视频，使用 1x 的大带宽节点通常体验更好且更省流量。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

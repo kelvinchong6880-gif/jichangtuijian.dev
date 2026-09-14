@@ -1,0 +1,23 @@
+---
+import { SITE, NAV_LINKS } from '../data/config';
+---
+
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <a href="/" style="display: flex; align-items: center;" aria-label="机场推荐">
+        <picture>
+          <source media="(max-width: 374px)" srcset="/images/brand/logo-mark.svg">
+          <img src="/images/brand/logo-horizontal.svg" alt="机场推荐" width="126" height="36" style="height: 36px; width: auto; object-fit: contain;">
+        </picture>
+      </a>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        {NAV_LINKS.map(link => (
+          <li><a href={link.href}>{link.text}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

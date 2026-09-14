@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="如何正确测试 VPN 的速度？VPN 测速指南"
+    description="很多新手抱怨 VPN 速度慢，却不知如何正确测量。本文教您如何建立基准测试，并使用专业工具准确测试 VPN 的下载与上传表现。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/vpn/" style="color: var(--primary); text-decoration: none;">VPN 基础与排障</a> &gt; <span>VPN 测速</span>
+            </div>
+            <h1>如何正确测试 VPN 的真实速度？</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>正确的测速必须具备对比性：先在关闭 VPN 时测一次本地“基准速度”，再连上 VPN 测一次，对比两者得出的网速损耗率才是衡量 VPN 表现的关键。
+            </div>
+
+            <h2>为什么要测速？</h2>
+            <p>当您感觉网络卡顿时，测速能用客观的数据帮您定位问题：到底是您家里的宽带本身出了问题，还是 VPN 服务器的性能拉垮？单凭主观感受“看视频卡不卡”往往不够准确。</p>
+
+            <h2>标准的 VPN 测速步骤</h2>
+            
+            <h3>第一步：建立基准测试 (Baseline Test)</h3>
+            <ol>
+                <li><strong>断开 VPN 连接。</strong> 确保您的设备处于纯净的本地网络环境中。</li>
+                <li>使用浏览器访问全球公认的测速网站：<strong>Speedtest.net</strong>。</li>
+                <li>点击“GO”进行测试，记录下三个关键数据：<a href="/vpn/vpn-latency/">Ping (延迟)</a>、<a href="/vpn/vpn-download-speed/">Download (下载速度)</a> 和 Upload (上传速度)。这就是您本地网络能达到的<strong>物理极限</strong>。</li>
+            </ol>
+
+            <h3>第二步：连接 VPN 进行对比测试</h3>
+            <ol>
+                <li>开启 VPN，连接到您想要测试的节点（如日本东京）。</li>
+                <li>在 Speedtest.net 页面刷新，并确认测速节点（服务器）自动识别为了 VPN 所在地的测速点。</li>
+                <li>再次点击“GO”，记录下新的三项数据。</li>
+            </ol>
+
+            <h2>如何解读测速结果？</h2>
+            <p>通过对比两次数据，您可以得出结论：</p>
+            <ul>
+                <li><strong>优秀表现：</strong> 连上 VPN 后的下载速度，能达到基准速度的较高比例（如 70% - 90% 以上）。</li>
+                <li><strong>正常损耗：</strong> 由于加密和物理距离，通常折损 30% - 50% 也可能属于正常可用范围。</li>
+                <li><strong>表现较差：</strong> 连上 VPN 后速度跌破基准速度的极低比例（例如原本 100Mbps 掉到 2Mbps），说明该节点极度拥堵或遭遇了带宽瓶颈。此时请参考 <a href="/vpn/vpn-slow/">VPN 速度慢排查指南</a>。</li>
+            </ul>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">测速的常见误区</h3>
+                <p><strong>误区 1：单次测速定终身。</strong></p>
+                <p>网络是动态变化的。早上 8 点的测速可能表现优异，但晚上 9 点晚高峰可能就存在波动。一个节点是否好用，需要看它在晚高峰期间的实际表现。</p>
+                <p><strong>误区 2：要求 VPN 达到家里宽带的绝对上限。</strong></p>
+                <p>大部分 VPN 或代理网络都无法 100% 跑满您的本地最高宽带（例如千兆宽带）。加密过程和跨国传输的物理限制，必然会带来一定程度的开销。不存在“必须达到某个固定 Mbps”的绝对标准。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

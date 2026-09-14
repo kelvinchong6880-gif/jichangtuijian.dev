@@ -1,0 +1,46 @@
+---
+export interface Props {
+  provider: any;
+}
+
+const { provider } = Astro.props;
+---
+
+<div class="card provider-card">
+  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
+    <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+      <span class={`badge badge-rank-${provider.rank}`}>Top {provider.rank}</span>
+      {provider.logo && <img src={provider.logo} alt={`${provider.name} Logo`} style="width: auto; height: 32px; object-fit: contain;" />}
+      {provider.name}
+    </h3>
+    <div style="font-size: 1.25rem; font-weight: bold; color: var(--accent);">
+      {provider.price} <span style="font-size: 0.875rem; color: var(--text-muted); font-weight: normal;">{provider.priceUnit}</span>
+    </div>
+  </div>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+    <div>
+      <strong>流量：</strong>{provider.traffic}
+    </div>
+    <div>
+      <strong>有效期：</strong>{provider.validity}
+    </div>
+    <div style="grid-column: 1 / -1;">
+      <strong>线路特色：</strong>{provider.routeInfo}
+    </div>
+  </div>
+  
+  <div style="margin-bottom: 1.5rem;">
+    <strong>主要优点：</strong>
+    <ul style="list-style-type: disc; margin-left: 1.5rem; color: var(--text-muted);">
+      {provider.features.map((feature: string) => (
+        <li>{feature}</li>
+      ))}
+    </ul>
+  </div>
+  
+  <div style="display: flex; gap: 1rem;">
+    <a href={`/review/${provider.slug}`} class="btn btn-outline" style="flex: 1;">详细测评</a>
+    <a href={provider.affiliateUrl} target="_blank" rel="nofollow noopener" class="btn" style="flex: 1;">访问官网注册</a>
+  </div>
+</div>

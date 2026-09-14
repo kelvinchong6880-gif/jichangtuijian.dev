@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="VPN 延迟 (Ping) 多少正常？理解毫秒与延迟"
+    description="打游戏卡顿？网页响应慢？本文带您理解 VPN 延迟（Ping 值）的概念。多少 ms 延迟算正常？延迟对我们的网络体验到底有什么影响。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/vpn/" style="color: var(--primary); text-decoration: none;">VPN 基础与排障</a> &gt; <span>VPN 延迟与 Ping</span>
+            </div>
+            <h1>VPN 延迟 (Ping) 多少算正常？</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>延迟（Ping）是指数据从您的设备发送到服务器并返回所需的时间，单位是毫秒 (ms)。物理距离是决定延迟的最核心因素，不存在全球通用的“标准绝对延迟”。
+            </div>
+
+            <h2>什么是延迟 (Latency / Ping)？</h2>
+            <p>在 <a href="/vpn/vpn-speed-test/">测速</a> 时，Ping 值反映的是网络的<strong>响应速度</strong>，而不是传输容量。想象您在寄快递：延迟就是包裹送到目的地并拿到回执所需的时间；而带宽（下载速度）则是快递车的载货量。</p>
+            <p>当您点击一个网页链接时，如果延迟高，页面可能会等待几秒钟才开始加载；即使加载速度很快，这种滞后感也会影响交互体验。</p>
+
+            <h2>决定延迟的核心：物理距离</h2>
+            <p>信号在网络中的传输速度是有限的。您距离 VPN 服务器越远，延迟通常就越高，这是物理特性的体现：</p>
+            <ul>
+                <li>如果您在中国大陆连接<strong>周边地区节点（如香港、日本）</strong>：物理距离较近，通常延迟相对较低。</li>
+                <li>如果您连接<strong>欧美节点</strong>：数据需要横跨大洋，即便使用高质量的网络链路，物理延迟也通常在 150ms 以上。</li>
+            </ul>
+
+            <h2>不同场景下的合理延迟范围示例</h2>
+            <p><em>注意：以下区间仅作一般性用途参考示例，非统一质量标准。实际延迟受您本地 Wi-Fi 质量、运营商路由等多种因素共同影响。</em></p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 2rem;">
+                <thead>
+                    <tr style="background-color: var(--card-bg); border-bottom: 2px solid var(--border-color); text-align: left;">
+                        <th style="padding: 1rem;">延迟范围参考</th>
+                        <th style="padding: 1rem;">一般网络体验反馈</th>
+                        <th style="padding: 1rem;">适用场景示例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;"><strong>10ms - 60ms</strong></td>
+                        <td style="padding: 1rem;">响应极快。</td>
+                        <td style="padding: 1rem;">对延迟极度敏感的竞技类网络游戏。</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;"><strong>60ms - 150ms</strong></td>
+                        <td style="padding: 1rem;">良好，网页点击后响应正常。</td>
+                        <td style="padding: 1rem;">日常网页浏览、常规流媒体观看。</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;"><strong>200ms 以上</strong></td>
+                        <td style="padding: 1rem;">存在明显的滞后感。</td>
+                        <td style="padding: 1rem;">可用于普通下载大文件，但不适合高频交互操作。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">常见误区：延迟低等于速度一定快？</h3>
+                <p><strong>正解：延迟和下载速度是两个维度的指标。</strong></p>
+                <p>一个极其拥堵的近距离节点，可能 Ping 值较低（响应快），但如果带宽耗尽，视频依然会卡顿。相反，一个远距离节点 Ping 值较高，但如果带宽非常充裕，看高质量视频可能会极其流畅。因此，评价网络质量必须结合延迟和 <a href="/vpn/vpn-download-speed/">下载速度</a> 综合评估。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

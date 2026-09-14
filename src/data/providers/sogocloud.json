@@ -1,0 +1,82 @@
+{
+  "id": "sogocloud",
+  "name": "SOGOCloud",
+  "slug": "sogocloud",
+  "rank": 1,
+  "officialUrl": "https://wzjc.sogoyunaff.cc/#/?code=BC2BL855",
+  "affiliateUrl": "https://wzjc.sogoyunaff.cc/#/?code=BC2BL855",
+  "price": "8",
+  "priceUnit": "元/月起 (按年付)",
+  "traffic": "60GB - 1.1TB",
+  "validity": "月付/季付/半年付/年付/一次性",
+  "routeInfo": "全 IPLC/IEPL 专线，最高 2.5Gbps 速率，原生 IP",
+  "features": [
+    "全节点 x1 倍率，晚高峰不降速",
+    "多设备不限量同时在线",
+    "解锁 Netflix / Disney+ / ChatGPT / TikTok",
+    "智能路由自动择优",
+    "支持一次性不限时流量包"
+  ],
+  "deviceInfo": "不限制并发设备",
+  "officialDescription": "适合各种流量需求，从轻量新手到大流量团队，全 IPLC/IEPL 专线提供稳定低延迟体验。",
+  "source": "Desktop/官网套餐价格和基本资料",
+  "lastVerified": "2026-09",
+  "plans": [
+    {
+      "name": "小包-年付版",
+      "price": "¥98.00/年",
+      "traffic": "60GB/月",
+      "validity": "年付"
+    },
+    {
+      "name": "基础版",
+      "price": "¥25.00/月起",
+      "traffic": "150GB/月",
+      "validity": "月付/季付/半年付/年付"
+    },
+    {
+      "name": "优选版",
+      "price": "¥45.00/月起",
+      "traffic": "350GB/月",
+      "validity": "月付/季付/半年付/年付"
+    },
+    {
+      "name": "强化版",
+      "price": "¥80.00/月起",
+      "traffic": "550GB/月",
+      "validity": "月付/季付/半年付/年付"
+    },
+    {
+      "name": "顶配版",
+      "price": "¥150.00/月起",
+      "traffic": "1.1TB（1050GB）/月",
+      "validity": "月付/季付/半年付/年付"
+    },
+    {
+      "name": "SOGO基础餐不限时版",
+      "price": "¥120.00/一次性",
+      "traffic": "120GB",
+      "validity": "无限时长",
+      "note": "原始资料另有 ¥100 套餐亮点/活动标注"
+    },
+    {
+      "name": "SOGO优选餐不限时版",
+      "price": "¥220.00/一次性",
+      "traffic": "250GB",
+      "validity": "无限时长"
+    },
+    {
+      "name": "SOGO强化餐不限时版",
+      "price": "¥450.00/一次性",
+      "traffic": "500GB",
+      "validity": "无限时长"
+    },
+    {
+      "name": "SOGO至尊餐不限时版",
+      "price": "¥850.00/一次性",
+      "traffic": "1.0TB",
+      "validity": "无限时长"
+    }
+  ],
+  "logo": "/images/providers/sogocloud.png"
+}

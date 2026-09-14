@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="机场节点是什么？如何选择合适的节点国家与线路"
+    description="深入理解机场节点（服务器）的概念。节点国家怎么选？游戏、流媒体和日常上网对节点有什么不同要求？"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/knowledge/" style="color: var(--primary); text-decoration: none;">机场知识</a> &gt; <span>机场节点</span>
+            </div>
+            <h1>机场节点是什么？如何选择合适的节点</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>“节点”就是机场部署在世界各地的服务器。连接某个节点，您的设备在互联网上就会伪装成该节点所在地的 IP，从而享受当地的网络访问权限。
+            </div>
+
+            <h2>什么是机场节点？</h2>
+            <p>如果您已经看过我们的<a href="/knowledge/what-is-jichang/">机场是什么</a>，就会知道机场本质上提供的是网络中转服务。而这个中转的实体，就是“节点”。</p>
+            <p>当您连接到一个“日本节点”时，您的所有上网数据会先发送到机场在日本的服务器，然后由该服务器去请求您想访问的网站（如 Google）。这样，Google 看到的访问者就来自日本，从而允许您访问内容。</p>
+
+            <h2>节点国家/地区怎么选？</h2>
+            <p>不同的使用场景对节点地区的要求不同：</p>
+            <ul>
+                <li><strong>香港 (HK)：</strong> 物理距离大陆最近，通常是<strong>延迟最低、速度最快</strong>的节点。适合日常快速网页浏览、游戏加速和追求极速响应的用户。</li>
+                <li><strong>日本 (JP) / 韩国 (KR)：</strong> 亚洲地区的优质选择，拥有极高的带宽。非常适合观看 YouTube 等高质量流媒体。</li>
+                <li><strong>美国 (US)：</strong> 带宽极大且通常倍率较低。适合大文件下载或访问严格限制美国 IP 的特定服务（如原版 ChatGPT）。</li>
+                <li><strong>台湾 (TW) / 新加坡 (SG)：</strong> 适合特定区域流媒体解锁（如动画疯或特定 Netflix 剧集）或游戏锁区需求。</li>
+            </ul>
+
+            <h2>节点的线路类型</h2>
+            <p>除了国家地区，节点名称中通常还会带有线路类型的缩写（如 IEPL、IPLC、BGP 等）。这些代表了数据从您本地传输到该服务器的底层路径质量：</p>
+            <p>通常情况下，高端机场会采用专线传输。如果您想深入了解，可以查看我们的 <a href="/knowledge/iplc-iepl/">IPLC 与 IEPL 解析</a> 以及 <a href="/knowledge/direct-relay-dedicated/">直连、中转与专线的区别</a>。</p>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">常见误区</h3>
+                <p><strong>误区：节点越多越好。</strong></p>
+                <p>正解：很多劣质机场会通过技术手段将一台服务器复制出几十个节点名称来凑数。相比数量，<strong>节点的质量、连通率和带宽</strong>才是决定体验的核心。10 个极其稳定的专线节点远胜于 100 个经常掉线的劣质节点。</p>
+            </div>
+
+            <h2>常见问题 (FAQ)</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 节点名称中的“1x”, “0.5x” 是什么意思？</strong>
+                <p style="margin-top: 0.5rem;">A: 这是节点的流量倍率。使用高倍率节点会成倍消耗您的套餐流量。详情请参考<a href="/knowledge/traffic-multiplier/">节点流量倍率说明</a>。</p>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 为什么某些节点无法连接？</strong>
+                <p style="margin-top: 0.5rem;">A: 节点可能因为服务器维护、线路波动或遭到防火墙封锁而暂时失效。正规机场通常会自动监控并修复，您可以尝试切换到其他国家的节点继续使用。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

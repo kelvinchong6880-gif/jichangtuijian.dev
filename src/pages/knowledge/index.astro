@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../data/config';
+---
+
+<BaseLayout 
+    title="机场知识科普：节点、订阅、流量与线路新手指南"
+    description="新手必读的机场百科大全。详解机场是什么、如何选择节点、流量倍率计算、IPLC/IEPL专线科普，以及防范机场跑路的避坑指南。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <span>机场知识</span>
+            </div>
+            <h1>机场知识：节点、订阅、流量与线路新手指南</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin-top: 1rem;">
+                刚接触国际网络加速服务？面对五花八门的“节点”、“专线”、“倍率”等术语感到一头雾水？本知识库将用最通俗易懂的语言，为您拆解挑选与使用机场必备的核心概念。
+            </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem;">
+            
+            <!-- Category 1 -->
+            <section>
+                <h2 style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">新手入门</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/what-is-jichang/" style="color: var(--text-color); text-decoration: none;">机场是什么？</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">第一次看到“机场”这个网络术语？详细解释机场是什么、为什么叫机场以及基本组成。</p>
+                        <a href="/knowledge/what-is-jichang/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/node/" style="color: var(--text-color); text-decoration: none;">机场节点是什么？</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">深入理解节点（服务器）概念。日本、香港、美国节点该怎么选？</p>
+                        <a href="/knowledge/node/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/subscription/" style="color: var(--text-color); text-decoration: none;">机场订阅链接详解</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">订阅链接的作用、导入方式，以及切勿泄露链接的严重安全防范要求。</p>
+                        <a href="/knowledge/subscription/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Category 2 -->
+            <section>
+                <h2 style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">套餐与流量</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/traffic/" style="color: var(--text-color); text-decoration: none;">机场流量多少够用？</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">轻度还是重度用户？根据日常上网和刷视频习惯，推算您每月的流量需求。</p>
+                        <a href="/knowledge/traffic/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/traffic-multiplier/" style="color: var(--text-color); text-decoration: none;">节点流量倍率说明</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">为什么用了几 GB 后台却扣了十几 GB？教你识别并规避高流量倍率套路。</p>
+                        <a href="/knowledge/traffic-multiplier/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/unlimited/" style="color: var(--text-color); text-decoration: none;">不限时机场解析</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">不限时套餐是无限流量吗？按量付费套餐到底适合哪些人群购买。</p>
+                        <a href="/knowledge/unlimited/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/plan-selection/" style="color: var(--text-color); text-decoration: none;">机场套餐怎么选？</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">提供科学的选择逻辑，帮您决定买月付还是年付，规避高危促销陷阱。</p>
+                        <a href="/knowledge/plan-selection/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Category 3 -->
+            <section>
+                <h2 style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">线路知识</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/iplc-iepl/" style="color: var(--text-color); text-decoration: none;">IPLC 与 IEPL 专线</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">一文读懂企业级专线与普通线路的区别，了解其在延迟和稳定性上的表现。</p>
+                        <a href="/knowledge/iplc-iepl/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/direct-relay-dedicated/" style="color: var(--text-color); text-decoration: none;">直连、中转与专线</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">理清公网直连、BGP 中转与内网专线的原理差异、防墙能力与价格成本对比。</p>
+                        <a href="/knowledge/direct-relay-dedicated/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Category 4 -->
+            <section>
+                <h2 style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">风险与避坑</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/knowledge/risk-guide/" style="color: var(--text-color); text-decoration: none;">机场跑路与风险防范</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">揭示机场运营背后的关停跑路风险，教您如何最大程度保护资金和隐私安全。</p>
+                        <a href="/knowledge/risk-guide/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+</BaseLayout>

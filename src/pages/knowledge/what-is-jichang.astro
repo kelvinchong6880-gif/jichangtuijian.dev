@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="机场是什么？新手零基础科普指南 | 机场知识"
+    description="第一次看到“机场”这个网络术语？本文为您详细解释机场是什么、为什么叫机场，以及它的基本组成和主要用途。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/knowledge/" style="color: var(--primary); text-decoration: none;">机场知识</a> &gt; <span>机场是什么</span>
+            </div>
+            <h1>机场是什么？新手零基础科普指南</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>“机场”是提供科学上网（翻墙）节点的服务商的代称。新手用户通过购买机场的套餐，将节点导入到特定的客户端软件中，即可实现国际互联网的无缝访问。
+            </div>
+            
+            <h2>机场是什么？为什么叫“机场”？</h2>
+            <p>在网络环境中，“机场”并不是指现实中的飞机场，而是提供跨境网络加速节点的服务商。这个词起源于早期最流行的一种代理协议叫做 Shadowsocks，其客户端软件的图标是一架小纸飞机。随着时间推移，提供大量纸飞机节点的服务商就被网友们形象地称为“机场”。</p>
+            <p>机场的核心作用就是提供一条或者多条“代理线路”，帮助您的设备（手机、电脑）通过这些线路连接到全球各地的服务器，从而访问您本地网络无法直接访问的网站，例如 Google、YouTube、GitHub 等。</p>
+
+            <h2>机场的基本组成</h2>
+            <p>一个完整的机场服务通常包含以下几个部分：</p>
+            <ul>
+                <li><strong>官方网站与后台面板：</strong> 用于注册账号、查看套餐、购买以及获取订阅链接。</li>
+                <li><strong>节点（服务器）：</strong> 机场在不同国家和地区（如香港、日本、美国）部署的服务器，它们是您上网的中转站。如果您想了解更多关于节点的知识，请阅读我们的<a href="/knowledge/node/">机场节点指南</a>。</li>
+                <li><strong>订阅链接（Subscribe Link）：</strong> 一串包含所有节点信息的 URL 链接，您只需要将它复制到客户端中即可自动获取所有节点。相关知识请查看<a href="/knowledge/subscription/">机场订阅说明</a>。</li>
+                <li><strong>流量与套餐：</strong> 机场通常按照时间（月付/年付）和可用流量（GB）来售卖套餐。</li>
+            </ul>
+
+            <h2>机场有什么用途？</h2>
+            <p>机场主要被用于以下场景：</p>
+            <ol>
+                <li><strong>查阅资料与学习：</strong> 访问海外学术数据库、Google 搜索、维基百科等。</li>
+                <li><strong>流媒体娱乐：</strong> 观看 Netflix、Disney+、HBO、YouTube 等流媒体服务。由于不同国家版权限制，很多人使用机场节点来解锁特定国家的内容。</li>
+                <li><strong>跨境电商与外贸：</strong> 访问 TikTok 国际版、亚马逊后台等需要当地原生网络环境的业务。</li>
+                <li><strong>AI 工具：</strong> 顺畅访问 ChatGPT、Midjourney、Claude 等限制区域的 AI 工具。</li>
+            </ol>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">常见误区</h3>
+                <p><strong>误区：买了机场就能直接翻墙。</strong></p>
+                <p>正解：机场只是“网络服务提供商”，它不提供 App 本身。您必须先在手机或电脑上安装兼容的<strong>客户端软件</strong>（如 Clash、Shadowrocket、v2rayN），然后将机场的订阅链接导入到软件中，才能开始使用。</p>
+            </div>
+
+            <h2>常见问题 (FAQ)</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 机场和 VPN 有什么区别？</strong>
+                <p style="margin-top: 0.5rem;">A: 简单的区分是，传统 VPN（如 ExpressVPN）提供一键连接的 App，主要用于加密和隐私保护；而“机场”通常基于代理协议，主要目的是绕过防火墙。机场在突破网络封锁的速度和伪装性上通常优于传统 VPN。详细对比可以看<a href="/vpn/vpn-vs-proxy/">VPN和机场的区别</a>。</p>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 机场安全吗？我的隐私会被泄露吗？</strong>
+                <p style="margin-top: 0.5rem;">A: 机场主要解决连通性问题，不具备传统 VPN 极强的隐私加密特性。建议在不明机场环境下避免进行敏感的金融交易，日常网页浏览使用 HTTPS 是相对安全的。</p>
+            </div>
+
+            <p style="margin-top: 3rem; text-align: center;">如果您已经理解了机场是什么，可以继续查看 <a href="/recommend/">2026 机场套餐与价格对比</a>。</p>
+
+        </div>
+    </div>
+</BaseLayout>

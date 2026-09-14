@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="Windows 电脑配置与使用指南"
+    description="如何在 Windows 10/11 电脑上配置网络客户端？涵盖 System Proxy、TUN 模式的区别及常见安全提示。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/tutorial/" style="color: var(--primary); text-decoration: none;">使用教程</a> &gt; <span>Windows</span>
+            </div>
+            <h1>Windows 电脑网络配置教程</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速说明：</strong>本教程适用于 Windows 10 及 Windows 11 用户，指导您如何在电脑上下载安装客户端，并正确配置系统代理或虚拟网卡（TUN）。
+            </div>
+
+            <h2>一、准备工作</h2>
+            <ul>
+                <li><strong>有效订阅与资料：</strong> 从服务商后台准备好 Windows 端适用的订阅链接。（详见 <a href="/knowledge/plan-selection/">套餐知识</a>）</li>
+                <li><strong>系统权限：</strong> 安装软件或安装虚拟网卡驱动时，您需要拥有当前 Windows 账户的管理员权限。</li>
+            </ul>
+
+            <h2>二、客户端下载与安装</h2>
+            <p>Windows 平台的开源客户端种类繁多，请务必根据服务商的兼容性要求进行选择。</p>
+            <ul>
+                <li><strong>下载原则：</strong> 请通过服务商后台提供的官方下载链接，或者直接前往该开源项目的 <strong>官方 <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub Release</a></strong> 页面下载。</li>
+                <li><strong>安装过程：</strong> 解压或运行安装程序。建议将程序放置在没有中文和特殊字符的英文路径下（例如 <code>D:\Tools\ProxyClient\</code>），避免因路径编码问题导致软件报错。</li>
+            </ul>
+            <div style="background: #fff3cd; color: #856404; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <strong>重要安全提醒（关于 Windows Defender / SmartScreen）：</strong><br>
+                由于很多开源客户端没有购买昂贵的商业代码签名，Windows 可能会弹出“Windows 已保护你的电脑 (SmartScreen)”或安全软件拦截提示。
+                <ul>
+                    <li><strong>正确做法：</strong> 优先确认您的下载来源绝对可靠（如官方 GitHub）。确认无误后，点击“更多信息”并选择“仍要运行”，或者将其添加到安全软件的白名单中。</li>
+                    <li><strong>错误做法：</strong> 绝对不要建议自己或他人<strong>永久关闭 Windows Defender</strong>、永久关闭系统防火墙，或运行网上来源不明的 PowerShell 脚本来强行屏蔽安全中心。不要使用任何盗版或被第三方篡改的客户端。</li>
+                </ul>
+            </div>
+
+            <h2>三、导入订阅 (Import Subscription)</h2>
+            <ol>
+                <li>在服务商网站复制订阅链接。</li>
+                <li>运行客户端软件，它通常会出现在屏幕右下角的系统托盘（任务栏角落）中。双击图标打开主界面。</li>
+                <li>寻找类似于 <strong>配置 (Profiles)</strong> 或 <strong>订阅管理</strong> 的选项卡。</li>
+                <li>选择“从剪贴板导入 URL”或手动粘贴链接并点击“下载/更新”。</li>
+            </ol>
+
+            <h2>四、System Proxy 与 TUN 模式基础概念</h2>
+            <p>Windows 下的客户端通常提供两种接管网络的方式：</p>
+            <ul>
+                <li><strong>System Proxy (系统代理)：</strong> 客户端会在 Windows 设置中配置一个本地代理端口（如 127.0.0.1:1080）。绝大多数浏览器（Edge、Chrome）会自动遵循这个设置并走代理。但部分不遵循系统代理设置的软件（如命令行工具、部分游戏）依然会走直连。</li>
+                <li><strong>TUN 模式 (虚拟网卡)：</strong> 客户端会在系统中创建一张虚拟网卡，强制接管整台电脑的所有网络流量，类似于传统 VPN 的全局效果。如果您发现某些软件始终无法走代理，可以尝试在客户端设置中开启 TUN 模式（需要管理员权限）。</li>
+            </ul>
+
+            <h2>五、选择节点与连接</h2>
+            <ol>
+                <li>在节点列表或代理（Proxies）页面中，选择一个延迟（Ping）和负载适合的节点。（关于节点的更多解释，见 <a href="/knowledge/node/">节点知识</a>）。</li>
+                <li>在主界面或系统托盘右键菜单中，勾选 <strong>“设为系统代理 (Set as System Proxy)”</strong> 或开启 <strong>TUN 模式</strong> 以启动连接。</li>
+            </ol>
+
+            <h2>六、验证连接与常见错误</h2>
+            <p>打开浏览器，访问查 IP 网站确认网络出口发生改变（见 <a href="/vpn/vpn-check/">连接验证指南</a>）。</p>
+            <p><strong>常见排障：</strong></p>
+            <ul>
+                <li><strong>连接成功但毫无网络：</strong> 可能是系统时间未同步，或当前节点已失效。请尝试同步系统时间并更换节点。详见 <a href="/vpn/vpn-not-working/">无网络排障</a>。</li>
+                <li><strong>速度异常缓慢：</strong> 请在客户端内对节点进行测速，并选择延迟较低的节点。详见 <a href="/vpn/vpn-slow/">网速缓慢排障</a>。</li>
+                <li><strong>软件退出后电脑无法上网：</strong> 如果客户端非正常崩溃，系统代理设置可能未被还原。请进入 <code>Windows 设置 -> 网络和 Internet -> 代理</code>，手动关闭“使用代理服务器”开关。</li>
+            </ul>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">排障安全底线</h3>
+                <p>如果为了排查是否被第三方杀毒软件拦截而进行了临时关闭测试，必须在测试明确结论后，立即恢复杀毒软件和防火墙的正常运行，切勿让 Windows 电脑长期处于裸奔状态。</p>
+            </div>
+    
+        </div>
+    </div>
+</BaseLayout>

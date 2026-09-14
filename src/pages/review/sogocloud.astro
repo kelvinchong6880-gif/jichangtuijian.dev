@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Disclosure from '../../components/Disclosure.astro';
+import { getProviderBySlug } from '../../data/providers';
+
+const provider = getProviderBySlug('sogocloud');
+---
+
+<BaseLayout 
+  title="SOGOCloud怎么样？2026 最新套餐价格与测评介绍 | 机场推荐"
+  description="全面了解 SOGOCloud 怎么样。本文依据官方资料整理了 SOGOCloud 的最新套餐价格、流量说明与线路特点，帮助您根据自身预算与需求选择合适的方案。"
+>
+  <div class="container">
+    <div style="margin-bottom: 2rem;">
+      <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+        {provider.logo && <img src={provider.logo} alt="SOGOCloud Logo" style="width: auto; height: 48px; object-fit: contain; border-radius: 4px;" />}
+        <h1 style="margin: 0; padding: 0; border: none;">SOGOCloud 怎么样？2026 套餐价格、流量与线路介绍</h1>
+      </div>
+      <p style="color: var(--text-muted);">
+        <strong>最后核验：</strong> {provider.lastVerified} | <strong>排名：</strong> #{provider.rank}
+      </p>
+    </div>
+
+    <Disclosure />
+
+    <section class="card" style="margin-bottom: 3rem; background-color: #f0fdf4; border-color: #bbf7d0;">
+      <h2 style="margin-top: 0; color: #166534; border-bottom: none;">⚡ 快速结论</h2>
+      <p style="color: #15803d; margin-bottom: 0;">
+        本站将 SOGOCloud 排名第 1，这是基于本站编辑商业排序的结果。根据目前官方套餐资料，它同时提供年付、月付以及不限时方案，用户应该根据自己的实际预算、流量和付款周期进行选择。请注意，本站没有进行独立长期稳定性或速度测试。
+      </p>
+    </section>
+
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <a href={provider.affiliateUrl} class="btn" target="_blank" rel="sponsored nofollow noopener" style="padding: 1rem 2rem; font-size: 1.1rem;">查看 SOGOCloud 当前套餐</a>
+    </div>
+
+    <section style="margin-bottom: 3rem;">
+      <h2>📌 核心参数速览</h2>
+      <ul style="list-style-type: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <li style="background: var(--bg-alt); padding: 1rem; border-radius: 8px;">
+          <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem;">起步价格</div>
+          <div style="font-size: 1.25rem; font-weight: bold; color: var(--primary);">{provider.price}</div>
+        </li>
+        <li style="background: var(--bg-alt); padding: 1rem; border-radius: 8px;">
+          <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem;">基础流量</div>
+          <div style="font-size: 1.25rem; font-weight: bold;">{provider.traffic}</div>
+        </li>
+        <li style="background: var(--bg-alt); padding: 1rem; border-radius: 8px;">
+          <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem;">支持协议</div>
+          <div style="font-size: 1.1rem;">{provider.protocols ? provider.protocols.join(', ') : <span style="font-size: 0.9rem; color: var(--text-muted);">官方未明确说明</span>}</div>
+        </li>
+      </ul>
+    </section>
+
+    <section style="margin-bottom: 3rem;">
+      <h2>🚀 线路与特点介绍</h2>
+      <div class="article-content" style="margin-top: 1rem;">
+        <p>根据 SOGOCloud 官方资料标注，该服务商具备以下线路特色：</p>
+        <ul style="margin-top: 1rem;">
+          {provider.features.map(f => (
+            <li style="margin-bottom: 0.5rem;">{f}</li>
+          ))}
+        </ul>
+        <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+          * 注：以上线路特点均基于该服务商官网公布的信息，本站未进行独立性能验证，实际体验可能因网络环境而异。
+        </p>
+      </div>
+        <div style="margin-bottom: 1.5rem;">
+          <strong>Q: SOGOCloud 节点倍率如何？</strong>
+          <p style="margin-top: 0.5rem;">A: 根据官方资料显示，全节点均为 x1 倍率，没有高倍率套路。</p>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <strong>Q: 晚高峰会限速或降速吗？</strong>
+          <p style="margin-top: 0.5rem;">A: 官方页面称 SOGOCloud 晚高峰不降速，保障稳定的网络体验。</p>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <strong>Q: 是否支持流媒体解锁？</strong>
+          <p style="margin-top: 0.5rem;">A: 官方说明支持解锁 Netflix、Disney+、ChatGPT、TikTok 等多种流媒体和服务。</p>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <strong>Q: 允许多少设备同时在线？</strong>
+          <p style="margin-top: 0.5rem;">A: 根据官方套餐描述，SOGOCloud 支持多设备不限量同时在线。</p>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <strong>Q: 是否提供原生 IP？</strong>
+          <p style="margin-top: 0.5rem;">A: 官方资料标注提供原生 IP 支持，有利于某些对 IP 纯净度要求高的业务。</p>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <strong>Q: 购买前需要注意什么？</strong>
+          <p style="margin-top: 0.5rem;">A: 任何机场都有不可抗力风险。本站未进行独立长期性能验证，建议您先购买月付套餐，确认在您当地网络环境稳定后再做长期打算。</p>
+        </div>
+    </section>
+
+    <section style="margin-bottom: 3rem;">
+      <h2>💰 2026 最新套餐价格清单</h2>
+      <p style="margin-bottom: 1rem;">以下是根据官方资料整理的 SOGOCloud 完整 9 个套餐列表：</p>
+      <div class="table-container" style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+          <thead>
+            <tr style="background-color: var(--card-bg); border-bottom: 2px solid var(--border-color); text-align: left;">
+              <th style="padding: 1rem;">套餐名称</th>
+              <th style="padding: 1rem;">价格 (起)</th>
+              <th style="padding: 1rem;">流量</th>
+              <th style="padding: 1rem;">有效期/周期</th>
+            </tr>
+          </thead>
+          <tbody>
+            {provider.plans.map(plan => (
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 1rem; font-weight: 500;">{plan.name}</td>
+                <td style="padding: 1rem; color: var(--primary);">{plan.price}</td>
+                <td style="padding: 1rem;">{plan.traffic}</td>
+                <td style="padding: 1rem;">{plan.period}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+      <h2>🤔 常见问题解答 (FAQ)</h2>
+      <div style="margin-top: 1.5rem;">
+        <div style="margin-bottom: 1.5rem;">
+          <strong>Q: 第一次使用应该选择年付还是月付？</strong>
+          <p style="margin-top: 0.5rem;">A: 强烈建议首次购买选择月付，测试当地真实网络环境稳定后再考虑年付。</p>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <strong>Q: SOGOCloud 适合什么用户？</strong>
+          <p style="margin-top: 0.5rem;">A: 它提供了从 60GB 到 1.1TB 不等的流量选择，适合从轻量浏览到重度流媒体及多设备共享的各阶层用户，用户可根据自身用量灵活选购。</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

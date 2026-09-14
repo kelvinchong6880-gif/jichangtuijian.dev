@@ -1,0 +1,56 @@
+{
+  "id": "weifeng",
+  "name": "微风",
+  "slug": "weifeng",
+  "rank": 2,
+  "officialUrl": "https://edp01.breezenetaff.com/#/?code=hM8APccJ",
+  "affiliateUrl": "https://edp01.breezenetaff.com/#/?code=hM8APccJ",
+  "price": "11.4",
+  "priceUnit": "元/月起 (按年付)",
+  "traffic": "100GB - 1.2TB",
+  "validity": "年付/月付/一次性",
+  "routeInfo": "全 IPLC 专线，享受低延迟高速率",
+  "features": [
+    "购买日算起自动重置",
+    "不限制设备同时接入",
+    "晚高峰不限速",
+    "永久不过期流量包可选"
+  ],
+  "deviceInfo": "不限制设备同时接入",
+  "officialDescription": "主打低延迟 IPLC 专线，覆盖多地节点，套餐配置灵活，包括常规月付及大容量永久不限时套餐。",
+  "source": "Desktop/官网套餐价格和基本资料",
+  "lastVerified": "2026-09",
+  "plans": [
+    {
+      "name": "清风",
+      "price": "¥137/年",
+      "traffic": "100GB/月"
+    },
+    {
+      "name": "乘风",
+      "price": "¥27/月",
+      "traffic": "200GB/月"
+    },
+    {
+      "name": "破风",
+      "price": "¥57/月",
+      "traffic": "500GB/月"
+    },
+    {
+      "name": "御风",
+      "price": "¥127/月",
+      "traffic": "1.2TB/月"
+    },
+    {
+      "name": "信风·不限时",
+      "price": "¥200/次",
+      "traffic": "270GB永久"
+    },
+    {
+      "name": "长风·不限时",
+      "price": "¥370/次",
+      "traffic": "570GB永久"
+    }
+  ],
+  "logo": "/images/providers/weifeng.png"
+}

@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="机场套餐怎么选？月付还是年付？流量多少合适？"
+    description="面对琳琅满目的机场套餐不知如何下手？本文提供一套科学的机场套餐选择逻辑，帮助新手规避高危选项，挑选最适合自己需求的节点方案。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/knowledge/" style="color: var(--primary); text-decoration: none;">机场知识</a> &gt; <span>套餐怎么选</span>
+            </div>
+            <h1>机场套餐选择指南：如何挑选最适合自己的套餐？</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>新手首次购买机场，如果服务商提供月付或较短周期方案，<strong>通常建议优先考虑短周期</strong>，以较低的长期承诺成本观察自己所在地区的实际使用情况。
+            </div>
+
+            <h2>第一步：根据使用场景选择线路级别</h2>
+            <p>价格差距往往体现在线路上（关于线路名词可复习 <a href="/knowledge/direct-relay-dedicated/">直连中转专线区别</a>）：</p>
+            <ul>
+                <li><strong>如果你是外服游戏玩家 / 晚高峰对网络极其敏感 / 重要跨境电商：</strong> 必须选择标有 <a href="/knowledge/iplc-iepl/">IPLC / IEPL</a> 的全专线机场套餐。</li>
+                <li><strong>如果你是重度追剧党 / 日常查资料 / 追求性价比：</strong> 选择提供优质公网中转线路（如 BGP 中转）的机场，既能保证看视频流畅，又能获得充足的流量。</li>
+            </ul>
+
+            <h2>第二步：确定需要的流量大小</h2>
+            <p>永远不要盲目追求“流量越大越好”，绝大部分人都高估了自己的用量。具体估算可参考我们的<a href="/knowledge/traffic/">流量消耗估算说明</a>：</p>
+            <ul>
+                <li><strong>极轻度偶尔用：</strong> 直接购买<a href="/knowledge/unlimited/">不限时套餐（按量付费包）</a>，用多少算多少，时间不过期。</li>
+                <li><strong>每天几小时网页/推特：</strong> 50GB - 100GB / 月。</li>
+                <li><strong>每天高强度刷视频 (YouTube/Netflix)：</strong> 200GB - 500GB / 月。</li>
+            </ul>
+            <p><em>注意：选购时务必确认机场是否存在恶意的<a href="/knowledge/traffic-multiplier/">高节点流量倍率</a>。</em></p>
+
+            <h2>第三步：购买周期 (月付 vs 季付 vs 年付)</h2>
+            <p>机场行业因为处于灰色地带，时刻面临不可抗力风险（详见<a href="/knowledge/risk-guide/">防跑路指南</a>）。关于付款周期，我们有以下铁律：</p>
+            <ol>
+                <li><strong>新服务商首次接触建议短周期：</strong> 无论长期套餐的折扣看起来多么诱人，建议先小额购买一个月，在您自己当地的网络环境（联通/电信/移动）亲自体验晚高峰的速度。别人测速再快也不代表您用着快。</li>
+                <li><strong>信任期后：季付或半年付。</strong> 如果一个机场您稳定使用了几个月，且服务商售后态度良好，可以考虑购买季付或半年付，以获得一定的折扣。</li>
+                <li><strong>审慎对待：大额年付或超长周期预付。</strong> 除非是您长期使用且充分信任的老牌服务商，否则建议在确认长期稳定性前，谨慎选择一次性大额支付，以防范潜在的运营中断风险。</li>
+            </ol>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">常见误区</h3>
+                <p><strong>误区：花钱买最贵的“旗舰版”套餐速度就最快。</strong></p>
+                <p>正解：很多机场的“基础版”和“旗舰版”在节点质量和速度上是完全一样的，唯一的区别只是给的流量多少，或者允许同时在线的设备数不同。请仔细阅读套餐的说明文本，如果没写“旗舰版拥有专属极速节点”，那速度大概率是一样的。</p>
+            </div>
+
+            <p style="margin-top: 3rem; text-align: center;">如果您已经掌握了选购技巧，欢迎前往 <a href="/recommend/">2026 机场推荐与套餐对比</a> 页面挑选您的理想服务商。</p>
+
+        </div>
+    </div>
+</BaseLayout>

@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="VPN 工作原理详解：一文读懂加密隧道如何工作"
+    description="VPN 是如何实现加密和 IP 伪装的？本文用新手能理解的方式，拆解 VPN 客户端、服务器与加密隧道的工作原理。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/vpn/" style="color: var(--primary); text-decoration: none;">VPN 基础与排障</a> &gt; <span>VPN 工作原理</span>
+            </div>
+            <h1>VPN 是如何工作的？加密隧道原理拆解</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>VPN 的工作原理是：您的设备（客户端）将网络数据加密，发送到远端的 VPN 服务器。服务器解密后代您访问目标网站，然后将结果加密送回给您。整个过程中，本地网络运营商只能看到一堆乱码数据。
+            </div>
+
+            <h2>VPN 系统的三大核心组件</h2>
+            <p>要理解 <a href="/vpn/what-is-vpn/">VPN 是什么</a>，我们需要先认识 VPN 工作过程中的三个关键角色：</p>
+            <ul>
+                <li><strong>客户端 (Client)：</strong> 您安装在手机或电脑上的 VPN 软件。它负责在数据离开您的设备前对其进行加密。</li>
+                <li><strong>VPN 服务器 (Server)：</strong> VPN 服务商部署在全球各地的大型计算机。它负责接收您的加密数据，解密并转发给真正的目标网站。</li>
+                <li><strong>加密隧道 (Tunnel)：</strong> 客户端和服务器之间建立的逻辑通道。任何在这条通道里传输的数据都是经过加密的。</li>
+            </ul>
+
+            <h2>一次完整的 VPN 连接过程</h2>
+            <p>假设您现在坐在咖啡馆，想要连接美国的 VPN 访问 <code>example.com</code>，以下是幕后发生的事情：</p>
+            <ol>
+                <li><strong>建立隧道：</strong> 您的 VPN 客户端与美国的 VPN 服务器取得联系，通过安全协议（如 OpenVPN、WireGuard 或 IPsec）验证身份并生成加密密钥，建立隧道。</li>
+                <li><strong>本地加密：</strong> 您在浏览器输入网址。VPN 客户端将这个访问请求（连同 DNS 解析请求）用密钥加密成一堆无意义的乱码。</li>
+                <li><strong>隐蔽传输：</strong> 这些乱码数据通过咖啡馆的 Wi-Fi 和您的网络运营商（ISP）传输出去。虽然 ISP 能看到您在发送数据，但由于数据是加密的，他们无法知道您访问了什么网站、发送了什么内容。</li>
+                <li><strong>服务器代访：</strong> 美国的 VPN 服务器收到乱码，使用对应的密钥解密出真实的请求，然后代替您向 <code>example.com</code> 发起访问。</li>
+                <li><strong>加密回传：</strong> 网站将网页数据返回给 VPN 服务器，服务器再次将其加密，通过隧道送回您的设备，您的客户端解密后展示在屏幕上。</li>
+            </ol>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">原理解析：关于 DNS 的重要性</h3>
+                <p>在不使用 VPN 时，您访问网站的第一步是请求 DNS（域名系统）将网址翻译成 IP 地址。这个请求通常是由您的本地运营商处理的，如果不加密，运营商就能清楚地记录您的访问痕迹（这就是所谓的 <strong>DNS 泄露</strong>）。<br>
+                优秀的 VPN 会接管系统的 DNS 请求，将其一起加密发送到 VPN 服务器，由服务器的专属 DNS 进行解析，从而避免部分隐私泄露。如果您怀疑存在泄露，请查看 <a href="/vpn/vpn-check/">如何检测 VPN 是否生效</a>。</p>
+            </div>
+
+            <h2>常见问题 (FAQ)</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: VPN 加密会导致速度变慢吗？</strong>
+                <p style="margin-top: 0.5rem;">A: 是的，加密解密过程需要消耗设备的 CPU 算力，且数据绕道远端服务器也会增加物理传输路径。因此，使用 VPN 通常会带来一定程度的网速折损。如果遇到严重卡顿，请参考 <a href="/vpn/vpn-slow/">VPN 速度慢排查指南</a>。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

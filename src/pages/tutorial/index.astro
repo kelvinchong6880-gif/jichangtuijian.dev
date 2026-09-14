@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="网络工具使用教程：Android、iPhone、Windows 与 macOS"
+    description="四大主流平台设备的网络工具配置指南，包含客户端下载、订阅导入与基础排障，适合初学者的一站式教程枢纽。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <span>使用教程</span>
+            </div>
+            <h1>网络工具使用教程：四大平台配置指南</h1>
+        </div>
+
+        <div class="article-content">
+
+            <p>无论您使用的是手机还是电脑，本教程中心均提供了从零开始的详尽操作指南。我们专注于教您如何安全地下载兼容客户端、完成订阅导入并排查基础网络故障。</p>
+
+            <h2>选择您的设备平台</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                
+                <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; background: var(--bg-alt);">
+                    <h3 style="margin-top: 0; color: var(--primary);">🤖 Android (安卓)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">适合使用各类安卓手机及平板的用户。</p>
+                    <p style="font-size: 0.95rem; margin-bottom: 1.5rem;">讲解 APK 官方获取途径、订阅导入流程以及如何解决后台频繁杀应用导致断线的问题。</p>
+                    <a href="/tutorial/android/" style="display: inline-block; background: var(--primary); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: bold;">查看 Android 教程</a>
+                </div>
+
+                <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; background: var(--bg-alt);">
+                    <h3 style="margin-top: 0; color: var(--primary);">🍎 iPhone / iOS</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">适合使用 iPhone 和 iPad 的用户。</p>
+                    <p style="font-size: 0.95rem; margin-bottom: 1.5rem;">详解 App Store 地区限制应对策略、系统 VPN 权限授予与网络状态验证指南。</p>
+                    <a href="/tutorial/ios/" style="display: inline-block; background: var(--primary); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: bold;">查看 iOS 教程</a>
+                </div>
+
+                <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; background: var(--bg-alt);">
+                    <h3 style="margin-top: 0; color: var(--primary);">💻 Windows</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">适合使用 Windows 10/11 系统的电脑用户。</p>
+                    <p style="font-size: 0.95rem; margin-bottom: 1.5rem;">说明 System Proxy 与虚拟网卡的差异，指导安全应对 SmartScreen 拦截与基础连接排障。</p>
+                    <a href="/tutorial/windows/" style="display: inline-block; background: var(--primary); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: bold;">查看 Windows 教程</a>
+                </div>
+
+                <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; background: var(--bg-alt);">
+                    <h3 style="margin-top: 0; color: var(--primary);">🍏 macOS (Mac)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">适合 MacBook、iMac 等苹果电脑用户。</p>
+                    <p style="font-size: 0.95rem; margin-bottom: 1.5rem;">教您如何安全地通过系统设置处理 Gatekeeper“无法验证开发者”弹窗，以及完成网络扩展授权。</p>
+                    <a href="/tutorial/mac/" style="display: inline-block; background: var(--primary); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: bold;">查看 macOS 教程</a>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                <h2>新手开始前先了解</h2>
+                <p>在开始动手配置客户端之前，我们强烈建议您先阅读以下基础知识，这能帮您避开 90% 的低级错误：</p>
+                <ul>
+                    <li><a href="/knowledge/subscription/">什么是机场订阅？</a> —— 理解那串以 http 开头的长链接到底包含什么信息。</li>
+                    <li><a href="/knowledge/node/">节点知识普及</a> —— 为什么会有这么多国家地区的选项，该如何挑选。</li>
+                    <li><a href="/vpn/vpn-check/">连接验证指南</a> —— 怎么确认我真的配置成功并改变了网络出口？</li>
+                    <li><a href="/knowledge/plan-selection/">套餐如何选择？</a> —— 如果您还没有订阅，可以先了解如何选择适合自己的服务。</li>
+                </ul>
+            </div>
+    
+        </div>
+    </div>
+</BaseLayout>

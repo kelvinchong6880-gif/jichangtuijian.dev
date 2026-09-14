@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Disclosure from '../components/Disclosure.astro';
+import ProviderCard from '../components/ProviderCard.astro';
+import { getProviders } from '../data/providers';
+import { SITE } from '../data/config';
+
+const providers = getProviders();
+---
+
+<BaseLayout 
+    title={`2026 年机场推荐：8 家热门机场套餐与价格对比 | ${SITE.title}`}
+    description="2026年机场推荐与套餐对比指南。全面介绍各机场的起步价格、流量以及支持的协议。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>2026 年机场推荐：8 家热门机场套餐与价格对比</h1>
+            <p style="color: var(--text-muted);">
+                <strong>最后更新：</strong> {SITE.lastVerified} | <strong>作者：</strong> {SITE.author}
+            </p>
+        </div>
+
+        <Disclosure />
+
+        <div style="margin-bottom: 3rem; margin-top: 2rem;">
+            <h2>快速对比表格</h2>
+            <div class="table-container" style="overflow-x: auto; margin-top: 1rem;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                    <thead>
+                        <tr style="background-color: var(--card-bg); border-bottom: 2px solid var(--border-color); text-align: left;">
+                            <th style="padding: 1rem;">排名</th>
+                            <th style="padding: 1rem;">机场名称</th>
+                            <th style="padding: 1rem;">最低套餐 | 月付参考</th>
+                            <th style="padding: 1rem;">基础流量</th>
+                            <th style="padding: 1rem;">快速结论</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {providers.map((p, i) => (
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 1rem;">#{i + 1}</td>
+                                <td style="padding: 1rem;">
+                                    <a href={`/review/${p.slug}`} style="font-weight: 600;">{p.name}</a>
+                                </td>
+                                <td style="padding: 1rem; color: var(--primary); font-weight: bold;">{p.price}</td>
+                                <td style="padding: 1rem;">{p.traffic}</td>
+                                <td style="padding: 1rem; font-size: 0.9rem;">
+                                    {i === 0 ? "支持 IPLC，提供多档套餐" : 
+                                     i === 1 ? "提供专线，适合日常和流媒体" : 
+                                     i === 2 ? "高性价比，多种协议支持" : "根据官方资料，提供稳定接入"}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 3rem;">
+            <h2>详细介绍</h2>
+            <div class="provider-list">
+                {providers.map((provider, index) => (
+                    <ProviderCard provider={provider} rank={index + 1} />
+                ))}
+            </div>
+        </div>
+    </div>
+</BaseLayout>

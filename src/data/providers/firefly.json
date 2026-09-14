@@ -1,0 +1,56 @@
+{
+  "id": "firefly",
+  "name": "Firefly",
+  "slug": "firefly",
+  "rank": 4,
+  "officialUrl": "https://vip02.fireflyaff.com/#/?code=8nDg6OEY",
+  "affiliateUrl": "https://vip02.fireflyaff.com/#/?code=8nDg6OEY",
+  "price": "8",
+  "priceUnit": "元/月起 (按年付)",
+  "traffic": "60GB - 1.0TB",
+  "validity": "年付/月付/一次性",
+  "routeInfo": "IPLC专线网络，不限速",
+  "features": [
+    "每月30天重置（订阅版）",
+    "永久不过期（不限时版）",
+    "不限速，不限设备数",
+    "主要覆盖亚美核心节点"
+  ],
+  "deviceInfo": "不限设备数",
+  "officialDescription": "界面简单直接，套餐层级分明，无隐性限制，IPLC 专线保障日常上网和流媒体需求。",
+  "source": "Desktop/官网套餐价格和基本资料",
+  "lastVerified": "2026-09",
+  "plans": [
+    {
+      "name": "Firefly年付版",
+      "price": "¥96/年",
+      "traffic": "60GB/月"
+    },
+    {
+      "name": "Firefly Lite",
+      "price": "¥25/月",
+      "traffic": "150GB/月"
+    },
+    {
+      "name": "Firefly Plus",
+      "price": "¥45/月",
+      "traffic": "300GB/月"
+    },
+    {
+      "name": "Firefly Blaze",
+      "price": "¥85/月",
+      "traffic": "600GB/月"
+    },
+    {
+      "name": "Firefly Nova",
+      "price": "¥150/月",
+      "traffic": "1.0TB/月"
+    },
+    {
+      "name": "Firefly不限时",
+      "price": "¥100/次",
+      "traffic": "100GB永久"
+    }
+  ],
+  "logo": "/images/providers/firefly.png"
+}

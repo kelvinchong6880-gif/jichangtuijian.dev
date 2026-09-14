@@ -1,0 +1,51 @@
+{
+  "id": "shanyue",
+  "name": "闪跃",
+  "slug": "shanyue",
+  "rank": 8,
+  "officialUrl": "https://wep01.flashleapaff.com/#/?code=cs0ekCMG",
+  "affiliateUrl": "https://wep01.flashleapaff.com/#/?code=cs0ekCMG",
+  "price": "8",
+  "priceUnit": "元/月起 (按年付)",
+  "traffic": "60GB - 1.0TB",
+  "validity": "年付/月付",
+  "routeInfo": "全IPLC专线，原生IP",
+  "features": [
+    "所有节点x1倍率",
+    "晚高峰不限速",
+    "原生IP解锁各大流媒体",
+    "解锁 ChatGPT，TikTok"
+  ],
+  "deviceInfo": "未明确限制",
+  "officialDescription": "追求晚高峰不限速的极致体验，全 IPLC 原生 IP 线路覆盖广泛业务需求。",
+  "source": "Desktop/官网套餐价格和基本资料",
+  "lastVerified": "2026-09",
+  "plans": [
+    {
+      "name": "闪跃年付版",
+      "price": "¥96.00/年",
+      "traffic": "60GB/月"
+    },
+    {
+      "name": "闪动 (Flicker)",
+      "price": "¥24.00/月",
+      "traffic": "150GB/月"
+    },
+    {
+      "name": "飞跃 (Leap)",
+      "price": "¥44.00/月",
+      "traffic": "300GB/月"
+    },
+    {
+      "name": "瞬移 (Teleport)",
+      "price": "¥84.00/月",
+      "traffic": "600GB/月"
+    },
+    {
+      "name": "跃迁 (Warp)",
+      "price": "¥134.00/月",
+      "traffic": "1.0TB/月"
+    }
+  ],
+  "logo": "/images/providers/shanyue.jpg"
+}

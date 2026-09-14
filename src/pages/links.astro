@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="友情链接与相关网站 | 机场推荐"
+  description="这里整理了一些与网络工具、机场知识和相关内容有关的网站，方便读者进一步浏览。"
+>
+  <div class="container">
+    <div style="margin-bottom: 2rem;">
+      <h1>友情链接与相关网站</h1>
+      <p style="color: var(--text-muted); line-height: 1.6;">
+        这里整理了一些与网络工具、机场知识和相关内容有关的网站，方便读者进一步浏览。链接收录不代表本站对第三方网站内容、服务或安全性作出保证。
+      </p>
+    </div>
+
+    <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        
+        <li style="padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px;">
+          <a href="https://clash-vpn.org/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">
+            Clash VPN
+          </a>
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">提供 Clash 及 VPN 相关的资源与资讯。</p>
+        </li>
+
+        <li style="padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px;">
+          <a href="https://clashjiedian.org/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">
+            Clash节点查
+          </a>
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Clash 节点相关的查询与分享平台。</p>
+        </li>
+
+        <li style="padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px;">
+          <a href="https://findjichang.com/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">
+            Find机场
+          </a>
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">机场测速与收录指南。</p>
+        </li>
+
+        <li style="padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px;">
+          <a href="https://haoyongjichang.com/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">
+            好用机场
+          </a>
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">收录并分享好用的网络加速服务。</p>
+        </li>
+
+        <li style="padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px;">
+          <a href="https://jichangdog.com/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">
+            机场Dog
+          </a>
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">一个关于机场推荐与评测的聚合博客。</p>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

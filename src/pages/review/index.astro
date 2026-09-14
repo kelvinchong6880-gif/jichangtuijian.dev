@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProviders } from '../../data/providers';
+const providers = getProviders();
+---
+<BaseLayout title="机场测评 | 2026 最新各服务商评测" description="全面、客观的各大机场测评，为您提供选购指南。">
+  <div class="container">
+    <div style="margin-bottom: 2rem;"><h1>机场测评目录</h1></div>
+    <ul style="list-style: none; padding: 0;">
+      {providers.map(p => (
+        <li style="margin-bottom: 1rem;">
+          <a href={`/review/${p.slug}`} style="font-size: 1.25rem;">{p.name} 怎么样？</a>
+          <p style="color: var(--text-muted); margin-top: 0.25rem;">起步价格：{p.price} | 流量：{p.traffic}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>

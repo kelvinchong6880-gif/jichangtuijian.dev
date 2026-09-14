@@ -1,0 +1,61 @@
+{
+  "id": "flycat",
+  "name": "飞猫云",
+  "slug": "flycat",
+  "rank": 3,
+  "officialUrl": "https://flycat1.flycatvipaff.cc/#/?code=w5lO9fqB",
+  "affiliateUrl": "https://flycat1.flycatvipaff.cc/#/?code=w5lO9fqB",
+  "price": "7",
+  "priceUnit": "元/月起 (按年付)",
+  "traffic": "50GB - 1.0TB",
+  "validity": "年付/季付/月付/一次性",
+  "routeInfo": "全 IPLC 专线网络，提供最高 2.5Gbps 稳定速率",
+  "features": [
+    "所有节点 x1 倍率，高峰时段不降速",
+    "原生 IP 线路，解锁 Netflix 等流媒体",
+    "智能流量分配与路由优化",
+    "长周期享有8折、7折、6折优惠"
+  ],
+  "deviceInfo": "不限制设备连接数量",
+  "officialDescription": "从低流量学生党到企业级定制，满足各阶层需求，拥有丰富的节点和长周期折扣。",
+  "source": "Desktop/官网套餐价格和基本资料",
+  "lastVerified": "2026-09",
+  "plans": [
+    {
+      "name": "学生版",
+      "price": "¥84.00/年",
+      "traffic": "50GB/月"
+    },
+    {
+      "name": "星耀版",
+      "price": "¥25.00/月",
+      "traffic": "150GB/月"
+    },
+    {
+      "name": "星环版",
+      "price": "¥45.00/月",
+      "traffic": "300GB/月"
+    },
+    {
+      "name": "银河版",
+      "price": "¥85.00/月",
+      "traffic": "600GB/月"
+    },
+    {
+      "name": "宇宙版",
+      "price": "¥150.00/月",
+      "traffic": "1.0TB/月"
+    },
+    {
+      "name": "不限时套餐",
+      "price": "¥680.00/次",
+      "traffic": "1.0TB永久"
+    },
+    {
+      "name": "飞猫 · 定制套餐",
+      "price": "¥550.00/月",
+      "traffic": "500GB/月"
+    }
+  ],
+  "logo": "/images/providers/flycat.png"
+}

@@ -1,0 +1,51 @@
+{
+  "id": "kuajieyun",
+  "name": "跨界云",
+  "slug": "kuajieyun",
+  "rank": 6,
+  "officialUrl": "https://vip02.kuajieaff.com/#/?code=hh3QezsW",
+  "affiliateUrl": "https://vip02.kuajieaff.com/#/?code=hh3QezsW",
+  "price": "8",
+  "priceUnit": "元/月起 (按年付)",
+  "traffic": "60GB - 1.8TB",
+  "validity": "年付/月付 (支持更长周期)",
+  "routeInfo": "IPLC高端线路，不限速，所有节点x1倍率",
+  "features": [
+    "流媒体和 AI 平台全解锁",
+    "明确标注每天预估可看剧时长",
+    "不限制设备登录数，在线客服答疑",
+    "周期越长越省（年付8折、两年7折）"
+  ],
+  "deviceInfo": "不限制设备登录数",
+  "officialDescription": "按不同用量（每天看剧1小时到全家共享）精准推荐套餐，IPLC 线路确保大流量下载与多屏观影顺畅。",
+  "source": "Desktop/官网套餐价格和基本资料",
+  "lastVerified": "2026-09",
+  "plans": [
+    {
+      "name": "跨界年付版",
+      "price": "¥96.00/年",
+      "traffic": "60GB/月"
+    },
+    {
+      "name": "轻云 Lite",
+      "price": "¥20.00/月",
+      "traffic": "120GB/月"
+    },
+    {
+      "name": "跃云 Leap",
+      "price": "¥40.00/月",
+      "traffic": "330GB/月"
+    },
+    {
+      "name": "凌云 Soar",
+      "price": "¥90.00/月",
+      "traffic": "830GB/月"
+    },
+    {
+      "name": "无界 Infinity",
+      "price": "¥130.00/月",
+      "traffic": "1.8TB/月"
+    }
+  ],
+  "logo": "/images/providers/kuajieyun.png"
+}

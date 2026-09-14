@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="VPN 是什么？新手必须了解的基础概念与核心作用"
+    description="第一次接触 VPN？本文用通俗易懂的语言解释 VPN 是什么，它能做什么，以及它的核心局限。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/vpn/" style="color: var(--primary); text-decoration: none;">VPN 基础与排障</a> &gt; <span>VPN 是什么</span>
+            </div>
+            <h1>VPN 是什么？基础概念与用途通俗解析</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>VPN（虚拟专用网络）是一种网络技术，它在您的设备和互联网之间建立一条加密通道，从而隐藏您的真实 IP 地址，并在一定程度上保护您的网络数据不被中间人轻易窃听。
+            </div>
+            
+            <h2>VPN 到底是什么？</h2>
+            <p>VPN 的全称是 Virtual Private Network（虚拟专用网络）。如果把互联网比作一条人人都能看见的公共高速公路，那么 VPN 就像是在这条公路上为您专门修建了一条“不透明的地下隧道”。</p>
+            <p>当您开启 VPN 时，通常，您的 VPN 客户端会根据系统和路由配置，将指定的网络请求进入这条加密隧道，传输到 VPN 服务商位于其他国家或地区的服务器，然后再由该服务器替您访问目标网站。网站看到的是 VPN 服务器的 IP，而不是您的真实 IP。</p>
+
+            <h2>VPN 有什么主要用途？</h2>
+            <ol>
+                <li><strong>保护公共 Wi-Fi 安全：</strong> 在咖啡馆、机场等公共 Wi-Fi 环境下，黑客可能窃听未加密的数据。VPN 的加密隧道可以有效防止您的登录凭据和隐私被同局域网的恶意用户截获。</li>
+                <li><strong>隐藏真实 IP 地址：</strong> 您的真实 IP 地址可能暴露您的粗略地理位置。VPN 可以将其伪装成 VPN 服务器所在地的 IP，从而保护隐私。</li>
+                <li><strong>绕过地理封锁：</strong> 某些流媒体平台（如 Netflix、BBC iPlayer）会限制观看者的国家。连接到特定国家的 VPN 服务器，通常可以解除这种地区限制。</li>
+                <li><strong>远程办公内网访问：</strong> 许多企业使用私有 VPN，让员工在家里也能安全地接入公司内网服务器。</li>
+            </ol>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">常见误区：VPN 不是万能的</h3>
+                <p><strong>误区 1：开启 VPN 就绝对匿名了。</strong></p>
+                <p>正解：VPN 可以对 ISP（网络运营商）和目标网站隐藏您的活动，但 <strong>VPN 服务商本身</strong>是知道您在干什么的。如果您使用了不可靠的 VPN，他们可能会记录您的访问日志并出售给第三方广告商。没有任何网络工具能提供 100% 绝对的匿名，请谨慎选择服务商。</p>
+                <p><strong>误区 2：VPN 可以防病毒。</strong></p>
+                <p>正解：VPN 只负责传输通道的加密，它不具备杀毒软件的功能。如果您下载了带木马的文件，依然会中毒。</p>
+            </div>
+
+            <h2>VPN 和“机场（Proxy）”的区别</h2>
+            <p>在中文互联网语境下，大家经常把 VPN 和“机场（代理 Proxy）”混淆。传统 VPN 侧重于全域加密和隐私保护，而机场通常是指专门提供跨国网络加速与突破防火墙封锁的服务商。两者的协议实现、客户端体验和核心侧重点有所不同。如果想了解详细差异，请阅读 <a href="/vpn/vpn-vs-proxy/">VPN 和机场（Proxy）的区别</a>。</p>
+
+            <h2>常见问题 (FAQ)</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: VPN 是非法的吗？</strong>
+                <p style="margin-top: 0.5rem;">A: 在绝大多数国家和地区，使用 VPN 本身是完全合法的，它是一种正当的隐私保护工具。但在极少数国家，未经批准提供或使用 VPN 可能面临法律限制，请遵守当地法律法规。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>
