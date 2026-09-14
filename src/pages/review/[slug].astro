@@ -38,7 +38,7 @@ const { provider } = Astro.props;
                         <p style="font-size: 1.1rem; color: var(--text-muted); margin: 0;">官方页面称提供稳定的线路和优质的流媒体解锁服务。</p>
                     </div>
                 </div>
-                <a href={provider.url} target="_blank" rel="sponsored nofollow noopener" class="btn">访问 {provider.name} 官网</a>
+                <a href={provider.affiliateUrl} target="_blank" rel="sponsored nofollow noopener" class="btn">访问 {provider.name} 官网</a>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
@@ -101,7 +101,7 @@ const { provider } = Astro.props;
         <div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border-radius: 8px; text-align: center;">
             <h3 style="margin-bottom: 1rem;">前往 {provider.name} 查看最新活动</h3>
             <p style="margin-bottom: 1.5rem; color: var(--text-muted);">点击下方按钮可直达官方网站，获取最新的折扣信息和活动详情。</p>
-            <a href={provider.url} target="_blank" rel="sponsored nofollow noopener" class="btn" style="padding: 0.8rem 2rem; font-size: 1.1rem;">立即访问</a>
+            <a href={provider.affiliateUrl} target="_blank" rel="sponsored nofollow noopener" class="btn" style="padding: 0.8rem 2rem; font-size: 1.1rem;">立即访问</a>
         </div>
     </div>
 </BaseLayout>
