@@ -17,7 +17,7 @@ const rankedBrands = allBrands.sort((a, b) => a.data.sort_order - b.data.sort_or
         <p><strong>本榜单排序规则声明：</strong></p>
         <ul class="list-disc pl-5">
           <li>本页面为本站编辑推荐顺序，不代表实测质量排名（第1-8名为精选主推，其余按品牌名称拼音排序）。</li>
-          <li>如存在商业合作，会在品牌旁显著标注“合作”。</li>
+          <li>带有“本站主推”标记的品牌代表编辑精选主推。</li>
           <li>缺失测试数据的品牌将标记为“未实测”。</li>
           <li>如需按客观价格寻找，请访问独立的<a href="/pianyi/" class="text-blue-600 hover:underline">便宜机场</a>或<a href="/xingjiabi/" class="text-blue-600 hover:underline">性价比机场</a>板块。</li>
         </ul>
@@ -38,7 +38,7 @@ const rankedBrands = allBrands.sort((a, b) => a.data.sort_order - b.data.sort_or
           <div class="flex-grow">
             <h2 class="text-xl font-bold text-gray-900 flex items-center">
               <a href={`/brands/${brand.id}/`} class="hover:underline">{brand.data.name}</a>
-              {brand.data.is_sponsored && <span class="ml-2 text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded border border-blue-100">合作</span>}
+              {brand.data.is_sponsored && <span class="ml-2 text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded border border-blue-100">本站主推</span>}
             </h2>
             <div class="mt-1 text-sm text-gray-500">
               起步价: {brand.data.currency} {brand.data.price_monthly || brand.data.price_yearly} / 流量: {brand.data.bandwidth_gb}GB
