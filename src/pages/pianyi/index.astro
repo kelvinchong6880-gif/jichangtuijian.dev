@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getBrands } from '../../utils/data';
+
+const allBrands = await getBrands();
+
+const getLowestEntry = (brand: any) => {
+  if (brand.data.price_monthly) return { price: brand.data.price_monthly, type: '月付' };
+  if (brand.data.price_yearly) return { price: brand.data.price_yearly / 12, type: '年付折算(需一次性支付 ' + brand.data.price_yearly + ')' };
+  return { price: 9999, type: '未知' };
+};
+
+const sortedBrands = allBrands
+  .map(b => ({ ...b, entry: getLowestEntry(b) }))
+  .sort((a, b) => a.entry.price - b.entry.price);
+---
+
+<BaseLayout title="便宜机场推荐：低预算上车指南" description="预算有限？按绝对入门价格由低到高为您整理了最便宜的节点服务商。包含真实月付与年付折算说明，避免隐藏消费。">
+  
+  <div class="max-w-4xl mx-auto space-y-8">
+    <div class="border-b border-gray-200 pb-5">
+      <h1 class="text-3xl font-extrabold text-gray-900">便宜机场</h1>
+      <p class="mt-3 text-xl text-gray-500">
+        此列表严格按照入门价格（绝对值）由低到高排序。我们明确区分了实际月付与“年付折算的假月付”，避免诱导。
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {sortedBrands.map(brand => (
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 relative">
+          {brand.data.is_dummy && <span class="absolute top-2 right-2 text-[10px] bg-yellow-100 text-yellow-800 px-1 rounded">演示</span>}
+          <h3 class="text-xl font-bold text-gray-900 mb-2">
+            <a href={`/brands/${brand.id}/`} class="hover:text-blue-600">{brand.data.name}</a>
+          </h3>
+          <div class="flex items-baseline text-2xl font-extrabold text-blue-600 mb-4">
+            {brand.data.currency} {brand.entry.price.toFixed(1)}
+            <span class="ml-1 text-sm font-medium text-gray-500">/月估算</span>
+          </div>
+          <ul class="text-sm text-gray-600 space-y-2 mb-4">
+            <li class="flex items-start">
+              <span class="font-semibold w-20">付款门槛:</span>
+              <span class={brand.entry.type.includes('年付') ? 'text-red-500' : 'text-green-600'}>{brand.entry.type}</span>
+            </li>
+            <li class="flex items-start">
+              <span class="font-semibold w-20">可用流量:</span>
+              <span>{brand.data.bandwidth_gb} GB</span>
+            </li>
+          </ul>
+          <a href={brand.data.register_link} target="_blank" rel="noopener sponsored" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            前往官网
+          </a>
+        </div>
+      ))}
+    </div>
+    
+  </div>
+
+</BaseLayout>

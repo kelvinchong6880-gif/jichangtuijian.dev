@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getBrands } from '../../utils/data';
+
+const allBrands = await getBrands();
+---
+
+<BaseLayout title="优质机场推荐：实测稳定的高级节点" description="寻找高质量、稳定不掉线的专线机场？依据本站的真实测试截图与晚高峰观察，为您推荐真正优质的节点。">
+  
+  <div class="max-w-4xl mx-auto space-y-8">
+    <div class="border-b border-gray-200 pb-5">
+      <h1 class="text-3xl font-extrabold text-gray-900">优质稳定机场</h1>
+      <p class="mt-3 text-xl text-gray-500">
+        “贵”不等于“好”。本栏目收录的优质机场，必须经过晚高峰测速、流媒体解锁测试，并附有可追溯的截图证据。（当前展示为演示数据，正式上线将包含测速图）
+      </p>
+    </div>
+
+    <div class="space-y-8">
+      {allBrands.map((brand: any) => (
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+            <h2 class="text-xl font-bold text-gray-900">
+              {brand.data.name}
+            </h2>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              证据状态: {brand.data.evidence_status}
+            </span>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-2">基础信息</h4>
+                <ul class="text-sm text-gray-600 space-y-2">
+                  <li>价格门槛: {brand.data.currency} {brand.data.price_monthly || brand.data.price_yearly}</li>
+                  <li>设备限制: {brand.data.device_limit ? `${brand.data.device_limit} 台` : '未说明'}</li>
+                  <li>退款政策: {brand.data.refund_policy || '未说明'}</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-2">测试记录（占位）</h4>
+                <div class="bg-gray-100 rounded p-4 text-center text-gray-400 text-sm border-2 border-dashed border-gray-300">
+                  <p>在此处插入 Speedtest 测速截图</p>
+                  <p class="mt-1 text-xs">测试环境: 广东电信 1000M / 测试时间: {brand.data.verification_date}</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-gray-200">
+              <a href={`/brands/${brand.id}/`} class="text-blue-600 hover:text-blue-500 text-sm font-medium">查看详细评测报告 &rarr;</a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+  </div>
+
+</BaseLayout>

@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { render } from 'astro:content';
+import { getBrands } from '../../utils/data';
+
+export async function getStaticPaths() {
+  const brands = await getBrands();
+  return brands.map(brand => ({
+    params: { slug: brand.id },
+    props: { brand },
+  }));
+}
+
+const { brand } = Astro.props;
+const { Content } = await render(brand);
+---
+
+<BaseLayout 
+  title={`${brand.data.name} 评测与套餐价格 - 机场推荐`} 
+  description={`${brand.data.name}怎么样？为您提供最新的套餐价格、流媒体解锁测试与注册链接。核验日期：${brand.data.verification_date}。`}
+>
+  <article class="max-w-3xl mx-auto bg-white shadow-sm rounded-xl overflow-hidden border border-gray-200">
+    <div class="p-8">
+      <div class="flex justify-between items-start border-b border-gray-100 pb-6 mb-6">
+        <div>
+          <h1 class="text-3xl font-extrabold text-gray-900">{brand.data.name}</h1>
+          <div class="mt-2 flex items-center text-sm text-gray-500 space-x-4">
+            <span>核验日期: {brand.data.verification_date}</span>
+            <span class="bg-gray-100 px-2 py-0.5 rounded">{brand.data.evidence_status}</span>
+            {brand.data.is_dummy && <span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">演示数据</span>}
+          </div>
+        </div>
+        <div>
+          <a href={brand.data.register_link} target="_blank" rel="noopener sponsored" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+            前往注册
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mb-8 bg-gray-50 p-4 rounded-lg">
+        <div>
+          <span class="block text-xs text-gray-500 uppercase">月付价格</span>
+          <span class="block text-lg font-medium text-gray-900">{brand.data.currency} {brand.data.price_monthly || '-'}</span>
+        </div>
+        <div>
+          <span class="block text-xs text-gray-500 uppercase">年付价格</span>
+          <span class="block text-lg font-medium text-gray-900">{brand.data.currency} {brand.data.price_yearly || '-'}</span>
+        </div>
+        <div>
+          <span class="block text-xs text-gray-500 uppercase">流量额度</span>
+          <span class="block text-lg font-medium text-gray-900">{brand.data.bandwidth_gb} GB ({brand.data.bandwidth_reset_period})</span>
+        </div>
+        <div>
+          <span class="block text-xs text-gray-500 uppercase">设备限制</span>
+          <span class="block text-lg font-medium text-gray-900">{brand.data.device_limit || '未知'}</span>
+        </div>
+      </div>
+
+      <div class="prose prose-blue max-w-none">
+        {brand.data.is_sponsored && (
+          <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+            <p class="text-sm text-blue-700 m-0">
+              <strong>商业关系披露：</strong> 本页面包含推广链接，通过此链接注册，本站可能会获得佣金。这不会影响您支付的价格，但支持了本站的运营。
+            </p>
+          </div>
+        )}
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>

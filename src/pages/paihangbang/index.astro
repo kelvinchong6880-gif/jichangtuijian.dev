@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getBrands } from '../../utils/data';
+
+const allBrands = await getBrands();
+
+// 按 sort_order 排名，其次按名称拼音
+const rankedBrands = allBrands.sort((a, b) => a.data.sort_order - b.data.sort_order || a.data.name.localeCompare(b.data.name));
+---
+
+<BaseLayout title="机场排行榜：2026年最新推荐榜单" description="全网机场综合排行榜。包含本站精选与全网收录。">
+  
+  <div class="max-w-4xl mx-auto space-y-8">
+    <div class="bg-white px-4 py-5 border-b border-gray-200 sm:px-6 rounded-t-lg shadow-sm">
+      <h1 class="text-3xl font-extrabold text-gray-900 leading-tight">综合机场排行榜</h1>
+      <div class="mt-4 text-sm text-gray-600 space-y-2">
+        <p><strong>本榜单排序规则声明：</strong></p>
+        <ul class="list-disc pl-5">
+          <li>本页面为本站编辑推荐顺序，不代表实测质量排名（第1-8名为精选主推，其余按品牌名称拼音排序）。</li>
+          <li>如存在商业合作，会在品牌旁显著标注“合作”。</li>
+          <li>缺失测试数据的品牌将标记为“未实测”。</li>
+          <li>如需按客观价格寻找，请访问独立的<a href="/pianyi/" class="text-blue-600 hover:underline">便宜机场</a>或<a href="/xingjiabi/" class="text-blue-600 hover:underline">性价比机场</a>板块。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      {rankedBrands.map((brand, index) => (
+        <div class="bg-white shadow rounded-lg p-6 flex items-center relative overflow-hidden">
+          {index < 3 && (
+            <div class={`absolute top-0 left-0 w-1 h-full ${index === 0 ? 'bg-yellow-400' : index === 1 ? 'bg-gray-300' : 'bg-yellow-600'}`}></div>
+          )}
+          <div class="flex-shrink-0 mr-6 text-center w-12">
+            <span class={`text-3xl font-black ${index === 0 ? 'text-yellow-500' : index === 1 ? 'text-gray-400' : index === 2 ? 'text-yellow-700' : 'text-gray-200'}`}>
+              #{index + 1}
+            </span>
+          </div>
+          <div class="flex-grow">
+            <h2 class="text-xl font-bold text-gray-900 flex items-center">
+              <a href={`/brands/${brand.id}/`} class="hover:underline">{brand.data.name}</a>
+              {brand.data.is_sponsored && <span class="ml-2 text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded border border-blue-100">合作</span>}
+            </h2>
+            <div class="mt-1 text-sm text-gray-500">
+              起步价: {brand.data.currency} {brand.data.price_monthly || brand.data.price_yearly} / 流量: {brand.data.bandwidth_gb}GB
+            </div>
+          </div>
+          <div class="flex-shrink-0 ml-4">
+            <a href={brand.data.register_link} target="_blank" rel="noopener sponsored" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-gray-900 hover:bg-gray-800 focus:outline-none">
+              直达官网
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+  </div>
+
+</BaseLayout>

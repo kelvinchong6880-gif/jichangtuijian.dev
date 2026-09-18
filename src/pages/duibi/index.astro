@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getBrands } from '../../utils/data';
+
+const allBrands = await getBrands();
+---
+
+<BaseLayout title="机场对比：全网节点套餐详细横向比较" description="将多个机场的套餐价格、流量限制、设备数及付款周期放在一起横向对比，帮您直观发现差异，拒绝盲目跟风。">
+  
+  <div class="space-y-6">
+    <div>
+      <h1 class="text-3xl font-extrabold text-gray-900">机场全景对比</h1>
+      <p class="mt-2 text-lg text-gray-500">
+        以下数据基于我们最近的收集。同口径横向对比是防止被套路的最有效方法。
+      </p>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">品牌</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">月付/年付</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">流量 (周期)</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备限制</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">核验日期</th>
+                  <th scope="col" class="relative px-6 py-3"><span class="sr-only">操作</span></th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                {allBrands.map((brand: any) => (
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="text-sm font-medium text-gray-900">
+                          {brand.data.name}
+                          {brand.id === 'sogo' && <span class="ml-1 text-[10px] bg-blue-100 text-blue-800 px-1 rounded">主推</span>}
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{brand.data.currency} {brand.data.price_monthly || '-' } / {brand.data.price_yearly || '-'}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{brand.data.bandwidth_gb} GB</div>
+                      <div class="text-xs text-gray-500">{brand.data.bandwidth_reset_period}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {brand.data.device_limit || '未知'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {brand.data.verification_date}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <a href={`/brands/${brand.id}/`} class="text-blue-600 hover:text-blue-900">详情</a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+</BaseLayout>
