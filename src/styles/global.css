@@ -1,1 +1,1 @@
-@import "tailwindcss";
+@import "tailwindcss";:root { --primary: #2563eb; --primary-hover: #1d4ed8; --bg-color: #f8fafc; --text-color: #0f172a; --text-muted: #64748b; --border-color: #e2e8f0; --card-bg: #ffffff; --accent: #f59e0b; --radius: 8px; --max-width: 1200px; --nav-height: 64px; --bg-alt: #f1f5f9; }

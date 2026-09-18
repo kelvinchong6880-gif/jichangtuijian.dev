@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="iPhone / iOS 配置与使用指南"
+    description="如何在 iPhone 或 iPad 上配置网络代理？详解 App Store 客户端下载、订阅导入与系统 VPN 权限设置。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/tutorial/" style="color: var(--primary); text-decoration: none;">使用教程</a> &gt; <span>iPhone / iOS</span>
+            </div>
+            <h1>iPhone / iOS 网络配置教程</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速说明：</strong>本教程适用于 iPhone 和 iPad 用户，指导您如何在 iOS 系统上完成相关客户端的下载、权限授权与节点配置。
+            </div>
+
+            <h2>一、准备工作</h2>
+            <ul>
+                <li><strong>有效的订阅：</strong> 确保您已经获取了服务商提供的订阅链接。如果您还没有，可以参考 <a href="/knowledge/plan-selection/">如何选择套餐</a>。</li>
+                <li><strong>可用网络：</strong> 需要有基础网络以便完成客户端下载。</li>
+                <li><strong>兼容的客户端：</strong> iOS 生态较为封闭，支持的客户端相对集中，具体请以您的服务商文档推荐为准。</li>
+            </ul>
+
+            <h2>二、App Store 客户端下载</h2>
+            <p>由于 iOS 的系统限制，所有的应用安装均需通过官方 App Store。请勿相信任何要求您安装“未知描述文件”以实现越狱或侧载的教程，这存在极大的安全风险。</p>
+            <div style="background: #fff3cd; color: #856404; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <strong>重要地区可用性提醒：</strong><br>
+                部分网络工具客户端可能因所在地区的 App Store 政策不同，无法在您当前的本地应用商店中直接搜索到（例如中国大陆区 App Store 通常不提供此类应用）。具体可用性请以当地 App Store 实际情况为准。
+            </div>
+            <ul>
+                <li>请根据服务商提供的应用名称，在可获取该应用的地区 App Store 中进行搜索下载。</li>
+                <li><strong>安全警告：</strong> 不要无依据地轻信网上的教程去购买未知来源的 Apple ID，或在设置中登录陌生人提供的 Apple ID（尤其是登录 iCloud），这可能导致您的设备被远程锁定勒索。不要随意关闭 Apple ID 的双重认证等核心安全功能。</li>
+            </ul>
+
+            <h2>三、导入订阅 (Import Subscription)</h2>
+            <p>不同客户端界面略有差异，通常流程如下：</p>
+            <ol>
+                <li>登录您的服务商后台，复制适用于 iOS 客户端的订阅链接。</li>
+                <li>打开已下载好的客户端 App，在主界面或设置页面中找到类似于 <strong>配置 (Profiles)</strong>、<strong>节点 (Servers)</strong> 或右上角的 <strong>+ 添加</strong> 按钮。</li>
+                <li>选择 <strong>从 URL 下载</strong> 或 <strong>从剪贴板导入</strong>。</li>
+                <li>粘贴链接并完成下载。如果支持，也可在电脑屏幕上打开二维码，使用 App 内部的扫码功能导入。</li>
+            </ol>
+
+            <h2>四、选择节点与系统权限授权</h2>
+            <p>订阅更新完毕后：</p>
+            <ol>
+                <li>从节点列表中选择一个适合的地区节点（关于地区差异，可参考 <a href="/knowledge/node/">节点基础知识</a>）。</li>
+                <li>点击客户端主页的大圆圈或连接开关。</li>
+                <li><strong>首次连接：</strong> iOS 会弹出一个系统级提示：<code>“XXX” Would Like to Add VPN Configurations</code>。必须点击 <strong>“Allow (允许)”</strong>。</li>
+                <li>系统会要求您输入 iPhone 锁屏密码或使用 Face ID 进行验证，验证通过后，VPN 配置文件将写入系统设置。</li>
+            </ol>
+
+            <h2>五、验证与使用</h2>
+            <p>连接建立后，iPhone 屏幕左上角（或下拉控制中心）会出现 <strong>VPN</strong> 图标标识。</p>
+            <p>请通过浏览器访问查询 IP 的网站，确认网络出口已变更为所选节点。更多验证手段请阅读 <a href="/vpn/vpn-check/">如何检测连接是否生效</a>。请牢记，IP 变化不等于完全匿名保护。</p>
+
+            <h2>六、常见排障</h2>
+            <ul>
+                <li><strong>显示已连接，但没网络：</strong> 通常是节点本身失效或 DNS 配置冲突，请换一个节点，或参阅 <a href="/vpn/vpn-not-working/">连接成功无网络排查</a>。</li>
+                <li><strong>锁屏后频繁断线：</strong> iOS 系统在深度休眠时可能会断开部分网络连接。如果长时间未使用，重新解锁后可能需要等待几秒钟让客户端自动重连。详见 <a href="/vpn/vpn-disconnect/">断线排查</a>。</li>
+                <li><strong>节点延迟很高或极慢：</strong> 尝试选择地理位置更近的节点。详见 <a href="/vpn/vpn-slow/">网速缓慢排查</a>。</li>
+            </ul>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">安全提示</h3>
+                <p>不要在公开的社交平台或论坛上截屏分享您的订阅二维码或链接。任何人只要扫描了您的二维码，就可以随意消耗您的流量额度，甚至导致账号被封禁。</p>
+            </div>
+
+            <h2>七、常见问题 (FAQ)</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 我能在系统“设置 -> VPN”里面直接添加订阅吗？</strong>
+                <p style="margin-top: 0.5rem;">A: 通常不行。系统自带的 VPN 设置仅支持传统的 IKEv2 等标准协议。而服务商提供的订阅往往基于现代代理协议，必须依赖专用的第三方 App 来解析和建立连接。</p>
+            </div>
+    
+        </div>
+    </div>
+</BaseLayout>

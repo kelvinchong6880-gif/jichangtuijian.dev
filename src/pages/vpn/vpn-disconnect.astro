@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="VPN 经常断线？频繁断开连接的排查方法"
+    description="VPN 总是自动断开连接？本文汇总了导致 VPN 频繁掉线的网络环境、系统权限与后台限制原因，教您一步步恢复稳定连接。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/vpn/" style="color: var(--primary); text-decoration: none;">VPN 基础与排障</a> &gt; <span>VPN 断线排查</span>
+            </div>
+            <h1>VPN 经常自动断线？不稳定原因与排查步骤</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>VPN 频繁断线多半是因为<strong>手机系统杀后台（省电策略）</strong>、网络环境频繁切换（如 Wi-Fi 掉回 4G）或特定服务器遭遇防火墙干扰。
+            </div>
+
+            <h2>导致 VPN 频繁断线的常见原因</h2>
+            <ul>
+                <li><strong>系统的省电与杀后台策略：</strong> （尤其在 Android 手机上最常见）当 VPN 客户端在后台运行一段时间后，系统为了省电，强行关闭了 VPN 进程，导致连接中断。</li>
+                <li><strong>网络环境频繁波动：</strong> 比如您在乘坐高铁，手机信号在 4G/5G 甚至不同基站间来回切换；或者您走在街上，手机在微弱的公共 Wi-Fi 和数据网络之间反复横跳。</li>
+                <li><strong>防火墙主动阻断：</strong> 某些网络环境（如严格的公司内网）识别到了您的 VPN 连接的流量特征，进行了强制阻断。</li>
+                <li><strong>服务器端维护或过载：</strong> 您连接的那台特定服务器恰好崩溃或发生路由拥堵。</li>
+            </ul>
+
+            <h2>排障排查步骤 (Troubleshooting)</h2>
+            <p>请按以下步骤依次检查并调整设置：</p>
+
+            <h3>Step 1: 解除系统后台与省电限制（移动端最有效）</h3>
+            <p><strong>对于 Android 用户：</strong></p>
+            <ol>
+                <li>进入手机的<strong>设置 > 应用管理</strong>，找到您的 VPN 或代理客户端。</li>
+                <li>找到<strong>电池/省电策略</strong>选项，将其设置为<strong>“无限制”或“允许后台高耗电”</strong>。</li>
+                <li>在多任务视图中，将该 App <strong>锁定（加锁）</strong>，防止一键清理时被杀掉。</li>
+            </ol>
+            <p><strong>对于 iOS 用户：</strong>确保没有开启“低电量模式”，且允许该应用进行后台应用刷新。</p>
+
+            <h3>Step 2: 稳定本地网络环境</h3>
+            <p>如果您所在区域 Wi-Fi 信号不稳定，建议暂时关闭 Wi-Fi，仅使用移动数据（或反之），避免手机在两种网络间频繁切换重建隧道。</p>
+
+            <h3>Step 3: 启用“始终开启的 VPN” (Always-On)</h3>
+            <p>在较新的 Android 系统或部分高级 VPN 客户端中，拥有“Always-On VPN”或“Kill Switch”选项。开启后，系统会竭尽全力维持 VPN 隧道的连接状态。</p>
+
+            <h3>Step 4: 更换服务器或协议</h3>
+            <p>如果您连接某个特定节点一直断开，立刻尝试更换其他国家或地区的节点。同时，尝试在客户端设置中将连接协议更改为 <strong>TCP</strong>（相比 UDP 在恶劣网络下更抗干扰）。</p>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">注意：不要盲目修改危险的系统设置</h3>
+                <p>网上有些过时的教程可能会建议您“永久关闭系统防火墙”或“刷入未知内核”来提升稳定性，这存在极大的安全风险。如果常规的 App 权限和网络环境调整无效，通常是服务商线路的客观问题，不应强行破坏本地系统安全设置。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

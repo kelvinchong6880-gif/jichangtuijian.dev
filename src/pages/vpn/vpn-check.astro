@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="如何检测 VPN 是否生效？确保连接的安全检查"
+    description="VPN 显示已连接，但它真的在工作吗？教你几个简单的步骤，通过检查公网 IP 和 DNS 来确认 VPN 连接状态。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/vpn/" style="color: var(--primary); text-decoration: none;">VPN 基础与排障</a> &gt; <span>VPN 检测</span>
+            </div>
+            <h1>如何检测 VPN 是否真正生效？</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>确认 VPN 基础连接是否生效最直接的方法是：打开查 IP 的网站，看看显示的 IP 地址和地理位置是否已经变成了 VPN 服务器所在的地区。
+            </div>
+
+            <h2>为什么需要检测 VPN 状态？</h2>
+            <p>有时候 VPN 客户端会产生“假死”现象：界面上显示“已连接”，但实际上流量由于配置错误或代理冲突，依然在使用您本地的真实网络。如果您需要保护公共环境下的网络连接，这可能带来隐私泄露风险。</p>
+
+            <h2>基础检测：核对公网 IP 地址</h2>
+            <p>这是最基础、最直观的检查方法：</p>
+            <ol>
+                <li><strong>断开 VPN 时：</strong> 在浏览器中搜索“IP”或访问类似 <code>ipleak.net</code> 的测试工具，记下页面显示的当前 IP 地址和城市（这通常是您真实的网络归属地）。</li>
+                <li><strong>连接 VPN 后：</strong> 刷新该页面。如果显示的 IP 发生了变化，且地理位置变成了您选择的 VPN 节点地区，则说明最基本的流量转发已经生效。</li>
+            </ol>
+            <p>如果连接后 IP 没有变化，说明代理可能未正确接管浏览器流量，请参考 <a href="/vpn/vpn-not-working/">VPN 无法上网排查指南</a> 检查系统代理设置。</p>
+
+            <h2>进阶检测：DNS 检查</h2>
+            <p>在 <a href="/vpn/vpn-how-it-works/">VPN 原理</a> 中提过，即便您的 IP 变了，如果您的 DNS 请求依然发给本地运营商，部分访问特征依然可能暴露。</p>
+            <ul>
+                <li>在检测网站中查看 <strong>DNS Addresses</strong> 区域。</li>
+                <li>如果检测到的 DNS 服务器归属地与您的 VPN 节点匹配，通常说明正常。</li>
+                <li>如果列表中出现了您的真实 ISP 提供的 DNS，说明存在 <strong>DNS 泄露风险</strong>。您可以在客户端设置中寻找并开启“防止 DNS 泄露”或相关选项。</li>
+            </ul>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">防范误区：不要神化检测结果</h3>
+                <p><strong>误区：IP 变了 = 绝对匿名。</strong></p>
+                <p>正解：公网 IP 发生变化仅能作为流量出口变化的一个信号，但不能证明完全匿名、所有流量均已加密，也不能证明不存在 WebRTC 泄漏等问题。伪装 IP 只是基础防护。如果您登录了实名认证的网站，平台依然能识别您。任何工具都无法提供绝对的完全隐匿。</p>
+                <p><strong>误区：DNS 无泄露 = 绝对安全。</strong></p>
+                <p>正解：检测只能确认您和 VPN 服务器之间的基础配置是否按预期工作。DNS 测试通过也不等于绝对安全。如果 VPN 服务商本身隐私政策存疑，检测结果再完美也无法保障最终隐私。选择信誉良好的服务商才是根本保障。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

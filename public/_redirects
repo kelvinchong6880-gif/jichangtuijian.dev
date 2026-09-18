@@ -1,6 +1,11 @@
-/knowledge/*  /  301
-/tutorial/*  /  301
-/vpn/*  /  301
-/review/*  /  301
-/recommend  /  301
-/links  /  301
+/review/firefly /brands/firefly/ 301
+/review/flycat /brands/飞猫/ 301
+/review/kuajieyun /brands/跨界/ 301
+/review/lingmao /brands/灵猫/ 301
+/review/shanyue /brands/闪跃/ 301
+/review/sogocloud /brands/sogo/ 301
+/review/weifeng /brands/微风/ 301
+/review/wuyou /brands/无忧/ 301
+/review/ /paihangbang/ 301
+/recommend /paihangbang/ 301
+/links /paihangbang/ 301

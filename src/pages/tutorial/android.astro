@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="Android 安卓手机配置与使用指南"
+    description="如何在 Android 安卓手机上配置网络代理？从客户端下载、订阅导入到常见问题排查的完整新手教程。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/tutorial/" style="color: var(--primary); text-decoration: none;">使用教程</a> &gt; <span>Android</span>
+            </div>
+            <h1>Android 安卓手机网络配置教程</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速说明：</strong>本教程适用于已经拥有服务商订阅的用户，指导您如何在 Android（安卓）手机或平板上完成客户端配置与连接。
+            </div>
+
+            <h2>一、准备工作</h2>
+            <ul>
+                <li><strong>有效的订阅：</strong> 您需要提前从服务商处获取订阅链接（Subscription URL）或节点信息。如果您还没有订阅，可以先了解 <a href="/knowledge/plan-selection/">套餐怎么选</a>。</li>
+                <li><strong>网络连接：</strong> 确保手机当前有基础的 Wi-Fi 或移动数据网络，以便下载客户端和获取配置。</li>
+                <li><strong>兼容的客户端：</strong> 服务商通常会推荐特定的第三方开源客户端。请仔细阅读服务商提供的文档，确认他们支持哪些客户端协议。</li>
+            </ul>
+
+            <h2>二、客户端选择与下载安装</h2>
+            <p>Android 平台上有多种兼容主流协议的客户端工具。请注意，<strong>不要假定所有服务都使用同一种客户端</strong>，具体应以您的服务商后台说明为准。</p>
+            <ul>
+                <li><strong>下载原则：</strong> 请务必通过 <strong>Google Play 商店</strong> 或开源项目的 <strong>官方 <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub Release</a></strong> 页面下载 APK 安装包。</li>
+                <li><strong>安全警告：</strong> 严禁从未知来源的第三方下载站、网盘或论坛下载所谓的“破解版”或“汉化修改版”，这些应用极有可能被植入木马，导致设备数据泄露。</li>
+            </ul>
+
+            <h2>三、导入订阅 (Import Subscription)</h2>
+            <p>不同客户端的菜单名称可能略有差异，但通用流程基本如下：</p>
+            <ol>
+                <li>登录您的服务商网站后台，找到“一键订阅”或“复制订阅链接”的按钮。</li>
+                <li>打开 Android 客户端，找到类似于 <strong>订阅管理 (Subscriptions)</strong>、<strong>配置 (Profiles)</strong> 或右上角的 <strong>+ 号</strong> 添加按钮。</li>
+                <li>选择 <strong>“从剪贴板导入”</strong> 或 <strong>“从 URL 导入”</strong>。</li>
+                <li>粘贴您刚才复制的订阅链接，并点击保存或更新。如果客户端支持扫描二维码（QR Code），您也可以直接扫描服务商后台的二维码导入。</li>
+            </ol>
+
+            <h2>四、选择节点与连接</h2>
+            <p>订阅更新成功后，您将看到一系列的服务器节点列表。</p>
+            <ol>
+                <li>根据您的实际需求选择一个地区节点。如果您不清楚如何选择，请阅读 <a href="/knowledge/node/">机场节点选择建议</a>。</li>
+                <li>返回客户端主界面，点击底部的 <strong>连接图标 (通常是一个圆形的播放或开关按钮)</strong>。</li>
+                <li>首次连接时，Android 系统会弹出一个安全提示：“连接请求：XXX 想要设置一个 VPN 连接…”，请点击 <strong>“确定”或“允许”</strong>。这是系统赋予应用接管流量的正常权限。</li>
+            </ol>
+
+            <h2>五、验证连接</h2>
+            <p>连接成功后，状态栏通常会出现一个钥匙图标（或 VPN 字样）。</p>
+            <p>要确认网络是否正常接管，请打开浏览器访问一个查 IP 的网站，确认您的公网 IP 已经变更为节点所在地区的 IP。详细验证步骤请参考 <a href="/vpn/vpn-check/">如何检测连接是否生效</a>。请注意，IP 变化仅代表基础流量已转发，并不等于您已经完全匿名。</p>
+
+            <h2>六、常见错误与排障</h2>
+            <ul>
+                <li><strong>连接成功但无法上网：</strong> 请确认系统时间是否准确，或尝试更换节点。详见 <a href="/vpn/vpn-not-working/">连接成功无网络排查</a>。</li>
+                <li><strong>频繁断线：</strong> Android 系统的电池优化（杀后台）是导致断线的最常见原因。请进入系统设置，将该客户端的电池策略改为“无限制”。详见 <a href="/vpn/vpn-disconnect/">频繁断线排查</a>。</li>
+                <li><strong>网速极其缓慢：</strong> 可能是当前节点负载过高，请更换冷门节点或测试本地基础网络。详见 <a href="/vpn/vpn-slow/">网速缓慢排查</a>。</li>
+                <li><strong>订阅更新失败：</strong> 检查复制的链接是否完整，或尝试在非当前客户端接管的纯净网络下更新。</li>
+            </ul>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">安全提示</h3>
+                <ul>
+                    <li><strong>不要分享订阅：</strong> 您的订阅链接包含您的专属密钥。截图分享或公开发布会导致他人盗用您的流量，服务商也可能因此封禁您的账号。</li>
+                    <li><strong>临时排障还原：</strong> 如果为了排查问题，临时关闭了手机系统级别的某些安全拦截功能，请务必在排障结束后立即恢复原状，不要让设备处于无保护状态。</li>
+                </ul>
+            </div>
+
+            <h2>七、常见问题 (FAQ)</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 系统提示“此应用可能耗电过快”，我该关闭它吗？</strong>
+                <p style="margin-top: 0.5rem;">A: 这是 Android 系统的常规提醒。网络代理客户端需要维持后台连接，必然会有一定的合理耗电。如果强行关闭，会导致网络中断。</p>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 为什么部分国内 App 显示我还在原地址？</strong>
+                <p style="margin-top: 0.5rem;">A: 大多数现代客户端默认使用“分流规则”（即国内流量直连，国外流量代理），因此国内应用看到的是您的真实本地 IP。</p>
+            </div>
+    
+        </div>
+    </div>
+</BaseLayout>

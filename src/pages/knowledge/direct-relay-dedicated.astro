@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="直连、中转与专线：机场线路术语新手指南"
+    description="如何区分机场的直连、公网中转与专线？带你了解三种常见机场网络传输方式的原理与优缺点，帮助您根据需求选择合适的机场。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/knowledge/" style="color: var(--primary); text-decoration: none;">机场知识</a> &gt; <span>直连/中转/专线</span>
+            </div>
+            <h1>直连、公网中转与专线有什么区别？</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>直连（便宜但易被墙且晚高峰卡顿）、公网中转（性价比高，速度尚可）、专线（最昂贵，延迟较低且免疫封锁）。
+            </div>
+
+            <h2>1. 直连线路 (Direct)</h2>
+            <p>这是最基础、最便宜的网络方式。您的设备将数据包直接发送给国外的节点服务器（如美国的 VPS）。</p>
+            <ul>
+                <li><strong>优点：</strong> 成本极低，流量给得特别大，适合大文件下载。</li>
+                <li><strong>缺点：</strong> 数据必须直接穿过国际公网出口和防火墙（GFW），相对更容易受干扰，晚高峰期间可能遇到拥堵和丢包，影响视频观看体验。</li>
+            </ul>
+
+            <h2>2. 公网中转线路 (Relay / Transit)</h2>
+            <p>为了解决直连线路容易被封和拥堵的问题，中转线路在您的设备和海外节点之间，加入了一台“国内中转服务器”（如上海移动或广州电信服务器）。数据先发给国内的中转机，再由中转机发往海外。</p>
+            <ul>
+                <li><strong>优点：</strong> 国内直连国内中转机速度很快，中转机通常有优化的出国路由，因此整体速度和稳定性大幅高于直连。也是目前性价比最高的机场方案。</li>
+                <li><strong>缺点：</strong> 数据仍然要经过公网防火墙，特殊时期仍有被封锁的风险。</li>
+            </ul>
+
+            <h2>3. 专线线路 (Dedicated / IPLC / IEPL)</h2>
+            <p>高端机场的终极解决方案。它同样有国内入口和海外出口，但入口和出口之间并不是通过公共互联网连接，而是通过租用跨国运营商的<strong>企业级内网物理专线</strong>连接。</p>
+            <ul>
+                <li><strong>优点：</strong> 通过租用特定网络通道进行传输。这种方式的防干扰能力通常较好，且晚高峰表现往往优于普通公网中转，但其实际体验受服务商购买的带宽上限限制。详见 <a href="/knowledge/iplc-iepl/">IPLC 与 IEPL 深度解析</a>。</li>
+                <li><strong>缺点：</strong> 成本极高，导致套餐单价贵，给的<a href="/knowledge/traffic/">流量</a>相对较少。</li>
+            </ul>
+
+            <h2>线路对比总结表格</h2>
+            <div class="table-container" style="overflow-x: auto; margin-top: 1rem; margin-bottom: 2rem;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 500px;">
+                    <thead>
+                        <tr style="background-color: var(--card-bg); border-bottom: 2px solid var(--border-color); text-align: left;">
+                            <th style="padding: 1rem;">线路类型</th>
+                            <th style="padding: 1rem;">防墙能力</th>
+                            <th style="padding: 1rem;">晚高峰表现</th>
+                            <th style="padding: 1rem;">价格成本</th>
+                            <th style="padding: 1rem;">适用场景</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem;">直连</td>
+                            <td style="padding: 1rem; color: #d32f2f;">较弱</td>
+                            <td style="padding: 1rem; color: #d32f2f;">可能卡顿</td>
+                            <td style="padding: 1rem; color: #388e3c;">极低</td>
+                            <td style="padding: 1rem;">平时下载超大文件</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem;">公网中转</td>
+                            <td style="padding: 1rem; color: #f57c00;">一般</td>
+                            <td style="padding: 1rem; color: #f57c00;">较流畅</td>
+                            <td style="padding: 1rem; color: #f57c00;">中等</td>
+                            <td style="padding: 1rem;">日常刷视频、高性价比选择</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem;">IPLC 专线</td>
+                            <td style="padding: 1rem; color: #388e3c;">较强 (抗干扰)</td>
+                            <td style="padding: 1rem; color: #388e3c;">相对稳定</td>
+                            <td style="padding: 1rem; color: #d32f2f;">昂贵</td>
+                            <td style="padding: 1rem;">游戏加速、重要工作、敏感期</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p style="margin-top: 3rem; text-align: center;">如果你想寻找优质的专线或中转机场，请查阅 <a href="/recommend/">2026 机场推荐与套餐对比</a>。</p>
+
+        </div>
+    </div>
+</BaseLayout>

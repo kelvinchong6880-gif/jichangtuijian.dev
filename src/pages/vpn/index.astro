@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+---
+
+<BaseLayout 
+    title="VPN 基础与排障指南：工作原理、测速与断线排查"
+    description="讲解 VPN 是什么、工作原理以及与代理工具的区别。提供 VPN 经常断线、速度慢、无法上网等常见故障的排查步骤。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <span>VPN 基础与排障</span>
+            </div>
+            <h1>VPN 基础知识与故障排查指南</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin-top: 1rem;">
+                网络连接问题总是令人困扰。本指南涵盖了从基础概念科普到常见故障诊断的实用内容，帮助新手理解原理并解决常见的“有连接无网络”、“频繁断线”等疑难问题。
+            </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem;">
+            
+            <!-- Category 1 -->
+            <section>
+                <h2 style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">VPN 基础知识</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/what-is-vpn/" style="color: var(--text-color); text-decoration: none;">VPN 是什么？</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">用通俗易懂的语言解释虚拟专用网络的概念、核心用途及隐私局限。</p>
+                        <a href="/vpn/what-is-vpn/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/vpn-how-it-works/" style="color: var(--text-color); text-decoration: none;">VPN 工作原理</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">拆解客户端、服务器与加密隧道是如何协同工作并建立连接的。</p>
+                        <a href="/vpn/vpn-how-it-works/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/vpn-vs-proxy/" style="color: var(--text-color); text-decoration: none;">VPN 与代理的区别</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">传统隐私软件与代理工具在技术侧重点和使用场景上的不同。</p>
+                        <a href="/vpn/vpn-vs-proxy/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/free-vs-paid-vpn/" style="color: var(--text-color); text-decoration: none;">免费 vs 付费对比</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">剖析免费工具的潜在局限，探讨选择服务时的关键考量依据。</p>
+                        <a href="/vpn/free-vs-paid-vpn/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Category 2 -->
+            <section>
+                <h2 style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">连接排障 (Troubleshooting)</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/vpn-not-working/" style="color: var(--text-color); text-decoration: none;">显示已连接但无法上网</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">提供完整的排查流程，帮您定位 DNS 故障、节点失效或代理冲突。</p>
+                        <a href="/vpn/vpn-not-working/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/vpn-disconnect/" style="color: var(--text-color); text-decoration: none;">VPN 经常断线</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">解析手机权限、网络环境波动等原因，提供防掉线排查策略。</p>
+                        <a href="/vpn/vpn-disconnect/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/vpn-slow/" style="color: var(--text-color); text-decoration: none;">VPN 速度慢排查</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">网速卡顿怎么办？带您检查服务器负载、物理距离及本地网络问题。</p>
+                        <a href="/vpn/vpn-slow/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Category 3 -->
+            <section>
+                <h2 style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">测速与参数解读</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/vpn-speed-test/" style="color: var(--text-color); text-decoration: none;">如何正确测速？</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">教您建立基准测试，利用专业工具准确得出连接前后的网速对比。</p>
+                        <a href="/vpn/vpn-speed-test/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/vpn-latency/" style="color: var(--text-color); text-decoration: none;">延迟 (Ping) 多少正常？</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">理解毫秒单位与物理距离的关联，以及它对实际网络操作体验的影响。</p>
+                        <a href="/vpn/vpn-latency/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/vpn-download-speed/" style="color: var(--text-color); text-decoration: none;">下载速度单位换算</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">理清 Mbps 与 MB/s 的换算关系，解读测速数据与实际下载的差异。</p>
+                        <a href="/vpn/vpn-download-speed/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+                    
+                    <div class="card" style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="/vpn/vpn-check/" style="color: var(--text-color); text-decoration: none;">检测 VPN 是否生效</a></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">通过核对公网 IP 和执行基础 DNS 检查，确认您的网络连接状态。</p>
+                        <a href="/vpn/vpn-check/" style="color: var(--primary); font-weight: 500;">阅读全文 &rarr;</a>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+</BaseLayout>

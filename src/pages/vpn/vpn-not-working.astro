@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="VPN 显示已连接但无法上网？排查指南"
+    description="VPN 客户端显示 Connected，但网页打不开、没有任何网络？按照本文的安全排查流程，快速定位是 DNS 故障、路由问题还是代理冲突。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/vpn/" style="color: var(--primary); text-decoration: none;">VPN 基础与排障</a> &gt; <span>VPN 无法上网</span>
+            </div>
+            <h1>VPN 连接成功但无法上网怎么办？排查流程</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>连接显示成功却无网络，通常是因为 DNS 解析失败、系统代理设置残留冲突，或者该 VPN 服务器的实际出口路由已中断。
+            </div>
+
+            <h2>现象描述</h2>
+            <p>这是新手最容易遇到的困惑之一：客户端界面上出现了绿色的“已连接 (Connected)”，甚至状态栏也出现了 VPN 小图标，但是打开浏览器却提示“无法访问此网站 (ERR_CONNECTION_TIMED_OUT)”或一直转圈。</p>
+            <p>这种情况说明，您的设备与节点之间仅仅建立了初步握手，但数据在隧道内部或服务器出口处并未成功流转。</p>
+
+            <h2>安全排查流程 (Troubleshooting Flow)</h2>
+            <p>请严格按照以下从易到难的顺序进行排查：</p>
+
+            <h3>Step 1: 断开 VPN 测试基础网络</h3>
+            <p>首先，彻底断开 VPN。尝试打开一个普通的本地网站（如 baidu.com）。如果断开 VPN 后也无法上网，说明您本机的网络（Wi-Fi 或宽带）本身断了，请先修复本地网络故障。</p>
+
+            <h3>Step 2: 更换 VPN 服务器节点</h3>
+            <p>如果基础网络正常，请重新开启 VPN 并<strong>换一个不同国家/地区的节点</strong>。很多时候，显示“已连接”仅仅是因为认证服务器还在，但该节点的流量出口 IP 已经被封锁或瘫痪。换个节点往往能瞬间解决。</p>
+
+            <h3>Step 3: 检查时间与日期同步</h3>
+            <p>VPN 连接依赖极其严格的安全证书验证。如果您的电脑或手机时间与标准时间相差太大（比如差了几个小时甚至几天），证书校验就会出错，导致有连接无流量。请在系统设置中开启“自动设置时间 (NTP)”。</p>
+
+            <h3>Step 4: 检查 DNS 故障</h3>
+            <p>如果能通过 IP 地址访问服务（例如 Ping <code>8.8.8.8</code> 是通的），但输入域名（如 google.com）打不开，说明是 DNS 出了问题。尝试在 VPN 客户端设置中，开启“使用内置 DNS”或手动将系统 DNS 更改为可靠的公共 DNS（如 <code>1.1.1.1</code> 或 <code>8.8.8.8</code>）。</p>
+
+            <h3>Step 5: 清理系统代理残留 (主要针对 Windows/macOS)</h3>
+            <p>如果您之前安装过其他代理软件（如 Clash、v2rayN）非正常退出，系统的全局代理开关可能卡死了。请进入：<br>
+            <strong>Windows：</strong> 设置 > 网络和 Internet > 代理，关闭所有“手动设置代理”的开关。<br>
+            <strong>macOS：</strong> 系统设置 > 网络 > 详情 > 代理，取消勾选所有的代理选项。</p>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">安全提示</h3>
+                <p>在排查过程中，<strong>千万不要永久关闭您的杀毒软件或系统内置防火墙</strong>。如果怀疑是第三方安全软件拦截了 VPN 虚拟网卡，可以尝试临时退出它们几分钟进行测试。如果确认是安全软件拦截，请将 VPN 客户端添加到白名单，而不是永久裸奔上网。如果为了排障进行了临时测试，必须在测试后立即恢复原安全设置。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

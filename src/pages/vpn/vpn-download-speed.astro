@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="VPN 下载速度：Mbps 和 MB/s 的换算与理解"
+    description="测速结果是 100 Mbps，为什么实际下载软件只有 10 几 MB/s？为您解释带宽单位换算、协议开销以及实际吞吐量的关系。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/vpn/" style="color: var(--primary); text-decoration: none;">VPN 基础与排障</a> &gt; <span>VPN 下载速度</span>
+            </div>
+            <h1>理解 VPN 下载速度：Mbps vs MB/s</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>宽带和测速软件标称的 <strong>Mbps</strong>（兆比特每秒）除以 <strong>8</strong>，大约等于我们日常下载软件时看到的理论最高 <strong>MB/s</strong>（兆字节每秒）。
+            </div>
+
+            <h2>最大误区：Mbps 与 MB/s 混淆</h2>
+            <p>很多新手在进行 <a href="/vpn/vpn-speed-test/">VPN 测速</a> 后感到疑惑：“测速明明显示 80 Mbps，为什么浏览器下载文件时，速度只有 10 MB/s 左右？是不是被限速了？”</p>
+            <p>实际上，这是计算机存储单位不同造成的正常现象：</p>
+            <ul>
+                <li><strong>网络带宽单位 (Mbps)</strong>：即 Megabit per second。网络运营商、Speedtest 测速软件普遍使用这个单位。</li>
+                <li><strong>文件下载单位 (MB/s)</strong>：即 Megabyte per second。浏览器、常见下载软件普遍使用这个单位。</li>
+            </ul>
+            <p><strong>换算公式：1 Byte (字节) = 8 bit (比特)</strong>。<br>
+            因此，理想状态下，80 Mbps 的带宽理论上约等于 10 MB/s 的下载速度。</p>
+
+            <h2>为什么实际下载速度往往达不到理论值？</h2>
+            <p>即使您换算正确，比如测出 80 Mbps 理论上应该有 10 MB/s，但实际下载时往往略低。这通常并非恶意限速，而是由以下因素决定：</p>
+            <ol>
+                <li><strong>协议与加密开销 (Overhead)：</strong> 在 <a href="/vpn/vpn-how-it-works/">VPN 原理</a> 中，数据需要被打包和加密传输。这些额外的封装本身就要占用一部分带宽。</li>
+                <li><strong>目标服务器限制：</strong> 您的网络再快，如果提供下载的那个网站服务器限制了单用户的下载速度（比如某些免费网盘），您也只能获得对方允许的速度上限。</li>
+                <li><strong>本地硬件瓶颈：</strong> 路由器性能限制、Wi-Fi 受到干扰，都可能导致实际吞吐量下降。</li>
+            </ol>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">视频体验参考数据</h3>
+                <p>其实，流畅观看流媒体并不需要追求极端的测速数据。作为一般性用途参考（非统一质量标准）：</p>
+                <ul>
+                    <li>流畅观看 1080P 高清视频：通常需要稳定达到 <strong>5 Mbps (~0.6 MB/s)</strong>。</li>
+                    <li>流畅观看 4K 超高清视频：通常需要稳定达到 <strong>25 Mbps (~3 MB/s)</strong>。</li>
+                </ul>
+                <p>只要您的连接足够稳定并达到上述带宽，即可获得较好的视听体验。</p>
+            </div>
+
+        </div>
+    </div>
+</BaseLayout>

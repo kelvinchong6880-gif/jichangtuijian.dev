@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="IPLC 与 IEPL 专线是什么？为什么高端机场都在用？"
+    description="一文读懂 IPLC（国际私有租用线路）与 IEPL（国际以太网专线）。了解专线网络为何拥有超低延迟且不会被墙封锁。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/knowledge/" style="color: var(--primary); text-decoration: none;">机场知识</a> &gt; <span>IPLC / IEPL 专线</span>
+            </div>
+            <h1>IPLC 与 IEPL 专线解析</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>IPLC 和 IEPL 都是企业级的物理内网专线。由于数据传输不过传统的公网防火墙，这类线路不仅延迟极低，与普通公网路径相比，其路由方式和资源保障可能不同。但在实际使用中，延迟、稳定性和可用性仍取决于具体线路实现、服务商网络及用户所在地等多种因素。
+            </div>
+
+            <h2>什么是 IPLC？</h2>
+            <p><strong>IPLC</strong> (International Private Leased Circuit，国际私有租用线路) 是一种传统的企业级点对点通信专线。它相当于在两点（例如深圳和香港）之间拉了一根专属的网线。</p>
+            <p>使用 IPLC 专线的机场节点，通常在特定的入口和出口之间采用相对隔离的传输路径。这种方式一般不直接走拥挤的公共国际出口，因此在特定时期受到的网络干扰可能相对较小，但不代表绝对不会中断。</p>
+
+            <h2>什么是 IEPL？</h2>
+            <p><strong>IEPL</strong> (International Ethernet Private Line，国际以太网专线) 可以看作是 IPLC 的升级版。它是基于纯以太网技术的端到端专线，拥有比传统 IPLC 更高的灵活性和更低的网络层级开销。</p>
+            <p>对普通机场用户而言，IPLC 和 IEPL 在体验上的差异微乎其微。它们都被统称为“专线”，都具备极低的延迟和不被墙的优势。</p>
+
+            <h2>专线（IPLC/IEPL）的巨大优势</h2>
+            <ul>
+                <li><strong>抗干扰能力：</strong> 由于不走常规公共国际出口，在特定时期受到的网络干扰可能相对较小，但不代表绝对不会中断。</li>
+                <li><strong>相对低延迟：</strong> 专线通常提供更优的路由路径，对延迟要求高的场景（如游戏）有一定帮助，但实际延迟仍受物理距离和本地网络影响。</li>
+                <li><strong>晚高峰表现：</strong> 专线拥有相对独立的带宽保障，在晚高峰网络拥堵时，可能提供比公网更稳定的连接体验，但这同样取决于服务商购买的专线带宽容量。</li>
+            </ul>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">常见误区</h3>
+                <p><strong>误区：只要标注了 IPLC 就一定最快。</strong></p>
+                <p>正解：专线成本极其高昂（通常按 Megabit 计费）。有些服务商虽然使用了真 IPLC 线路，但购买的带宽非常小（水管很细），当大量用户同时涌入时，依然会因为拥挤而变得极其缓慢。因此，除了线路名称，机场的总体带宽容量和冗余度同样重要。</p>
+            </div>
+
+            <h2>常见问题 (FAQ)</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Q: 为什么专线套餐往往更贵或流量更少？</strong>
+                <p style="margin-top: 0.5rem;">A: 因为企业级专线的每 Mbps 带宽成本可能是普通公网带宽的百倍以上。羊毛出在羊身上，正规的专线机场往往只能提高单价或降低可用流量。如果想了解其他类型的线路（如直连或公网中转），请参考<a href="/knowledge/direct-relay-dedicated/">直连与中转的区别</a>。</p>
+            </div>
+
+            <p style="margin-top: 3rem; text-align: center;">如果你需要寻找稳定不掉线的专线服务，可以查阅 <a href="/recommend/">2026 高端 IPLC 机场对比指南</a>。</p>
+
+        </div>
+    </div>
+</BaseLayout>

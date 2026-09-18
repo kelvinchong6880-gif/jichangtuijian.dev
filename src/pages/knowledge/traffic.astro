@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+    title="机场流量是什么？一个月多少 GB 够用？"
+    description="深度解析机场套餐中的流量概念。100GB、500GB 还是 1TB？帮助您根据真实使用场景选择最合适的机场流量。"
+>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <div class="breadcrumbs" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <a href="/" style="color: var(--primary); text-decoration: none;">首页</a> &gt; <a href="/knowledge/" style="color: var(--primary); text-decoration: none;">机场知识</a> &gt; <span>机场流量</span>
+            </div>
+            <h1>机场流量详解：一个月多少 GB 才够用？</h1>
+        </div>
+
+        <div class="article-content" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+
+            <div style="background: var(--bg-alt); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <strong>快速结论：</strong>轻度查阅资料 50-100GB 足够；重度刷视频、看流媒体建议 200-500GB；如果是下载大文件或全家多设备共享，建议 1TB 以上。
+            </div>
+
+            <h2>机场流量是如何消耗的？</h2>
+            <p>当您连接机场节点后，您访问海外网站所产生的所有上传和下载数据，都会从您的机场套餐总流量中扣除。例如，您购买了 200GB/月的套餐，当月您消耗了 50GB，剩余流量即为 150GB。</p>
+            <p><strong>注意：</strong>流量消耗还与您使用的<a href="/knowledge/node/">节点</a>有关。部分机场设有<a href="/knowledge/traffic-multiplier/">流量倍率</a>。如果您使用了 2 倍率节点下载 1GB 文件，套餐中将会扣除 2GB 的流量。</p>
+
+            <h2>各场景流量消耗估算</h2>
+            <p>为了帮助您选择，以下是常见网络行为的大致流量消耗估算：</p>
+            <ul>
+                <p><em>注：以下数据仅用于帮助理解量级，并非固定消耗标准。实际流量取决于视频码率、平台机制、缓存和设备。</em></p>\n                <li><strong>网页浏览与查资料：</strong> 相对较省流量，每天几小时网页浏览，一个月消耗通常在 10GB-30GB 之间。</li>
+                <li><strong>社交媒体 (Twitter, Instagram)：</strong> 图片和短视频较多，每天重度使用，一个月约消耗 30GB-80GB。</li>
+                <li><strong>观看 YouTube (1080P)：</strong> 1080P 画质每小时约消耗 1.5GB。每天看 1 小时，月消耗约 45GB。</li>
+                <li><strong>观看 Netflix/Disney+ (4K 高清)：</strong> 4K 画质每小时约消耗 7GB。如果您是狂热追剧党，一个月可轻松突破 300GB。</li>
+            </ul>
+
+            <h2>我该选择多大的套餐？</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 2rem;">
+                <thead>
+                    <tr style="background-color: var(--card-bg); border-bottom: 2px solid var(--border-color); text-align: left;">
+                        <th style="padding: 1rem;">用户类型</th>
+                        <th style="padding: 1rem;">推荐流量</th>
+                        <th style="padding: 1rem;">适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;"><strong>轻度用户</strong></td>
+                        <td style="padding: 1rem;">50GB - 100GB</td>
+                        <td style="padding: 1rem;">Google 查资料、偶尔上推特、使用 ChatGPT 文字对话。</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;"><strong>中度用户</strong></td>
+                        <td style="padding: 1rem;">200GB - 500GB</td>
+                        <td style="padding: 1rem;">日常刷 YouTube 短视频、追剧、长时间挂接代理。</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;"><strong>重度用户</strong></td>
+                        <td style="padding: 1rem;">1TB (1000GB) 以上</td>
+                        <td style="padding: 1rem;">4K 电视重度观看 Netflix、下载海外资源、团队共享。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="margin-top: 0;">常见误区</h3>
+                <p><strong>误区：流量用不完可以攒到下个月。</strong></p>
+                <p>正解：绝大多数常规机场套餐是“按月重置”的。无论您当月使用了多少，到了结算日（如每月15日或购买日），流量都会清零并恢复到套餐上限。如果您希望流量永不过期，可以考虑极少数机场提供的<a href="/knowledge/unlimited/">不限时套餐（按量付费）</a>。</p>
+            </div>
+
+            <p style="margin-top: 3rem; text-align: center;">明确了您的流量需求后，欢迎查阅 <a href="/recommend/">2026 机场套餐与价格对比</a> 来寻找合适的机场。</p>
+
+        </div>
+    </div>
+</BaseLayout>
