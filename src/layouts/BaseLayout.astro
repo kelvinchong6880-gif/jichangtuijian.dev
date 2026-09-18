@@ -1,4 +1,4 @@
----
+﻿---
 import '../styles/global.css';
 
 export interface Props {
@@ -8,21 +8,21 @@ export interface Props {
 
 const { title, description } = Astro.props;
 
-// 导航菜单配置
+// 瀵艰埅鑿滃崟閰嶇疆
 const navItems = [
-  { name: '机场推荐', path: '/' },
-  { name: '性价比机场', path: '/xingjiabi/' },
-  { name: '便宜机场', path: '/pianyi/' },
-  { name: '优质机场', path: '/youzhi/' },
-  { name: '机场对比', path: '/duibi/' },
-  { name: '机场排行榜', path: '/paihangbang/' },
+  { name: '鏈哄満鎺ㄨ崘', path: '/' },
+  { name: '鎬т环姣旀満鍦?, path: '/xingjiabi/' },
+  { name: '渚垮疁鏈哄満', path: '/pianyi/' },
+  { name: '浼樿川鏈哄満', path: '/youzhi/' },
+  { name: '鏈哄満瀵规瘮', path: '/duibi/' },
+  { name: '鏈哄満鎺掕姒?, path: '/paihangbang/' },
 ];
 
 const currentPath = Astro.url.pathname;
-// 解析并应用 SITE_DOMAIN 变量
+// 瑙ｆ瀽骞跺簲鐢?SITE_DOMAIN 鍙橀噺
 const siteDomain = import.meta.env.SITE_DOMAIN || 'https://www.example-jichang.com';
 const canonicalURL = new URL(Astro.url.pathname, siteDomain);
-const isPreviewOrDummy = import.meta.env.DEV || import.meta.env.IS_PREVIEW === 'true' || siteDomain.includes('example-jichang.com');
+const isPreviewOrDummy = import.meta.env.DEV || import.meta.env.IS_PREVIEW === 'true' || siteDomain.includes('example-jichang.com') || (process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH !== 'main');
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -40,7 +40,7 @@ const isPreviewOrDummy = import.meta.env.DEV || import.meta.env.IS_PREVIEW === '
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <div class="flex-shrink-0 flex items-center">
-            <a href="/" class="text-xl font-bold text-blue-600">机场推荐</a>
+            <a href="/" class="text-xl font-bold text-blue-600">鏈哄満鎺ㄨ崘</a>
           </div>
           
           <nav class="hidden md:flex space-x-8">
@@ -59,7 +59,7 @@ const isPreviewOrDummy = import.meta.env.DEV || import.meta.env.IS_PREVIEW === '
 
           <div class="flex items-center md:hidden">
             <button type="button" id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-expanded="false">
-              <span class="sr-only">打开主菜单</span>
+              <span class="sr-only">鎵撳紑涓昏彍鍗?/span>
               <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
@@ -91,8 +91,8 @@ const isPreviewOrDummy = import.meta.env.DEV || import.meta.env.IS_PREVIEW === '
 
     <footer class="bg-white border-t border-gray-200 mt-auto">
       <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
-        <p>本站内容仅供技术研究参考，请遵守当地法律法规。</p>
-        <p class="mt-2">&copy; {new Date().getFullYear()} 机场推荐. 保留所有权利。</p>
+        <p>鏈珯鍐呭浠呬緵鎶€鏈爺绌跺弬鑰冿紝璇烽伒瀹堝綋鍦版硶寰嬫硶瑙勩€?/p>
+        <p class="mt-2">&copy; {new Date().getFullYear()} 鏈哄満鎺ㄨ崘. 淇濈暀鎵€鏈夋潈鍒┿€?/p>
       </div>
     </footer>
 
