@@ -4,12 +4,45 @@ official_site: "https://wzjc.sogoyunaff.cc"
 register_link: "https://wzjc.sogoyunaff.cc/#/?code=BC2BL855"
 is_sponsored: true
 currency: "CNY"
-price_monthly: 8.0
+price_monthly: 25.0
 price_yearly: 98.0
-bandwidth_gb: 60
+bandwidth_gb: 150
 bandwidth_reset_period: "monthly"
 verification_date: "2026-09-18"
 evidence_status: "本站未实测"
+features:
+  - "网络类型：全 IEPL专线，单节点峰值至 2.5Gbps"
+  - "流媒体解锁：原生 IP，支持 Netflix / Disney+ / ChatGPT / TikTok"
+evidence_images:
+  - src: "/evidence/sogo/sogo-latency-1.png"
+    alt: "Sogo Cloud 客户端节点延迟截图一，显示新加坡、美国等节点读数"
+    width: 667
+    height: 784
+  - src: "/evidence/sogo/sogo-latency-2.png"
+    alt: "Sogo Cloud 客户端节点延迟截图二，显示新加坡和日本节点，其中新加坡04超时"
+    width: 657
+    height: 684
+  - src: "/evidence/sogo/sogo-latency-3.png"
+    alt: "Sogo Cloud 客户端节点延迟截图三，显示德国、日本和美国节点"
+    width: 666
+    height: 844
+  - src: "/evidence/sogo/sogo-latency-4.png"
+    alt: "Sogo Cloud 客户端节点延迟截图四，显示香港节点读数"
+    width: 692
+    height: 862
+  - src: "/evidence/sogo/sogo-latency-5.png"
+    alt: "Sogo Cloud 客户端节点延迟截图五，显示香港、台湾和日本节点"
+    width: 700
+    height: 889
+  - src: "/evidence/sogo/sogo-latency-6.png"
+    alt: "Sogo Cloud 客户端节点延迟截图六，显示台湾和日本节点，其中台湾04超时"
+    width: 697
+    height: 889
+  - src: "/evidence/sogo/sogo-latency-7.png"
+    alt: "Sogo Cloud 客户端节点延迟截图七，显示台湾和香港节点"
+    width: 738
+    height: 863
+logo: "/images/logos/sogoyun-logo.webp"
 sort_order: 1
 ---
 

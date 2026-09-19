@@ -1,5 +1,5 @@
 ---
-name: "firefly云"
+name: "firefly"
 official_site: "https://vip02.fireflyaff.com"
 register_link: "https://vip02.fireflyaff.com/#/?code=8nDg6OEY"
 is_sponsored: false
@@ -10,6 +10,10 @@ bandwidth_gb: 999
 bandwidth_reset_period: "monthly"
 verification_date: "2026-09-18"
 evidence_status: "本站未实测"
+features:
+  - "网络类型：官方宣称全节点接入 IPLC 专线"
+  - "计费方式：提供不限时/按量计费套餐，流量不过期"
+logo: "/images/logos/firefly-logo.png"
 sort_order: 4
 ---
 

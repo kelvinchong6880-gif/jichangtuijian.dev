@@ -1,5 +1,5 @@
 ---
-name: "edgenova云"
+name: "edgenova"
 official_site: "https://work.edgenovaaff.cc"
 register_link: "https://work.edgenovaaff.cc/#/?code=k7VCKPvN"
 is_sponsored: false
@@ -10,6 +10,10 @@ bandwidth_gb: 999
 bandwidth_reset_period: "monthly"
 verification_date: "2026-09-18"
 evidence_status: "本站未实测"
+features:
+  - "网络类型：官方宣称全节点接入 IPLC 专线"
+  - "流媒体解锁：官方标称支持解锁 Netflix, Disney+, ChatGPT, TikTok 等"
+logo: "/images/logos/edgenova-logo.png"
 sort_order: 999
 ---
 

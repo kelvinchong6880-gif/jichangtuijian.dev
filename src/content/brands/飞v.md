@@ -1,5 +1,5 @@
 ---
-name: "飞v云"
+name: "飞v"
 official_site: "https://varnexa.flyvaff.com"
 register_link: "https://varnexa.flyvaff.com/#/?code=XsiIuDgj"
 is_sponsored: false
@@ -10,6 +10,9 @@ bandwidth_gb: 65
 bandwidth_reset_period: "monthly"
 verification_date: "2026-09-18"
 evidence_status: "本站未实测"
+features:
+  - "流媒体解锁：官方标称支持解锁 Netflix, ChatGPT, TikTok 等"
+logo: "/images/logos/feiv-logo.png"
 sort_order: 999
 ---
 
