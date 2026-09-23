@@ -24,6 +24,9 @@ const brandsCollection = defineCollection({
     evidence_images: z.array(z.object({ src: z.string(), alt: z.string(), width: z.number(), height: z.number() })).optional(),
     is_dummy: z.boolean().default(false), // 鏍囪婕旂ず鏁版嵁锛屾寮忓彂甯冨墠闇€娓呯悊
     features: z.array(z.string()).optional(),
+    seo_title: z.string().optional(),
+    seo_description: z.string().optional(),
+    seo_h1: z.string().optional(),
   }),
 });
 

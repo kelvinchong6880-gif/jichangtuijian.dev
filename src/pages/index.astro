@@ -185,21 +185,21 @@ const otherBrands = allBrands.filter(b => b.id !== 'sogo');
         <div class="pa-hero-right">
             <div class="pa-monitor">
                 <div class="pa-monitor-header">
-                    <span>REALTIME MONITOR</span>
-                    <span style="display:flex; align-items:center;">LIVE<span class="pa-live-dot"></span></span>
+                    <span>SYSTEM STATUS</span>
+                    <span style="display:flex; align-items:center;">STATIC<span class="pa-live-dot" style="animation:none; opacity:0.5; background:var(--pa-amber);"></span></span>
                 </div>
                 <div class="pa-nodes">
-                    <div class="pa-node-row"><span>HKG-IEPL-01 香港·专线</span> <span class="pa-ping" id="ping1">38ms</span></div>
-                    <div class="pa-node-row"><span>NRT-BGP-03 东京·BGP</span> <span class="pa-ping" id="ping2">42ms</span></div>
-                    <div class="pa-node-row"><span>LAX-CN2-02 洛杉矶·CN2</span> <span class="pa-ping" id="ping3">158ms</span></div>
+                    <div class="pa-node-row"><span>收录原则</span> <span style="color:var(--pa-amber)">客观汇总</span></div>
+                    <div class="pa-node-row"><span>数据来源</span> <span style="color:var(--pa-amber)">公开资料/用户截图</span></div>
+                    <div class="pa-node-row"><span>更新机制</span> <span style="color:var(--pa-amber)">定期人工核对</span></div>
                 </div>
                 <div class="pa-canvas-container">
                     <canvas id="paCanvas" width="420" height="64" style="width:100%; height:64px;"></canvas>
                 </div>
                 <div class="pa-monitor-stats">
                     <span>{allBrands.length} 收录品牌</span>
-                    <span>127 在线节点</span>
-                    <span>52 轮实测</span>
+                    <span>持续更新中</span>
+                    <span>客观资料收录</span>
                 </div>
             </div>
         </div>
@@ -325,7 +325,7 @@ const otherBrands = allBrands.filter(b => b.id !== 'sogo');
 
 <script is:inline>
     // 打字机效果
-    const twText = "已收录全网优质加速节点数据\n127 个节点在线三轮测速取均值\n晚高峰 21:00 复测数据更新于 2026.09 — done.";
+    const twText = "基于官方公开资料与用户截图进行汇总\n提供客观的套餐参数与价格比对\n数据最后核对更新于 2026.09 … done.";
     const twEl = document.getElementById('paTypewriter');
     let twIdx = 0;
     function paType() {
@@ -339,23 +339,6 @@ const otherBrands = allBrands.filter(b => b.id !== 'sogo');
         }
     }
     setTimeout(paType, 500);
-
-    // 延迟抖动
-    function paJitter() {
-        const p1 = document.getElementById('ping1');
-        const p2 = document.getElementById('ping2');
-        const p3 = document.getElementById('ping3');
-        if (!p1) return;
-        
-        const j1 = 38 + (Math.floor(Math.random() * 13) - 6);
-        const j2 = 42 + (Math.floor(Math.random() * 13) - 6);
-        const j3 = 158 + (Math.floor(Math.random() * 29) - 14);
-        
-        p1.innerText = j1 + 'ms';
-        p2.innerText = j2 + 'ms';
-        p3.innerText = j3 + 'ms';
-    }
-    setInterval(paJitter, 1400);
 
     // Canvas 折线图
     const canvas = document.getElementById('paCanvas');

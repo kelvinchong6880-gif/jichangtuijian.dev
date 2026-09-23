@@ -59,13 +59,13 @@ const isPreviewOrDummy = import.meta.env.DEV || import.meta.env.IS_PREVIEW === '
         }
 
         /* 强制覆盖整个站点的白底黑字 Tailwind 样式 */
-        .bg-white, .bg-gray-50, .bg-gray-100 {
+        .bg-white, .bg-gray-50, .bg-gray-100, .bg-blue-50, .bg-yellow-100 {
             background-color: rgba(255,176,0,0.02) !important;
         }
-        .border-gray-100, .border-gray-200, .border-gray-300 {
+        .border-gray-100, .border-gray-200, .border-gray-300, .border-blue-400, .border-blue-100, .border-yellow-400 {
             border-color: var(--pa-amber-border) !important;
         }
-        .text-gray-900, .text-gray-800, .text-gray-700 {
+        .text-gray-900, .text-gray-800, .text-gray-700, .text-blue-700, .text-yellow-800 {
             color: var(--pa-text) !important;
         }
         .text-gray-600, .text-gray-500, .text-gray-400 {
@@ -188,7 +188,48 @@ const isPreviewOrDummy = import.meta.env.DEV || import.meta.env.IS_PREVIEW === '
             border-color: var(--pa-amber) !important;
             box-shadow: 0 0 10px rgba(255,176,0,0.1);
         }
+    
+        /* 表格强制样式增强 - 全屏展示，不使用横向滚动条 */
+        .prose table { 
+            width: 100% !important; 
+            display: table !important; 
+            border-collapse: collapse !important;
+            margin: 1.5rem 0 !important;
+            border: 1px solid var(--pa-amber-border) !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+            table-layout: auto !important;
+        }
+        .prose th, .prose td { 
+            border: 1px solid var(--pa-amber-border) !important; 
+            color: var(--pa-text) !important; 
+            padding: 0.85rem 1rem !important;
+            line-height: 1.6 !important;
+            vertical-align: middle !important;
+            word-wrap: break-word !important;
+            white-space: normal !important;
+        }
+        .prose th:first-child, .prose td:first-child {
+            width: 15%;
+            font-weight: bold;
+            color: var(--pa-amber) !important;
+        }
+        .prose th:last-child, .prose td:last-child {
+            width: 45%;
+        }
+        .prose th { 
+            color: var(--pa-amber) !important; 
+            background-color: var(--pa-amber-weak) !important;
+            font-weight: 700 !important;
+            letter-spacing: 1px;
+        }
+        .prose tbody tr:nth-child(even) {
+            background-color: rgba(255, 176, 0, 0.02) !important;
+        }
+        .prose tbody tr:hover td {
+            background-color: rgba(255, 176, 0, 0.08) !important;
+        }
     </style>
+
   </head>
   <body>
     <div class="pa-scanlines"></div>

@@ -42,11 +42,11 @@ const allBrands = await getBrands();
                       </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{brand.data.currency} {brand.data.price_monthly || '-' } / {brand.data.price_yearly || '-'}</div>
+                      <div class="text-sm text-gray-900">{brand.id === 'sogo' ? '基础版 ¥25/月（150GB/30天）；小包 ¥98/年（60GB/30天）' : `${brand.data.currency} ${brand.data.price_monthly || '-'} / ${brand.data.price_yearly || '-'}`}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">{brand.data.bandwidth_gb} GB</div>
-                      <div class="text-xs text-gray-500">{brand.data.bandwidth_reset_period}</div>
+                      <div class="text-sm text-gray-900">{brand.id === 'sogo' ? '见对应套餐' : `${brand.data.bandwidth_gb} GB`}</div>
+                      <div class="text-xs text-gray-500">{brand.id === 'sogo' ? '两档均每 30 天刷新' : brand.data.bandwidth_reset_period}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {brand.data.device_limit || '未知'}

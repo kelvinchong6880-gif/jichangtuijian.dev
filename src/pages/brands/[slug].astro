@@ -37,10 +37,10 @@ const evidenceImages = brand.data.evidence_images ?? [];
 </style>
 
 <BaseLayout 
-  title={`${brand.data.name} 套餐资料与价格 - 机场推荐PRO`}
-  description={`${brand.data.name}公开套餐资料、付款周期与注册链接。证据状态：${brand.data.evidence_status}；资料核验日期：${brand.data.verification_date}。`}
+  title={brand.data.seo_title || `${brand.data.name} 套餐资料与价格 - 机场推荐PRO`}
+  description={brand.data.seo_description || `${brand.data.name}公开套餐资料、付款周期与注册链接。证据状态：${brand.data.evidence_status}；资料核验日期：${brand.data.verification_date}。`}
 >
-  <article class="max-w-3xl mx-auto bg-white shadow-sm rounded-xl overflow-hidden border border-gray-200">
+  <article class="max-w-6xl mx-auto bg-white shadow-sm rounded-xl overflow-hidden border border-gray-200">
     <div class="p-8">
       <div class="flex justify-between items-start border-b border-gray-100 pb-6 mb-6">
         <div>
@@ -48,7 +48,7 @@ const evidenceImages = brand.data.evidence_images ?? [];
             {brand.data.logo && (
               <img src={brand.data.logo} alt={`${brand.data.name} logo`} class="h-16 w-auto max-w-[160px] object-contain rounded-md" />
             )}
-            <h1 class="text-3xl font-extrabold text-gray-900">{brand.data.name}</h1>
+            <h1 class="text-3xl font-extrabold text-gray-900">{brand.data.seo_h1 || brand.data.name}</h1>
           </div>
           <div class="mt-2 flex items-center text-sm text-gray-500 space-x-4">
             <span>核验日期: {brand.data.verification_date}</span>
@@ -63,24 +63,7 @@ const evidenceImages = brand.data.evidence_images ?? [];
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4 mb-8 bg-gray-50 p-4 rounded-lg">
-        <div>
-          <span class="block text-xs text-gray-500 uppercase">月付价格</span>
-          <span class="block text-lg font-medium text-gray-900">{brand.data.price_monthly ? `${brand.data.currency} ${brand.data.price_monthly}` : '资料未提供'}</span>
-        </div>
-        <div>
-          <span class="block text-xs text-gray-500 uppercase">年付价格</span>
-          <span class="block text-lg font-medium text-gray-900">{brand.data.price_yearly ? `${brand.data.currency} ${brand.data.price_yearly}` : '资料未提供'}</span>
-        </div>
-        <div>
-          <span class="block text-xs text-gray-500 uppercase">流量额度</span>
-          <span class="block text-lg font-medium text-gray-900">{brand.data.bandwidth_gb} GB（{brand.data.bandwidth_reset_period === 'monthly' ? '每月重置' : brand.data.bandwidth_reset_period === 'none' ? '一次性额度' : '周期待核验'}）</span>
-        </div>
-        <div>
-          <span class="block text-xs text-gray-500 uppercase">设备限制</span>
-          <span class="block text-lg font-medium text-gray-900">{brand.data.device_limit || '未知'}</span>
-        </div>
-      </div>
+
 
       <div class="prose prose-blue max-w-none">
         {brand.data.is_sponsored && (
