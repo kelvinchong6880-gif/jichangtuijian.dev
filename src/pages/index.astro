@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getProviders } from '../data/providers';
+import { SITE } from '../data/config';
 import fs from 'fs';
 import path from 'path';
 
@@ -22,11 +23,29 @@ const getPageCount = (dirPath) => {
 const knowledgeCount = getPageCount('knowledge');
 const vpnCount = getPageCount('vpn');
 const tutorialCount = getPageCount('tutorial');
+
+const structuredData = [
+    {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: SITE.title,
+        url: SITE.domain,
+        inLanguage: 'zh-CN',
+        description: SITE.description
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: SITE.author,
+        url: SITE.domain
+    }
+];
 ---
 
 <BaseLayout 
     title="机场推荐与网络工具指南 | 机场知识、套餐测评与使用教程"
     description="本站提供：机场套餐资料、Provider Review、机场知识、VPN 基础、Windows / macOS / iPhone / Android 教程。服务商线路、功能、价格等资料以官方整理为基础；实际体验可能因网络环境而异。"
+    structuredData={structuredData}
 >
     <!-- HERO SECTION -->
     <div class="hero-section">

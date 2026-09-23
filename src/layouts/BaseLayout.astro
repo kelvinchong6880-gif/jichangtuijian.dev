@@ -9,14 +9,20 @@ export interface Props {
   description?: string;
   canonicalUrl?: string;
   noindex?: boolean;
+  structuredData?: Record<string, any> | Record<string, any>[];
 }
 
 const { 
   title = SITE.title, 
   description = SITE.description,
   canonicalUrl = new URL(Astro.url.pathname, SITE.domain).href,
-  noindex = false
+  noindex = false,
+  structuredData
 } = Astro.props;
+
+const schemas = structuredData
+  ? (Array.isArray(structuredData) ? structuredData : [structuredData])
+  : [];
 ---
 
 <!DOCTYPE html>
@@ -37,6 +43,10 @@ const {
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:type" content="website" />
+
+  {schemas.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))}
 </head>
 <body>
   <Header />
