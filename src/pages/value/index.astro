@@ -26,10 +26,10 @@ const title = `性价比机场推荐2026：${n}家专线机场每GB价格排行�
 const description = `2026性价比机场推荐（${UPDATED_MONTH}更新）：把${n}家IPLC/IEPL专线机场的每个套餐换算成每GB价格，按150GB、300GB、500GB、1TB流量分档排行，最低约¥${perGB(champ.bestValue!)!.toFixed(2)}/GB，附年付和长期付费省钱方法。`;
 
 const faq = [
-  { q: '性价比最高的机场是哪家？', a: `综合价格、线路和稳定性，本站首推 ${sogo.name}：优选版 ¥45/月 350GB（约 ¥${perGB(sogo.priced.find((x) => x.name === '优选版')!)!.toFixed(3)}/GB），${sogo.lineLabel} 双专线，优惠码 ${sogo.promo}。只看每 GB 单价，最低的是 ${champ.name} ${champ.bestValue!.name}：${planPrice(champ.bestValue!)} ${fmtGB(champ.bestValue!.traffic)}，约 ¥${perGB(champ.bestValue!)!.toFixed(3)}/GB。` },
-  { q: '机场性价比怎么算？', a: '用“每月价格 ÷ 每月流量”得到每 GB 价格。年付、季付先折成每月价格；不限时包用总价 ÷ 总流量。单价相近时，优先选专线、1 倍率的机场。' },
-  { q: '大流量套餐一定更划算吗？', a: '单价通常更低，但用不完就不划算。每月只用 100GB 的人买 1TB 套餐，实际每 GB 成本反而高好几倍。先估算用量，再在对应流量档里比单价。' },
-  { q: '性价比机场和便宜机场有什么区别？', a: '便宜机场看“最少花多少钱能用上”，性价比机场看“同样的钱买到多少流量”。用量小看便宜机场，用量大看性价比。' },
+  { q: '什么叫机场“性价比高”？', a: '简单说就是同样的钱能用更多流量，而且线路不差。比如同样 ¥45，有的给 300GB，有的给 350GB，后者就更划算。本页把每个套餐都换算成“每 GB 多少钱”，数字越小越划算。' },
+  { q: '新手要不要直接买大流量套餐？', a: '不建议。大套餐每 GB 更便宜，但用不完就是浪费。新手先买 150GB 左右的月付，看一个月实际用了多少，下个月再升级或降级。' },
+  { q: '性价比最高的是哪家？', a: `综合来看推荐 ${sogo.name} 优选版：¥45/月 350GB，约 ¥${perGB(sogo.priced.find((x) => x.name === '优选版')!)!.toFixed(2)}/GB，双专线。只比单价的话，${champ.name} ${champ.bestValue!.name} 最低，约 ¥${perGB(champ.bestValue!)!.toFixed(3)}/GB，但每月 ${fmtGB(champ.bestValue!.traffic)}，适合用量很大的人。` },
+  { q: '年付是不是更划算？新手要不要买？', a: '很多机场年付打 8 折左右（比如飞猫云、跨界云），但要一次付一整年。新手先月付，确认这家机场在你家晚上也稳、用着顺手，再换成年付最稳妥。' },
 ];
 const schemas = [itemListSchema(`${UPDATED_MONTH}性价比机场推荐`, providers), faqSchema(faq), articleSchema(title, description, '/value/')];
 ---

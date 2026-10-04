@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BrandName from '../../components/BrandName.astro';
-import { getProviders, getProviderBySlug, USAGE, cheapestFor, usagePrice, perGB, fmtGB, fmtPrice, unlockText, PAIRS, pairSlug, UPDATED, UPDATED_LABEL, UPDATED_MONTH } from '../../data/providers';
+import Promo from '../../components/Promo.astro';
+import { getProviders, getProviderBySlug, cheapestFor, fmtGB, fmtPrice, planPrice, PAIRS, pairSlug, UPDATED, UPDATED_LABEL, UPDATED_MONTH } from '../../data/providers';
 import { faqSchema, articleSchema } from '../../data/schema';
 
 const providers = getProviders();
@@ -9,82 +10,115 @@ const n = providers.length;
 const by = (s: string) => getProviderBySlug(s)!;
 const sogo = by('sogocloud');
 
-const title = `机场对比2026：${n}家机场价格、流量、线路横向对比（10月更新）`;
-const description = `机场对比（${UPDATED_MONTH}更新）：${n}家专线机场的月付、年付、流量、每GB价格、不限时包和Netflix/ChatGPT解锁一表对比，按轻度、日常、追剧、重度用量比价，附SOGO云vs微风、飞猫云vs微风等${PAIRS.length}组两两对比。`;
+// 按人群推荐：每类人给一个首选 + 一个备选，写成新手听得懂的话
+const personas = [
+  { who: '学生 / 只查资料、用 ChatGPT', need: '每月 50GB 左右', a: by('flycat'), b: by('wuyou'), why: '飞猫云直接有“学生版”¥84/年，一年只花一次钱；无忧链接 ¥79/年更便宜一点。' },
+  { who: '上班族 / 每天刷视频 1–2 小时', need: '每月 150GB 左右', a: sogo, b: by('wuyou'), why: `${sogo.name} ¥25/月 150GB，双专线晚上也稳；预算更紧就选无忧链接 ¥19/月 100GB。` },
+  { who: '追剧党 / 常看 4K、YouTube', need: '每月 300GB 左右', a: sogo, b: by('weifeng'), why: `${sogo.name} 优选版 ¥45/月 350GB；微风 ¥57/月给到 500GB，看得多更放心。` },
+  { who: '全家一起用 / 经常下载', need: '每月 600GB 以上', a: by('kuajieyun'), b: by('weifeng'), why: '跨界云 ¥90/月 830GB、¥130/月 1.8TB，大流量最便宜；微风 ¥127/月 1.2TB 也不错。' },
+  { who: '一个月只用几次', need: '不想每月付钱', a: by('firefly'), b: by('wuyou'), why: 'Firefly ¥100 买 100GB、无忧链接 ¥108 买 100GB，流量用完为止，不会过期。' },
+];
+
+const title = `机场对比：新手怎么比较机场？${n}家机场一张表看懂（2026）`;
+const description = `新手机场对比指南（${UPDATED_MONTH}更新）：不懂IPLC、倍率也能看懂。用大白话对比${n}家机场每月多少钱、能用多少流量、晚上稳不稳、能不能看Netflix和用ChatGPT，按学生、上班族、追剧党、全家用直接推荐，附${PAIRS.length}组热门机场二选一。`;
+
 const faq = [
-  { q: '机场对比要看哪些参数？', a: '最重要的 5 项：月付价格、每月流量、线路（IPLC/IEPL 专线还是中转）、有没有不限时包、能否解锁 Netflix 和 ChatGPT。本页总表把这 5 项放在一起。' },
-  { q: '机场哪个好？', a: `没有对所有人都最好的机场。综合来看本站推荐 ${sogo.name}（¥25/月 150GB，IPLC/IEPL 双专线）；预算低选无忧链接（¥19/月 100GB）；流量大选跨界云（1.8TB ¥130/月）。` },
-  { q: '不同机场的流量能直接比吗？', a: '周期套餐每 30 天重置，不限时包用完为止、不过期，两者不能直接比数字。本页周期套餐比每月流量，不限时包单独列出。' },
+  { q: '我是新手，完全看不懂这些参数，怎么选？', a: `只看两件事：每月预算多少、每月大概用多少流量。不确定就按“每天刷视频 1–2 小时 = 每月 150GB”来估，选 ${sogo.name} 基础版（¥25/月 150GB）基本不会错。` },
+  { q: '表格里写的 IPLC、IEPL 是什么意思？要在意吗？', a: '这是“专线”的意思，可以理解成机场自己租的一条不堵车的路，晚上 8–11 点上网高峰也不容易卡。本页 8 家都是专线，新手不用再额外比较。' },
+  { q: '两家机场看着差不多，到底怎么二选一？', a: '先比同样流量下谁更便宜，再看谁有你需要的东西（比如不限时包、季付、更多国家节点）。下面的“热门机场二选一”页面已经帮你逐项比好了。' },
+  { q: '买错了怎么办？', a: '所以第一次一定买月付。用一个月觉得慢、不顺手，下个月换一家就好，损失最多几十块。用顺了再考虑年付。' },
+  { q: '对比表里的价格就是我实际要付的钱吗？', a: '是官网标价，结算时填优惠码还可能再便宜一点。个别机场会做限时活动，最终以结算页显示的金额为准。' },
 ];
 const schemas = [faqSchema(faq), articleSchema(title, description, '/compare/')];
 ---
 <BaseLayout title={title} description={description} structuredData={schemas} ogType="article" breadcrumbs={[{ name: '机场对比', path: '/compare/' }]}>
   <div class="container page">
-    <p class="eyebrow">更新于 <time datetime={UPDATED}>{UPDATED_LABEL}</time></p>
-    <h1>机场对比 2026：{n} 家机场价格、流量与线路横向对比</h1>
-    <p class="lead">把 {n} 家机场放进同一张表：月付多少钱、每月多少流量、每 GB 多少钱、有没有不限时包、能不能看 Netflix 和用 ChatGPT。下面还有按用量比价和热门机场两两对比，帮你判断“哪个机场好”。</p>
+    <p class="eyebrow">新手向 · 更新于 <time datetime={UPDATED}>{UPDATED_LABEL}</time></p>
+    <h1>机场对比：新手怎么比较机场？{n} 家一张表看懂</h1>
+    <p class="lead">第一次买机场，最头疼的是看不懂参数。这一页不讲术语，只回答你真正关心的问题：<strong>一个月多少钱、够不够我用、晚上卡不卡、能不能看 Netflix 和用 ChatGPT</strong>。看完直接对号入座。</p>
 
-    <section class="section">
-      <h2>热门机场两两对比</h2>
+    <section class="section" aria-labelledby="steps">
+      <h2 id="steps">比较机场前，先回答自己 3 个问题</h2>
+      <div class="grid">
+        <div class="box"><h3>① 每月用多少流量？</h3><p class="muted" style="margin:0">只查资料、用 ChatGPT：约 50GB<br />每天刷 1–2 小时视频：约 150GB<br />常看 4K：约 300GB<br />全家一起用：600GB 以上<br /><a href="/knowledge/traffic/">不会估算？看这篇</a></p></div>
+        <div class="box"><h3>② 每月预算多少？</h3><p class="muted" style="margin:0">¥20 以内：选 100GB 左右的入门档<br />¥25 左右：主流 150GB 档，最多人选<br />¥45 左右：300GB 以上，追剧够用<br />想更省：看 <a href="/cheap/">便宜机场</a></p></div>
+        <div class="box"><h3>③ 打算怎么付钱？</h3><p class="muted" style="margin:0">第一次：先买月付，不满意随时换<br />确定长期用：年付更便宜<br />一个月只用几次：买不限时流量包<br /><a href="/knowledge/plan-selection/">月付还是年付？</a></p></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="who">
+      <h2 id="who">按你的情况选：对号入座</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">你是哪种人</th><th scope="col">大概需要</th><th scope="col">首选</th><th scope="col">备选</th><th scope="col">为什么</th></tr></thead>
+          <tbody>
+            {personas.map((x) => (
+              <tr><td><strong>{x.who}</strong></td><td class="num">{x.need}</td><td><BrandName p={x.a} /></td><td><BrandName p={x.b} /></td><td style="min-width:260px">{x.why}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="all" aria-labelledby="table">
+      <h2 id="table">{n} 家机场大白话对比</h2>
+      <p>每一列都换成了新手能看懂的说法。“够日常用的套餐”指每月 150GB 以上、最便宜的那一档。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">机场</th><th scope="col">最低一个月</th><th scope="col">够日常用的套餐</th><th scope="col">一年付一次最低</th><th scope="col">有没有“买了不过期”的包</th><th scope="col">Netflix / ChatGPT</th></tr></thead>
+          <tbody>
+            {providers.map((p) => {
+              const daily = cheapestFor(p, 150);
+              return (
+                <tr class={p.slug === 'sogocloud' ? 'hl' : ''}>
+                  <td><BrandName p={p} /></td>
+                  <td class="num">{p.entry ? `${fmtPrice(p.entry.price)}（${fmtGB(p.entry.traffic)}）` : '—'}</td>
+                  <td class="num">{daily ? `${planPrice(daily)}（${fmtGB(daily.traffic)}/月）` : '—'}</td>
+                  <td class="num">{p.minYearly ? `${fmtPrice(p.minYearly.price)}/年` : '没有'}</td>
+                  <td>{p.oneTime.length ? `有，${fmtPrice(p.oneTime[0].price)} 起` : '没有'}</td>
+                  <td>{p.streaming && p.ai ? '官网写明都能用' : p.streaming || p.ai ? '部分支持' : '官网没写，先月付试'}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">8 家都是 IPLC / IEPL 专线（晚上不容易卡），所以表里没再单独列线路。想看每 GB 单价，去 <a href="/value/">性价比机场</a>。</p>
+    </section>
+
+    <section class="section" aria-labelledby="pairs">
+      <h2 id="pairs">纠结两家？热门机场二选一</h2>
       <div class="grid">
         {PAIRS.map(([a, b]) => (
-          <a class="box" href={`/compare/${pairSlug(a, b)}/`}><strong>{by(a).name} vs {by(b).name}</strong><p class="muted" style="margin:.35rem 0 0">{by(a).name}和{by(b).name}哪个好？价格、流量、线路逐项比较</p></a>
+          <a class="box" href={`/compare/${pairSlug(a, b)}/`}><strong>{by(a).name} 还是 {by(b).name}？</strong><p class="muted" style="margin:.35rem 0 0">新手该选哪个，一句话结论 + 按用量比价</p></a>
         ))}
       </div>
     </section>
 
-    <section class="section" id="all">
-      <h2>{n} 家机场参数对比总表</h2>
-      <div class="tbl-wrap">
-        <table class="tbl">
-          <thead><tr><th scope="col">机场</th><th scope="col">月付起步</th><th scope="col">年付最低</th><th scope="col">流量范围</th><th scope="col">最低每 GB</th><th scope="col">线路</th><th scope="col">不限时</th><th scope="col">解锁</th><th scope="col">优惠码</th></tr></thead>
-          <tbody>
-            {providers.map((p) => (
-              <tr class={p.slug === 'sogocloud' ? 'hl' : ''}>
-                <td><BrandName p={p} /></td>
-                <td class="num">{p.entry ? `${fmtPrice(p.entry.price)} / ${fmtGB(p.entry.traffic)}` : '—'}</td>
-                <td class="num">{p.minYearly ? `${fmtPrice(p.minYearly.price)} / ${fmtGB(p.minYearly.traffic)}` : '—'}</td>
-                <td class="num">{fmtGB(p.minTraffic)}–{fmtGB(p.maxTraffic)}</td>
-                <td class="num">{p.bestValue ? `¥${perGB(p.bestValue)!.toFixed(3)}` : '—'}</td>
-                <td>{p.lineLabel}</td>
-                <td>{p.oneTime.length ? `有（${p.oneTime.length}）` : '无'}</td>
-                <td>{unlockText(p)}</td>
-                <td><code>{p.promo ?? '—'}</code></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+    <section class="section" aria-labelledby="words">
+      <h2 id="words">对比表里常见的词，一句话解释</h2>
+      <ul class="list">
+        <li><strong>专线（IPLC / IEPL）</strong>：机场租的“不堵车的路”，晚上高峰也稳。<a href="/knowledge/iplc-iepl/">详细</a></li>
+        <li><strong>流量</strong>：每月能用多少数据，用完要等下个月重置或者加购。<a href="/knowledge/traffic/">详细</a></li>
+        <li><strong>倍率</strong>：1 倍率就是用 1GB 扣 1GB；2 倍率用 1GB 扣 2GB。<a href="/knowledge/traffic-multiplier/">详细</a></li>
+        <li><strong>不限时</strong>：一次买一包流量，不按月过期，用完为止，不是“无限流量”。<a href="/knowledge/unlimited/">详细</a></li>
+        <li><strong>订阅链接</strong>：买完后拿到的一串网址，导入客户端就能用。<a href="/knowledge/subscription/">详细</a></li>
+      </ul>
     </section>
 
-    <section class="section" id="usage">
-      <h2>按用量对比：各家满足需求的最便宜套餐</h2>
-      <div class="tbl-wrap">
-        <table class="tbl">
-          <thead><tr><th scope="col">机场</th>{USAGE.map((u) => <th scope="col">{u.label}（{u.need}GB+）</th>)}</tr></thead>
-          <tbody>
-            {providers.map((p) => (
-              <tr class={p.slug === 'sogocloud' ? 'hl' : ''}><td><BrandName p={p} /></td>{USAGE.map((u) => { const x = cheapestFor(p, u.need); return <td class="num">{x ? usagePrice(x) : '—'}</td>; })}</tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p class="muted">轻度：{USAGE[0].desc}；日常：{USAGE[1].desc}；追剧：{USAGE[2].desc}；重度：{USAGE[3].desc}。</p>
-    </section>
-
-    <section class="section">
-      <h2>机场对比的 3 个误区</h2>
-      <ol class="list">
-        <li><strong>只比“¥X 起”</strong>：起步价可能是年付折算，也可能流量很少，要比同一流量档。</li>
-        <li><strong>把不限时流量和月流量混着比</strong>：100GB 不限时包和每月 100GB 完全不同。</li>
-        <li><strong>忽略线路</strong>：便宜几块钱的中转线路，晚高峰可能远不如专线。<a href="/knowledge/direct-relay-dedicated/">直连、中转与专线</a></li>
-      </ol>
-      <p>看综合排名去 <a href="/recommend/">机场排行榜</a>；只看价格去 <a href="/cheap/">便宜机场</a>；只看单价去 <a href="/value/">性价比机场</a>。</p>
-    </section>
-
-    <section class="section">
-      <h2>机场对比常见问题</h2>
+    <section class="section" aria-labelledby="faq">
+      <h2 id="faq">新手比较机场常见问题</h2>
       {faq.map((f) => <div class="qa"><h3>{f.q}</h3><p>{f.a}</p></div>)}
+    </section>
+
+    <section class="section">
+      <div class="callout">
+        <p style="margin:0 0 .6rem"><strong>还是拿不定？</strong>大多数新手选 {sogo.name} 基础版：{planPrice(sogo.entry!)}，每月 {fmtGB(sogo.entry!.traffic)}，买完照着 <a href="/tutorial/">使用教程</a> 10 分钟就能用上。</p>
+        <div class="actions">
+          <a class="btn" href={sogo.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">前往 {sogo.name} 官网</a>
+          <Promo code={sogo.promo} />
+        </div>
+      </div>
     </section>
   </div>
 </BaseLayout>

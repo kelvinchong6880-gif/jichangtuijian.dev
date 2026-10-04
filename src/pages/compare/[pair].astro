@@ -4,8 +4,8 @@ import Promo from '../../components/Promo.astro';
 import BrandName from '../../components/BrandName.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import {
-  getProviderBySlug, USAGE, cheapestFor, usagePrice, monthlyEq, perGB, fmtGB, fmtPrice, planPrice, planTraffic, unlockText,
-  PAIRS, pairSlug, UPDATED_LABEL, UPDATED_MONTH, type Provider,
+  getProviderBySlug, USAGE, cheapestFor, usagePrice, monthlyEq, fmtGB, fmtPrice, planPrice, planTraffic,
+  PAIRS, pairSlug, UPDATED_LABEL, UPDATED_MONTH, type Provider, type Plan,
 } from '../../data/providers';
 import { faqSchema, articleSchema } from '../../data/schema';
 
@@ -14,93 +14,80 @@ export function getStaticPaths() {
 }
 
 const { A, B } = Astro.props as { A: Provider; B: Provider };
-const pair = `${A.name}和${B.name}`;
 const path = `/compare/${pairSlug(A.slug, B.slug)}/`;
-const opt = (p: Provider, f: (p: Provider) => string | null) => f(p) ?? '无';
-const rows = [
-  { k: '月付起步', f: (p: Provider) => (p.entry ? `${planPrice(p.entry)} / ${fmtGB(p.entry.traffic)}` : null) },
-  { k: '年付最低', f: (p: Provider) => (p.minYearly ? `${planPrice(p.minYearly)}（每月 ${fmtGB(p.minYearly.traffic)}）` : null) },
-  { k: '每月流量范围', f: (p: Provider) => `${fmtGB(p.minTraffic)}–${fmtGB(p.maxTraffic)}` },
-  { k: '最划算套餐', f: (p: Provider) => (p.bestValue ? `${p.bestValue.name}，¥${perGB(p.bestValue)!.toFixed(3)}/GB` : null) },
-  { k: '线路', f: (p: Provider) => `${p.lineLabel} 专线` },
-  { k: '不限时流量包', f: (p: Provider) => (p.oneTime.length ? p.oneTime.map((x) => `${fmtGB(x.traffic)} ${fmtPrice(x.price)}`).join('、') : null) },
-  { k: '流媒体 / AI', f: (p: Provider) => unlockText(p) },
-  { k: '节点地区', f: (p: Provider) => p.nodeRegions ?? '官网未列出' },
-  { k: '套餐数量', f: (p: Provider) => `${p.priced.length} 款` },
-  { k: '优惠码', f: (p: Provider) => p.promo ?? null },
-];
+const eq = (x: Plan | null) => (x ? monthlyEq(x)! : Infinity);
 
+// 每档用量谁更便宜（持平时看谁给的流量多，再持平按综合排名）
 const usage = USAGE.map((u) => {
   const pa = cheapestFor(A, u.need);
   const pb = cheapestFor(B, u.need);
-  const ma = pa ? monthlyEq(pa)! : Infinity;
-  const mb = pb ? monthlyEq(pb)! : Infinity;
-  return { ...u, pa, pb, win: ma === mb ? '持平' : ma < mb ? A.name : B.name };
+  let win: Provider | null = null;
+  if (eq(pa) < eq(pb)) win = A;
+  else if (eq(pb) < eq(pa)) win = B;
+  else if (pa && pb && pa.traffic !== pb.traffic) win = (pa.traffic ?? 0) > (pb.traffic ?? 0) ? A : B;
+  return { ...u, pa, pb, win, tie: eq(pa) === eq(pb), same: !!pa && !!pb && eq(pa) === eq(pb) && pa.traffic === pb.traffic };
 });
-const winsA = usage.filter((u) => u.win === A.name).length;
-const winsB = usage.filter((u) => u.win === B.name).length;
-const ties = usage.length - winsA - winsB;
+const daily = usage.find((u) => u.key === 'daily')!;
+const firstPick = daily.win ?? (A.rank < B.rank ? A : B);
+const other = firstPick === A ? B : A;
+const cheaperEntry = A.entry && B.entry ? (A.entry.price <= B.entry.price ? A : B) : A;
+const bigger = A.maxTraffic >= B.maxTraffic ? A : B;
+const moreOneTime = A.oneTime.length === B.oneTime.length ? null : A.oneTime.length > B.oneTime.length ? A : B;
 
-const verdict: string[] = [];
-if (A.entry && B.entry && A.entry.price === B.entry.price) {
-  verdict.push(`月付入门价相同（${fmtPrice(A.entry.price)}/月），${A.name}给 ${fmtGB(A.entry.traffic)}，${B.name}给 ${fmtGB(B.entry.traffic)}。`);
-} else if (A.entry && B.entry) {
-  const c = A.entry.price < B.entry.price ? A : B;
-  verdict.push(`月付入门 ${c.name}更便宜（${planPrice(c.entry!)} 起）。`);
-}
-verdict.push(`四档用量里，${A.name}有 ${winsA} 档更便宜，${B.name}有 ${winsB} 档更便宜${ties ? `，${ties} 档持平` : ''}。`);
-if (A.oneTime.length !== B.oneTime.length) {
-  const w = A.oneTime.length > B.oneTime.length ? A : B;
-  verdict.push(`想买不限时备用包，${w.name}选择更多（${w.oneTime.length} 款）。`);
-}
-if (A.lines?.length !== B.lines?.length) {
-  const w = (A.lines?.length ?? 0) > (B.lines?.length ?? 0) ? A : B;
-  verdict.push(`线路上 ${w.name} 是 ${w.lineLabel} 双专线。`);
-}
-if (A.maxTraffic !== B.maxTraffic) {
-  const w = A.maxTraffic > B.maxTraffic ? A : B;
-  verdict.push(`大流量需求选 ${w.name}（最高 ${fmtGB(w.maxTraffic)}/月）。`);
-}
+const tips: string[] = [];
+const dp = firstPick === A ? daily.pa : daily.pb;
+tips.push(`<strong>第一次买、每天刷刷视频</strong>：选 ${firstPick.name}（${dp ? `${dp.name}，${usagePrice(dp)}，每月 ${fmtGB(dp.traffic)}` : '综合排名更靠前'}）。`);
+if (A.entry && B.entry && A.entry.price !== B.entry.price)
+  tips.push(`<strong>预算最紧</strong>：${cheaperEntry.name} 月付最低 ${planPrice(cheaperEntry.entry!)}。`);
+if (A.maxTraffic !== B.maxTraffic) tips.push(`<strong>全家用、流量大</strong>：${bigger.name} 最高每月 ${fmtGB(bigger.maxTraffic)}。`);
+if (moreOneTime) tips.push(`<strong>一个月只用几次</strong>：${moreOneTime.name} 有 ${moreOneTime.oneTime.length} 款不过期的流量包，${fmtPrice(moreOneTime.oneTime[0].price)} 起。`);
+const plain = (s: string) => s.replace(/<[^>]+>/g, '');
+
+const rows = [
+  { k: '最低一个月多少钱', f: (p: Provider) => (p.entry ? `${planPrice(p.entry)}，每月 ${fmtGB(p.entry.traffic)}` : '没有月付') },
+  { k: '一年付一次最低', f: (p: Provider) => (p.minYearly ? `${planPrice(p.minYearly)}，每月 ${fmtGB(p.minYearly.traffic)}` : '没有') },
+  { k: '流量最少 / 最多', f: (p: Provider) => `${fmtGB(p.minTraffic)} / ${fmtGB(p.maxTraffic)} 每月` },
+  { k: '买了不过期的流量包', f: (p: Provider) => (p.oneTime.length ? `有 ${p.oneTime.length} 款，${fmtPrice(p.oneTime[0].price)} 起` : '没有') },
+  { k: '晚上会不会卡（线路）', f: (p: Provider) => `${p.lineLabel} 专线，高峰期比普通线路稳` },
+  { k: 'Netflix / ChatGPT', f: (p: Provider) => (p.streaming && p.ai ? '官网写明都能用' : '官网没写，先月付试') },
+  { k: '能选的套餐', f: (p: Provider) => `${p.priced.length} 款` },
+  { k: '优惠码', f: (p: Provider) => p.promo ?? '无' },
+];
 
 const faq = [
-  { q: `${pair}哪个好？`, a: verdict.join('') + '第一次购买建议先选月付试用。' },
-  { q: `${pair}哪个便宜？`, a: `月付最低：${A.name} ${A.entry ? planPrice(A.entry) : '无月付'}，${B.name} ${B.entry ? planPrice(B.entry) : '无月付'}。年付最低：${A.name} ${A.minYearly ? planPrice(A.minYearly) : '无'}，${B.name} ${B.minYearly ? planPrice(B.minYearly) : '无'}。` },
-  { q: `${A.name}和${B.name}能一起用吗？`, a: '可以。很多人一家买月付做主力，另一家买年付小包或不限时包做备用，主力出问题时在客户端切换订阅即可。' },
+  { q: `${A.name}和${B.name}哪个好？新手第一次买选哪个？`, a: tips.map(plain).join('') + '拿不准就先买一个月试试，不合适下个月再换。' },
+  { q: `${A.name}和${B.name}用起来有区别吗？`, a: '用法完全一样：在官网复制订阅链接，导入 Clash、小火箭等客户端，选一个节点就能上网。换机场只是换一条订阅链接，不用重新学。' },
+  { q: `${A.name}和${B.name}哪个晚上更稳？`, a: `两家都是专线机场（${A.name}：${A.lineLabel}；${B.name}：${B.lineLabel}），晚上高峰期都比普通中转机场稳。不同城市、不同宽带的体验会有差别，建议先月付，在晚上 8–11 点测一下常用网站。` },
+  { q: '可以两家都买吗？', a: `可以。一家买月付当主力，另一家买便宜的年付小包或不过期流量包当备用，主力出问题时在客户端切换就行。` },
 ];
-const title = `${pair}哪个好？2026 ${A.name} vs ${B.name} 机场对比`;
-const description = `${pair}哪个好（${UPDATED_MONTH}更新）：对比月付、年付、每月流量、每GB价格、线路、不限时包和解锁，按轻度、日常、追剧、重度用量给出更便宜的一家，附优惠码。`;
+const title = `${A.name}和${B.name}哪个好？新手该选哪个（2026 对比）`;
+const description = `${A.name}和${B.name}哪个好？新手版对比（${UPDATED_MONTH}更新）：用大白话比较两家一个月多少钱、够不够用、晚上卡不卡、能不能看Netflix和用ChatGPT，按学生、上班族、追剧、全家用直接告诉你选哪个。`;
 const schemas = [faqSchema(faq), articleSchema(title, description, path)];
 ---
-<BaseLayout title={title} description={description} structuredData={schemas} ogType="article" breadcrumbs={[{ name: '机场对比', path: '/compare/' }, { name: `${A.name} vs ${B.name}`, path }]}>
+<BaseLayout title={title} description={description} structuredData={schemas} ogType="article" breadcrumbs={[{ name: '机场对比', path: '/compare/' }, { name: `${A.name}还是${B.name}`, path }]}>
   <div class="container page">
-    <p class="eyebrow">更新于 {UPDATED_LABEL}</p>
-    <h1>{pair}哪个好？2026 机场对比</h1>
-    <p class="lead">{A.name}和{B.name}都是本站收录的专线机场。下面从价格、流量、线路、不限时包和解锁逐项比较，并按你的用量直接给出更便宜的那一家。</p>
+    <p class="eyebrow">新手向 · 更新于 {UPDATED_LABEL}</p>
+    <h1>{A.name}还是{B.name}？新手该选哪个</h1>
+    <p class="lead">纠结 {A.name} 和 {B.name}？不用看懂所有参数，先看下面的一句话结论，再按自己的用法对号入座。</p>
     <Disclosure />
-    <div class="callout"><p style="margin:0"><strong>结论：</strong>{verdict.join('')}</p></div>
+
+    <div class="callout">
+      <p style="margin:0 0 .5rem"><strong>一句话结论</strong></p>
+      <ul class="list" style="margin:0">{tips.map((t) => <li set:html={t} />)}</ul>
+    </div>
 
     <section class="section">
-      <h2>{A.name} vs {B.name} 参数对比</h2>
+      <h2>按你的用法选：{A.name}和{B.name}谁更划算</h2>
       <div class="tbl-wrap">
         <table class="tbl">
-          <thead><tr><th scope="col">对比项</th><th scope="col"><BrandName p={A} /></th><th scope="col"><BrandName p={B} /></th></tr></thead>
-          <tbody>{rows.map((r) => <tr><th scope="row">{r.k}</th><td>{opt(A, r.f)}</td><td>{opt(B, r.f)}</td></tr>)}</tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>按用量看：{pair}谁更便宜</h2>
-      <div class="tbl-wrap">
-        <table class="tbl">
-          <thead><tr><th scope="col">用量</th><th scope="col">{A.name}</th><th scope="col">{B.name}</th><th scope="col">更便宜</th></tr></thead>
+          <thead><tr><th scope="col">你平时怎么用</th><th scope="col">选 {A.name}</th><th scope="col">选 {B.name}</th><th scope="col">建议</th></tr></thead>
           <tbody>
             {usage.map((u) => (
               <tr>
-                <td><strong>{u.label}</strong>（{u.need}GB+）<br /><span class="muted">{u.desc}</span></td>
-                <td>{u.pa ? `${u.pa.name}：${usagePrice(u.pa)}` : '无合适档位'}</td>
-                <td>{u.pb ? `${u.pb.name}：${usagePrice(u.pb)}` : '无合适档位'}</td>
-                <td><strong>{u.win}</strong></td>
+                <td><strong>{u.desc}</strong><br /><span class="muted">每月约 {u.need}GB</span></td>
+                <td>{u.pa ? <>{u.pa.name}<br /><span class="num">{usagePrice(u.pa)}</span></> : '没有合适的套餐'}</td>
+                <td>{u.pb ? <>{u.pb.name}<br /><span class="num">{usagePrice(u.pb)}</span></> : '没有合适的套餐'}</td>
+                <td><strong>{u.same ? '两家一样，选哪个都行' : u.win ? (u.tie ? `价格一样，${u.win.name}流量更多` : `${u.win.name}更省`) : '—'}</strong></td>
               </tr>
             ))}
           </tbody>
@@ -109,22 +96,42 @@ const schemas = [faqSchema(faq), articleSchema(title, description, path)];
     </section>
 
     <section class="section">
-      <h2>两家的完整套餐</h2>
+      <h2>{A.name} vs {B.name}：大白话对比</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">新手关心的问题</th><th scope="col"><BrandName p={A} /></th><th scope="col"><BrandName p={B} /></th></tr></thead>
+          <tbody>{rows.map((r) => <tr><th scope="row">{r.k}</th><td>{r.f(A)}</td><td>{r.f(B)}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p class="muted">“专线”就是机场租的不堵车的路，<a href="/knowledge/iplc-iepl/">IPLC 和 IEPL 是什么</a>；“不过期的流量包”见 <a href="/knowledge/unlimited/">不限时机场</a>。</p>
+    </section>
+
+    <section class="section">
+      <h2>两家都一样的地方</h2>
+      <ul class="list">
+        <li>都是专线机场，不是便宜的公网中转。</li>
+        <li>买完都是拿一条订阅链接，导入客户端就能用，教程通用：<a href="/tutorial/windows/">Windows</a> · <a href="/tutorial/mac/">Mac</a> · <a href="/tutorial/ios/">iPhone</a> · <a href="/tutorial/android/">安卓</a>。</li>
+        <li>都支持月付，第一次买都可以先试一个月。</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>两家的全部套餐</h2>
       <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
         {[A, B].map((p) => (
           <div class="box">
             <BrandName p={p} />
             <ul class="list" style="margin:.5rem 0">{p.priced.map((x) => <li>{x.name}：{planPrice(x)} · {planTraffic(x)}</li>)}</ul>
-            <div class="actions"><a class="btn btn-sm" href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">前往官网</a><a href={p.url}>详细测评</a><Promo code={p.promo} /></div>
+            <div class="actions"><a class="btn btn-sm" href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">前往官网</a><a href={p.url}>{p.name}怎么样</a><Promo code={p.promo} /></div>
           </div>
         ))}
       </div>
     </section>
 
     <section class="section">
-      <h2>常见问题</h2>
+      <h2>新手常问</h2>
       {faq.map((f) => <div class="qa"><h3>{f.q}</h3><p>{f.a}</p></div>)}
-      <p style="margin-top:1rem">还想比较其他机场？看 <a href="/compare/">全部机场对比</a> 或 <a href="/recommend/">机场排行榜</a>。</p>
+      <p style="margin-top:1rem">还在比其他机场？看 <a href="/compare/">新手机场对比</a> 或 <a href="/recommend/">机场排行榜</a>。</p>
     </section>
   </div>
 </BaseLayout>

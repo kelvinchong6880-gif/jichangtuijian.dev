@@ -32,23 +32,26 @@ export function brandFaq(p: Provider) {
   const daily = cheapestFor(p, 150);
   const faq = [
     {
-      q: `${p.name}怎么样？`,
-      a: `${p.name}：${p.verdict}。在本站机场排行榜排第 ${p.rank} 名，适合${p.bestFor}。`,
+      q: `${p.name}怎么样？适合新手吗？`,
+      a: `${p.name}：${p.verdict}。在本站机场排行榜排第 ${p.rank} 名，最适合${p.bestFor}。新手建议先买一个月试试。`,
     },
     {
-      q: `${p.name}多少钱一个月？`,
-      a: `${p.entry ? `月付最低 ${planPrice(p.entry)}（${fmtGB(p.entry.traffic)}）` : '没有月付'}${p.minYearly ? `，年付最低 ${planPrice(p.minYearly)}（每月 ${fmtGB(p.minYearly.traffic)}）` : ''}${p.oneTime.length ? `，不限时包 ${fmtPrice(p.oneTime[0].price)} 起` : ''}。`,
+      q: `${p.name}一个月多少钱？最便宜怎么买？`,
+      a: `${p.entry ? `按月买最低 ${planPrice(p.entry)}，每月 ${fmtGB(p.entry.traffic)}` : '没有月付'}${p.minYearly ? `；一年付一次最低 ${planPrice(p.minYearly)}，每月 ${fmtGB(p.minYearly.traffic)}` : ''}${p.oneTime.length ? `；不过期的流量包 ${fmtPrice(p.oneTime[0].price)} 起` : ''}${p.promo ? `。结算时填优惠码 ${p.promo}` : ''}。`,
     },
     {
-      q: `${p.name}每天看视频选哪个套餐？`,
-      a: daily ? `每天 1–2 小时视频每月约需 150GB，选 ${daily.name}：${usagePrice(daily)}，每月 ${fmtGB(daily.traffic)}。` : `${p.name}没有 150GB 以上的周期套餐。`,
+      q: `每天刷视频，买${p.name}哪个套餐？`,
+      a: daily ? `每天看 1–2 小时视频，每月大约用 150GB，选 ${daily.name}：${usagePrice(daily)}，每月 ${fmtGB(daily.traffic)}。只查资料、用 ChatGPT 的话可以选更小的套餐。` : `${p.name}没有 150GB 以上的周期套餐，流量大的话建议看其他机场。`,
     },
     {
       q: `${p.name}能看 Netflix、用 ChatGPT 吗？`,
-      a: p.streaming || p.ai ? `官网写明支持：${unlockText(p)}。不同地区节点解锁情况不同，建议用香港、日本、新加坡、美国节点。` : '官网没有写明流媒体和 ChatGPT 解锁情况，需要的话先买月付实测。',
+      a: p.streaming || p.ai ? `官网写明支持：${unlockText(p)}。如果某个节点打不开，换成香港、日本、新加坡或美国的其他节点试试。` : '官网没有写明。如果你主要是为了看 Netflix 或用 ChatGPT，建议先买月付测试，或者选官网写明支持的机场。',
+    },
+    {
+      q: `买了${p.name}之后怎么用？`,
+      a: `在 ${p.name} 官网的用户中心复制订阅链接，粘贴到客户端里导入，选一个节点打开开关就能用。不同设备的步骤见本站 Windows、Mac、iPhone、安卓教程。`,
     },
   ];
-  if (p.promo) faq.push({ q: `${p.name}有优惠码吗？`, a: `有，结算页填写优惠码 ${p.promo} 即可。优惠力度以官网结算页显示为准。` });
   return faq;
 }
 

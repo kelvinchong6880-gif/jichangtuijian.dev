@@ -21,11 +21,11 @@ const title = `便宜机场推荐2026：月付¥${lowest.plan.price}起、年付
 const description = `2026便宜机场推荐（${UPDATED_MONTH}更新）：${n}家IPLC专线机场的最低价套餐，月付¥${lowest.plan.price}起、年付¥${lowestYear.plan.price}起、不限时包¥${oneTime[0].plan.price}起，分月付¥30以内、年付小包、不限时流量包三张表，附学生党推荐和优惠码。`;
 
 const faq = [
-  { q: '便宜又好用的机场推荐哪家？', a: `首推 ${sogo.name}：基础版 ¥25/月 150GB，${sogo.lineLabel} 双专线，能解锁 Netflix 和 ChatGPT，结算填优惠码 ${sogo.promo}。只追求最低价，${lowest.p.name} ${fmtPrice(lowest.plan.price)}/月 ${fmtGB(lowest.plan.traffic)}。` },
-  { q: '最便宜的机场多少钱一个月？', a: `本站收录的机场里，月付最低 ${fmtPrice(lowest.plan.price)}/月（${lowest.p.name} ${lowest.plan.name}，${fmtGB(lowest.plan.traffic)}）；年付最低 ${fmtPrice(lowestYear.plan.price)}/年（${lowestYear.p.name}，每月 ${fmtGB(lowestYear.plan.traffic)}），折合约 ${fmtPrice(lowestYear.plan.price / 12)}/月。` },
-  { q: '学生党买哪个便宜机场？', a: `学生主要查资料、用 ChatGPT，每月 40–60GB 就够，选年付小包最划算：${yearly.slice(0, 3).map(({ p, plan }) => `${p.name} ${fmtPrice(plan.price)}/年`).join('、')}。飞猫云的套餐直接叫“学生版”。` },
-  { q: '便宜机场会不会很卡？', a: `卡不卡主要看线路，不看价格。本页 ${n} 家都是 IPLC / IEPL 专线，¥19–¥25 的入门档用的也是专线，晚高峰表现比同价位的普通中转机场稳。` },
-  { q: '一个月只用几次，买什么最省？', a: `买不限时流量包：一次付费、流量用完为止、不过期。最便宜的是 ${oneTime[0].p.name} ${fmtPrice(oneTime[0].plan.price)} ${fmtGB(oneTime[0].plan.traffic)}。` },
+  { q: '预算只有二三十块，新手买哪个？', a: `¥25 左右首推 ${sogo.name} 基础版（¥25/月 150GB，${sogo.lineLabel} 专线），够日常刷视频；只想花最少的钱，${lowest.p.name} ${fmtPrice(lowest.plan.price)}/月 ${fmtGB(lowest.plan.traffic)}。结算时记得填优惠码。` },
+  { q: '网上说“几块钱一个月”的机场是真的吗？', a: `大多是把年付价格除以 12 算出来的。比如 ${lowestYear.p.name} ${fmtPrice(lowestYear.plan.price)}/年，折合约 ${fmtPrice(lowestYear.plan.price / 12)}/月，但要一次付一年。真正按月付，靠谱的专线机场基本在 ¥19 以上。` },
+  { q: '学生没什么钱，有学生套餐吗？', a: `有。飞猫云的“学生版”¥84/年，每月 50GB；其他机场的年付小包也差不多：${yearly.slice(0, 3).map(({ p, plan }) => `${p.name} ${fmtPrice(plan.price)}/年`).join('、')}。查资料、用 ChatGPT 完全够。` },
+  { q: '便宜机场会不会很卡、根本用不了？', a: `本页 ${n} 家都是专线机场，¥19–¥25 的入门套餐和贵的套餐走的是同一种线路，主要差别是流量多少，不是速度。真正容易卡的是不写线路、价格低得离谱的小机场。` },
+  { q: '一个月只用几次，怎么最省？', a: `买“不过期”的流量包：一次付钱，流量用完为止，不会每月清零。最便宜的是 ${oneTime[0].p.name} ${fmtPrice(oneTime[0].plan.price)} ${fmtGB(oneTime[0].plan.traffic)}。` },
 ];
 const schemas = [itemListSchema(`${UPDATED_MONTH}便宜机场推荐`, providers), faqSchema(faq), articleSchema(title, description, '/cheap/')];
 ---
