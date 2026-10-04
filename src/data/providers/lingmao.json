@@ -18,8 +18,7 @@
   ],
   "deviceInfo": "不限制客户端",
   "officialDescription": "专注于优质网络体验，千兆带宽支持，适合需要高品质原生 IP 解锁服务的用户。",
-  "source": "Desktop/官网套餐价格和基本资料",
-  "lastVerified": "2026-09",
+  "lastVerified": "2026-10-04",
   "plans": [
     {
       "name": "灵猫·年付小包",
@@ -52,5 +51,14 @@
       "traffic": "300GB/月"
     }
   ],
-  "logo": "/images/providers/lingmao.png"
+  "logo": "/images/providers/lingmao.webp",
+  "promo": "lingmao",
+  "lines": [
+    "IPLC"
+  ],
+  "streaming": true,
+  "ai": true,
+  "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+  "verdict": "有季付档，年付 Big ¥295 每月 300GB，折合不到 ¥25/月",
+  "bestFor": "想要季付、或者确定长期用 300GB 的人"
 }

@@ -18,8 +18,7 @@
   ],
   "deviceInfo": "不限设备数",
   "officialDescription": "界面简单直接，套餐层级分明，无隐性限制，IPLC 专线保障日常上网和流媒体需求。",
-  "source": "Desktop/官网套餐价格和基本资料",
-  "lastVerified": "2026-09",
+  "lastVerified": "2026-10-04",
   "plans": [
     {
       "name": "Firefly年付版",
@@ -52,5 +51,14 @@
       "traffic": "100GB永久"
     }
   ],
-  "logo": "/images/providers/firefly.png"
+  "logo": "/images/providers/firefly.webp",
+  "promo": "firefly",
+  "lines": [
+    "IPLC"
+  ],
+  "streaming": null,
+  "ai": null,
+  "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+  "verdict": "套餐简单清楚，¥100 就能买 100GB 永久不过期流量",
+  "bestFor": "偶尔才用、想买一次用很久的人"
 }

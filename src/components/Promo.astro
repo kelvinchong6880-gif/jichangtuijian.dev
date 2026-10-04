@@ -1,0 +1,7 @@
+---
+interface Props { code?: string | null }
+const { code } = Astro.props;
+---
+{code && (
+  <span class="promo">优惠码 <code>{code}</code><button type="button" class="promo-copy" data-copy={code} aria-label={`复制优惠码 ${code}`}>复制</button></span>
+)}

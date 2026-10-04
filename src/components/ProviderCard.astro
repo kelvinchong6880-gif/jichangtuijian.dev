@@ -1,63 +1,48 @@
 ---
-export interface Props {
-  provider: any;
-}
+import Promo from './Promo.astro';
+import { fmtGB, fmtPrice, planPrice, planTraffic, unlockText, type Provider } from '../data/providers';
 
-const { provider } = Astro.props;
+interface Props { provider: Provider; rank: number }
+const { provider: p, rank } = Astro.props;
 ---
-
-<div class="card provider-card">
-  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
-    <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
-      <span class={`badge badge-rank-${provider.rank}`}>Top {provider.rank}</span>
-      {provider.logo && <img src={provider.logo} alt={`${provider.name} Logo`} style="width: auto; height: 32px; object-fit: contain;" />}
-      {provider.name}
-    </h3>
-    <div style="font-size: 1.25rem; font-weight: bold; color: var(--accent);">
-      {provider.price} <span style="font-size: 0.875rem; color: var(--text-muted); font-weight: normal;">{provider.priceUnit}</span>
-    </div>
+<article class="box pcard" id={p.slug}>
+  <header class="pcard-head">
+    <span class={`rank ${rank === 1 ? 'rank-1' : ''}`}>{rank}</span>
+    {p.logo && <img src={p.logo} alt={`${p.name} logo`} width="40" height="40" loading="lazy" decoding="async" />}
+    <h3><a href={p.url}>{p.name}</a></h3>
+    <span class="pcard-price"><span class="price">{p.entry ? fmtPrice(p.entry.price) : p.price}</span><small>{p.entry ? '/月起' : p.priceUnit}</small></span>
+  </header>
+  <p class="pcard-verdict"><strong>推荐理由：</strong>{p.verdict}。</p>
+  <dl class="pcard-facts">
+    <div><dt>线路</dt><dd>{p.lineLabel} 专线</dd></div>
+    <div><dt>每月流量</dt><dd>{fmtGB(p.minTraffic)}–{fmtGB(p.maxTraffic)}</dd></div>
+    <div><dt>年付最低</dt><dd>{p.minYearly ? `${planPrice(p.minYearly)}（${planTraffic(p.minYearly)}）` : '无'}</dd></div>
+    <div><dt>不限时包</dt><dd>{p.oneTime.length ? `${p.oneTime.length} 款，${fmtPrice(p.oneTime[0].price)} 起` : '无'}</dd></div>
+    <div><dt>解锁</dt><dd>{unlockText(p)}</dd></div>
+    <div><dt>设备数</dt><dd>{p.deviceInfo && !/未/.test(p.deviceInfo) ? p.deviceInfo : '官网未写明'}</dd></div>
+  </dl>
+  <ul class="list pcard-feat">
+    {p.features.slice(0, 4).map((f) => <li>{f}</li>)}
+  </ul>
+  <p class="muted" style="margin:0 0 .75rem">适合：{p.bestFor}</p>
+  <div class="actions">
+    <a class="btn" href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">前往 {p.name} 官网</a>
+    <a class="btn btn-outline" href={p.url}>看 {p.name} 测评</a>
+    <Promo code={p.promo} />
   </div>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-    <div>
-      <strong>流量：</strong>{provider.traffic}
-    </div>
-    <div>
-      <strong>有效期：</strong>{provider.validity}
-    </div>
-    <div style="grid-column: 1 / -1;">
-      <strong>官方线路资料：</strong>{provider.routeInfo}
-    </div>
-  </div>
-  
-  <div style="margin-bottom: 1.5rem;">
-    <strong>官方资料重点：</strong>
-    <ul style="list-style-type: disc; margin-left: 1.5rem; color: var(--text-muted); margin-bottom: 1rem;">
-      {provider.features.map((feature: string) => (
-        <li>{feature}</li>
-      ))}
-    </ul>
+</article>
 
-    <strong>需求建议：</strong>
-    <ul style="list-style-type: disc; margin-left: 1.5rem; color: var(--text-muted); margin-bottom: 1rem;">
-      {parseFloat(provider.price) <= 12 && <li>最低入门价格较低，预算敏感用户可进一步比较。</li>}
-      {provider.traffic.includes('TB') && <li>最大流量包含 TB 级别，大流量需求用户可进一步查看。</li>}
-      {(provider.validity.includes('一次性') || provider.validity.includes('不限时')) && <li>提供不限时套餐，不希望固定月度周期的用户可进一步了解。</li>}
-      {provider.plans && provider.plans.length >= 6 && <li>提供 {provider.plans.length} 种套餐，希望比较更多套餐档位的用户可进一步查看。</li>}
-    </ul>
-
-    <strong>资料限制：</strong>
-    <p style="margin: 0.25rem 0 0 0; color: var(--text-muted); font-size: 0.9rem;">
-      官方资料未详细说明具体的 SLA 补偿政策或完整的退款条款，请在购买前自行查阅其最新服务条款。
-    </p>
-  </div>
-  
-  <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1rem;">
-    注：本页部分前往服务商的链接属于推广链接，请查阅页面顶部的推广说明。
-  </p>
-
-  <div style="display: flex; gap: 1rem;">
-    <a href={`/review/${provider.slug}/`} class="btn btn-outline" style="flex: 1;">详细测评</a>
-    <a href={provider.affiliateUrl} target="_blank" rel="nofollow noopener" class="btn" style="flex: 1;">访问官网注册</a>
-  </div>
-</div>
+<style>
+  .pcard { margin-bottom: 1rem; }
+  .pcard-head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .pcard-head img { height: 40px; width: auto; max-width: 110px; object-fit: contain; }
+  .pcard-head h3 { margin: 0; font-size: 1.25rem; flex: 1; }
+  .pcard-head h3 a { color: var(--text-color); }
+  .pcard-price .price { font-size: 1.4rem; }
+  .pcard-price small { color: var(--text-muted); margin-left: 2px; }
+  .pcard-verdict { margin-bottom: 0.75rem; }
+  .pcard-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.6rem 1rem; background: var(--bg-alt); border-radius: 10px; padding: 0.8rem 1rem; margin-bottom: 0.75rem; }
+  .pcard-facts dt { font-size: 0.8rem; color: var(--text-muted); }
+  .pcard-facts dd { font-weight: 600; font-size: 0.93rem; }
+  .pcard-feat { margin-bottom: 0.5rem; color: #334155; }
+</style>

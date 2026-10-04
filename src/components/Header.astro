@@ -1,21 +1,17 @@
 ---
-import { SITE, NAV_LINKS } from '../data/config';
+import { NAV_LINKS } from '../data/config';
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
 ---
-
 <header class="header">
-  <div class="container">
-    <div class="logo">
-      <a href="/" style="display: flex; align-items: center;" aria-label="机场推荐">
-        <picture>
-          <source media="(max-width: 374px)" srcset="/images/brand/logo-mark.svg">
-          <img src="/images/brand/logo-horizontal.svg" alt="机场推荐" width="126" height="36" style="height: 36px; width: auto; object-fit: contain;">
-        </picture>
-      </a>
-    </div>
-    <nav>
+  <div class="container header-inner">
+    <a class="logo" href="/" aria-label="机场推荐首页">
+      <img src="/images/brand/logo-horizontal.svg" alt="机场推荐" width="126" height="36" />
+    </a>
+    <nav aria-label="主导航">
       <ul class="nav-links">
-        {NAV_LINKS.map(link => (
-          <li><a href={link.href}>{link.text}</a></li>
+        {NAV_LINKS.map((l) => (
+          <li><a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.text}</a></li>
         ))}
       </ul>
     </nav>

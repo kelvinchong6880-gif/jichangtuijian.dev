@@ -18,8 +18,7 @@
   ],
   "deviceInfo": "未提及限制",
   "officialDescription": "专注于流媒体 4K 体验与全球 AI 工具稳定解锁，套餐选择覆盖不同需求群体。",
-  "source": "Desktop/官网套餐价格和基本资料",
-  "lastVerified": "2026-09",
+  "lastVerified": "2026-10-04",
   "plans": [
     {
       "name": "MINI链接",
@@ -57,5 +56,14 @@
       "traffic": "300GB"
     }
   ],
-  "logo": "/images/providers/wuyou.jpg"
+  "logo": "/images/providers/wuyou.webp",
+  "promo": "wuyou",
+  "lines": [
+    "IPLC"
+  ],
+  "streaming": true,
+  "ai": true,
+  "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+  "verdict": "月付最便宜：¥19/月 100GB，年付 ¥79 起，官网写明支持 ChatGPT 和 4K Netflix",
+  "bestFor": "预算有限、用量不大的人"
 }

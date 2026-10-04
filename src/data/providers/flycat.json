@@ -18,8 +18,7 @@
   ],
   "deviceInfo": "不限制设备连接数量",
   "officialDescription": "从低流量学生党到企业级定制，满足各阶层需求，拥有丰富的节点和长周期折扣。",
-  "source": "Desktop/官网套餐价格和基本资料",
-  "lastVerified": "2026-09",
+  "lastVerified": "2026-10-04",
   "plans": [
     {
       "name": "学生版",
@@ -57,5 +56,14 @@
       "traffic": "500GB/月"
     }
   ],
-  "logo": "/images/providers/flycat.png"
+  "logo": "/images/providers/flycat.webp",
+  "promo": "flycat888",
+  "lines": [
+    "IPLC"
+  ],
+  "streaming": true,
+  "ai": true,
+  "nodeRegions": "香港×20、台湾×10、日本×10、新加坡×10、美国×10、韩国×3，以及马来西亚、越南、泰国、印度、英国、德国等",
+  "verdict": "节点地区最多，学生版 ¥84/年，长周期最低 6 折",
+  "bestFor": "学生党、需要冷门地区节点的人"
 }

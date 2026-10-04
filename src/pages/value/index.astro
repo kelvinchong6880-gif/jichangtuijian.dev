@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Disclosure from '../../components/Disclosure.astro';
+import TopPicks from '../../components/TopPicks.astro';
+import BrandName from '../../components/BrandName.astro';
+import { getProviders, getProviderBySlug, perGB, monthlyEq, fmtGB, fmtPrice, planPrice, billingLabel, UPDATED, UPDATED_LABEL, UPDATED_MONTH } from '../../data/providers';
+import { faqSchema, itemListSchema, articleSchema } from '../../data/schema';
+
+const providers = getProviders();
+const n = providers.length;
+const sogo = getProviderBySlug('sogocloud')!;
+const periodic = providers.flatMap((p) => p.priced.filter((x) => x.billing !== 'One-Time' && x.traffic).map((plan) => ({ p, plan })));
+const tiers = [
+  { key: 'light', title: '100–200GB（日常使用）', min: 100, max: 200 },
+  { key: 'mid', title: '200–400GB（追剧）', min: 200, max: 400 },
+  { key: 'heavy', title: '400–900GB（重度 / 多设备）', min: 400, max: 900 },
+  { key: 'huge', title: '1TB 以上（家庭 / 下载）', min: 900, max: 1e9 },
+].map((t) => ({
+  ...t,
+  rows: periodic.filter(({ plan }) => plan.traffic! >= t.min && plan.traffic! < t.max).sort((a, b) => perGB(a.plan)! - perGB(b.plan)!),
+}));
+const brandBest = [...providers].filter((p) => p.bestValue).sort((a, b) => perGB(a.bestValue!)! - perGB(b.bestValue!)!);
+const champ = brandBest[0];
+
+const title = `性价比机场推荐2026：${n}家专线机场每GB价格排行（10月更新）`;
+const description = `2026性价比机场推荐（${UPDATED_MONTH}更新）：把${n}家IPLC/IEPL专线机场的每个套餐换算成每GB价格，按150GB、300GB、500GB、1TB流量分档排行，最低约¥${perGB(champ.bestValue!)!.toFixed(2)}/GB，附年付和长期付费省钱方法。`;
+
+const faq = [
+  { q: '性价比最高的机场是哪家？', a: `综合价格、线路和稳定性，本站首推 ${sogo.name}：优选版 ¥45/月 350GB（约 ¥${perGB(sogo.priced.find((x) => x.name === '优选版')!)!.toFixed(3)}/GB），${sogo.lineLabel} 双专线，优惠码 ${sogo.promo}。只看每 GB 单价，最低的是 ${champ.name} ${champ.bestValue!.name}：${planPrice(champ.bestValue!)} ${fmtGB(champ.bestValue!.traffic)}，约 ¥${perGB(champ.bestValue!)!.toFixed(3)}/GB。` },
+  { q: '机场性价比怎么算？', a: '用“每月价格 ÷ 每月流量”得到每 GB 价格。年付、季付先折成每月价格；不限时包用总价 ÷ 总流量。单价相近时，优先选专线、1 倍率的机场。' },
+  { q: '大流量套餐一定更划算吗？', a: '单价通常更低，但用不完就不划算。每月只用 100GB 的人买 1TB 套餐，实际每 GB 成本反而高好几倍。先估算用量，再在对应流量档里比单价。' },
+  { q: '性价比机场和便宜机场有什么区别？', a: '便宜机场看“最少花多少钱能用上”，性价比机场看“同样的钱买到多少流量”。用量小看便宜机场，用量大看性价比。' },
+];
+const schemas = [itemListSchema(`${UPDATED_MONTH}性价比机场推荐`, providers), faqSchema(faq), articleSchema(title, description, '/value/')];
+---
+
+<BaseLayout title={title} description={description} structuredData={schemas} ogType="article" breadcrumbs={[{ name: '性价比机场', path: '/value/' }]}>
+  <div class="container page">
+    <p class="eyebrow">更新于 <time datetime={UPDATED}>{UPDATED_LABEL}</time></p>
+    <h1>性价比机场推荐 2026：按每 GB 价格排行</h1>
+    <p class="lead">性价比不是越便宜越好，而是同样的钱能买到多少流量、线路好不好。我们把 {n} 家专线机场的每个周期套餐都换算成 <strong>每 GB 价格</strong>，再按你需要的流量分档排名。</p>
+    <Disclosure />
+
+    <TopPicks
+      list={providers.slice(0, 6)}
+      mode="value"
+      title="性价比机场推荐 Top 6（综合排名）"
+      firstReason="优选版 ¥45/月 350GB 约 ¥0.13/GB，在 300GB 左右的追剧用量里，价格、双专线质量和稳定性最均衡；60+ 个节点覆盖港台日新美，套餐从 60GB 到 1.05TB 都有。"
+    />
+
+    <section class="section" id="brands">
+      <h2>每 GB 单价排行：各家最划算的套餐</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">#</th><th scope="col">机场</th><th scope="col">最划算套餐</th><th scope="col">价格</th><th scope="col">每月流量</th><th scope="col">每 GB</th></tr></thead>
+          <tbody>
+            {brandBest.map((p, i) => (
+              <tr class={p.slug === 'sogocloud' ? 'hl' : ''}><td><span class="rank">{i + 1}</span></td><td><BrandName p={p} /></td><td>{p.bestValue!.name}</td><td class="num">{planPrice(p.bestValue!)}</td><td class="num">{fmtGB(p.bestValue!.traffic)}</td><td class="num price">¥{perGB(p.bestValue!)!.toFixed(3)}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    {tiers.map((t) => (
+      <section class="section" id={t.key}>
+        <h2>性价比机场：{t.title}</h2>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th scope="col">#</th><th scope="col">机场</th><th scope="col">套餐</th><th scope="col">价格</th><th scope="col">折合每月</th><th scope="col">每月流量</th><th scope="col">每 GB</th></tr></thead>
+            <tbody>
+              {t.rows.map(({ p, plan }, i) => (
+                <tr class={p.slug === 'sogocloud' ? 'hl' : ''}><td><span class="rank">{i + 1}</span></td><td><BrandName p={p} /></td><td>{plan.name}</td><td class="num">{fmtPrice(plan.price)}/{billingLabel(plan.billing).replace('付', '')}</td><td class="num">{fmtPrice(monthlyEq(plan)!)}</td><td class="num">{fmtGB(plan.traffic)}</td><td class="num price">¥{perGB(plan)!.toFixed(3)}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    ))}
+
+    <section class="section">
+      <h2>怎么挑性价比机场</h2>
+      <ol class="list">
+        <li><strong>先定流量档</strong>：查资料 50GB、刷视频 150GB、追剧 300GB、全家 600GB 以上。<a href="/knowledge/traffic/">一个月多少流量够用</a></li>
+        <li><strong>再比单价</strong>：在自己那一档里选每 GB 最低的，不要为用不完的流量买单。</li>
+        <li><strong>看倍率</strong>：2 倍率节点的实际单价要乘 2。<a href="/knowledge/traffic-multiplier/">流量倍率</a></li>
+        <li><strong>算长期折扣</strong>：确定长期用时，飞猫云等机场年付 8 折、三年 6 折。<a href="/knowledge/plan-selection/">月付还是年付</a></li>
+      </ol>
+      <p>只想花最少的钱？看 <a href="/cheap/">便宜机场推荐</a>。想两家机场逐项比较？看 <a href="/compare/">机场对比</a>。</p>
+    </section>
+
+    <section class="section">
+      <h2>性价比机场常见问题</h2>
+      {faq.map((f) => <div class="qa"><h3>{f.q}</h3><p>{f.a}</p></div>)}
+    </section>
+  </div>
+</BaseLayout>

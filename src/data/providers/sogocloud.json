@@ -1,6 +1,6 @@
 {
   "id": "sogocloud",
-  "name": "SOGOCloud",
+  "name": "SOGO云",
   "slug": "sogocloud",
   "rank": 1,
   "officialUrl": "https://wzjc.sogoyunaff.cc/#/?code=BC2BL855",
@@ -19,8 +19,7 @@
   ],
   "deviceInfo": "不限制并发设备",
   "officialDescription": "适合各种流量需求，从轻量新手到大流量团队，全 IPLC/IEPL 专线提供稳定低延迟体验。",
-  "source": "Desktop/官网套餐价格和基本资料",
-  "lastVerified": "2026-09",
+  "lastVerified": "2026-10-04",
   "plans": [
     {
       "name": "小包-年付版",
@@ -78,5 +77,15 @@
       "validity": "无限时长"
     }
   ],
-  "logo": "/images/providers/sogocloud.png"
+  "logo": "/images/providers/sogocloud.webp",
+  "promo": "sogo10000",
+  "lines": [
+    "IPLC",
+    "IEPL"
+  ],
+  "streaming": true,
+  "ai": true,
+  "nodeRegions": "香港×20、台湾×5、日本×10、新加坡×10、美国×10、马来西亚×2，以及英国、法国、德国、土耳其、泰国、巴西等",
+  "verdict": "IPLC/IEPL 双专线，¥25/月 150GB 起，9 款套餐里有 4 款不限时包，综合最均衡",
+  "bestFor": "第一次买机场、想要晚高峰稳定又不想多花钱的人"
 }

@@ -18,8 +18,7 @@
   ],
   "deviceInfo": "未明确限制",
   "officialDescription": "追求晚高峰不限速的极致体验，全 IPLC 原生 IP 线路覆盖广泛业务需求。",
-  "source": "Desktop/官网套餐价格和基本资料",
-  "lastVerified": "2026-09",
+  "lastVerified": "2026-10-04",
   "plans": [
     {
       "name": "闪跃年付版",
@@ -47,5 +46,14 @@
       "traffic": "1.0TB/月"
     }
   ],
-  "logo": "/images/providers/shanyue.jpg"
+  "logo": "/images/providers/shanyue.webp",
+  "promo": "shanyue",
+  "lines": [
+    "IPLC"
+  ],
+  "streaming": true,
+  "ai": true,
+  "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+  "verdict": "同档位便宜 ¥1：¥24/月 150GB、¥44/月 300GB，全节点 1 倍率",
+  "bestFor": "和主流机场比价、想每档都省一点的人"
 }

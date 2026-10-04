@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../data/config';
 ---
 
-<BaseLayout 
+<BaseLayout breadcrumbs={[{"name": "VPN 基础", "path": "/vpn/"}]} hideCrumbs 
     title="VPN 基础与排障指南：工作原理、测速与断线排查"
     description="讲解 VPN 是什么、工作原理以及与代理工具的区别。提供 VPN 经常断线、速度慢、无法上网等常见故障的排查步骤。"
 >

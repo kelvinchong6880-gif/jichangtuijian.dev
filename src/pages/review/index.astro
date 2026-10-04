@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getProviders } from '../../data/providers';
+import { getProviders, fmtPrice, fmtGB, UPDATED_MONTH } from '../../data/providers';
+import { itemListSchema } from '../../data/schema';
 const providers = getProviders();
 ---
-<BaseLayout title="机场测评 | 2026 最新各服务商评测" description="全面、客观的各大机场测评，为您提供选购指南。">
+<BaseLayout title={`机场测评2026：${providers.length}家机场怎么样？套餐价格、线路与优惠码`} description={`${UPDATED_MONTH}机场测评合集：SOGO云、微风、飞猫云、Firefly、无忧链接、跨界云、灵猫、闪跃 ${providers.length} 家专线机场怎么样，逐家整理套餐价格、流量、线路、优缺点和优惠码。`} structuredData={[itemListSchema(`${UPDATED_MONTH}机场测评`, providers)]} breadcrumbs={[{ name: '机场测评', path: '/review/' }]}>
   <div class="container">
     <div style="margin-bottom: 3rem; text-align: center;">
-      <h1 style="margin-bottom: 1rem;">机场测评目录</h1>
-      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">查看 8 家机场服务商的套餐价格、流量、线路资料与详细测评。</p>
+      <h1 style="margin-bottom: 1rem;">机场测评：{providers.length} 家机场怎么样？</h1>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">{providers.length} 家 IPLC / IEPL 专线机场逐家测评：套餐价格、按用量怎么选、优缺点和优惠码。不知道选哪家？先看 <a href="/recommend/">机场排行榜</a>。</p>
     </div>
     
     <div class="review-grid">
@@ -16,18 +17,18 @@ const providers = getProviders();
           <div class="card-header">
             {p.logo ? (
               <div class="logo-container">
-                <img src={p.logo} alt={`${p.name} Logo`} />
+                <img src={p.logo} alt={`${p.name} logo`} width="96" height="36" loading="lazy" />
               </div>
             ) : <div class="logo-placeholder"></div>}
             <div class="rank-badge">#{i + 1}</div>
           </div>
           <h2 class="provider-name">{p.name}</h2>
-          <p class="provider-summary">{p.routeInfo ? (p.routeInfo.length > 40 ? p.routeInfo.substring(0, 40) + '...' : p.routeInfo) : "查看套餐与官方资料"}</p>
+          <p class="provider-summary">{p.verdict}</p>
           
           <div class="price-traffic">
             <div class="info-block">
-              <span class="info-label">最低价格</span>
-              <div class="info-value"><span class="price">{p.price}</span><span class="unit">{p.priceUnit}</span></div>
+              <span class="info-label">月付起步</span>
+              <div class="info-value"><span class="price">{p.entry ? fmtPrice(p.entry.price) : p.price}</span><span class="unit">/月 · {p.entry ? fmtGB(p.entry.traffic) : ''}</span></div>
             </div>
             <div class="info-block">
               <span class="info-label">流量范围</span>
@@ -35,7 +36,7 @@ const providers = getProviders();
             </div>
           </div>
           
-          <a href={`/review/${p.slug}/`} class="btn review-btn">查看完整测评 &rarr;</a>
+          <a href={`/review/${p.slug}/`} class="btn review-btn">{p.name}怎么样 &rarr;</a>
         </div>
       ))}
     </div>

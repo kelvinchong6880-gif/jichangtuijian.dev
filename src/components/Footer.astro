@@ -1,16 +1,49 @@
 ---
-import { SITE } from '../data/config';
-const year = new Date().getFullYear();
+import { getProviders, UPDATED_LABEL } from '../data/providers';
+const providers = getProviders();
 ---
-
 <footer class="footer">
-  <div class="container">
-    <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-      <img src="/images/brand/logo-mark.svg" alt="" width="24" height="24" style="height: 24px; width: auto;" />
-      <span style="font-weight: bold; color: var(--text-color);">机场推荐</span>
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-title">机场推荐</p>
+      <ul>
+        <li><a href="/">2026 机场推荐</a></li>
+        <li><a href="/recommend/">机场排行榜</a></li>
+        <li><a href="/cheap/">便宜机场推荐</a></li>
+        <li><a href="/value/">性价比机场</a></li>
+        <li><a href="/compare/">机场对比</a></li>
+      </ul>
     </div>
-    <p style="margin-bottom: 0.5rem;"><a href="/links/" style="color: var(--text-muted); text-decoration: underline; font-size: 0.85rem;">友情链接与相关网站</a></p>
-    <p>&copy; {year} 机场推荐. All rights reserved.</p>
-    <p style="margin-top: 0.5rem; font-size: 0.75rem;">本站提供的信息仅供参考，请遵守您所在国家或地区的法律法规。</p>
+    <div>
+      <p class="footer-title">机场测评</p>
+      <ul>
+        {providers.map((p) => <li><a href={p.url}>{p.name}怎么样</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">新手教程</p>
+      <ul>
+        <li><a href="/tutorial/windows/">Windows 使用教程</a></li>
+        <li><a href="/tutorial/mac/">Mac 使用教程</a></li>
+        <li><a href="/tutorial/ios/">iPhone 使用教程</a></li>
+        <li><a href="/tutorial/android/">安卓使用教程</a></li>
+        <li><a href="/knowledge/what-is-jichang/">机场是什么</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">机场知识</p>
+      <ul>
+        <li><a href="/knowledge/iplc-iepl/">IPLC 与 IEPL 专线</a></li>
+        <li><a href="/knowledge/traffic/">流量多少够用</a></li>
+        <li><a href="/knowledge/plan-selection/">套餐怎么选</a></li>
+        <li><a href="/knowledge/risk-guide/">机场跑路防范</a></li>
+        <li><a href="/vpn/vpn-vs-proxy/">VPN 和机场的区别</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>数据更新于 {UPDATED_LABEL} · <a href="/links/">友情链接</a></p>
+    <p>本站部分链接为推广链接，不影响你的购买价格。请遵守所在地区的法律法规。</p>
+    <p>© 2026 机场推荐 jichangtuijian.pro</p>
   </div>
 </footer>

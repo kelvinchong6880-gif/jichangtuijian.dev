@@ -1,688 +1,170 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getProviders } from '../data/providers';
-import fs from 'fs';
-import path from 'path';
+import Disclosure from '../components/Disclosure.astro';
+import Promo from '../components/Promo.astro';
+import BrandName from '../components/BrandName.astro';
+import {
+  getProviders, getProviderBySlug, USAGE, cheapestFor, usagePrice, monthlyEq, fmtGB, fmtPrice, planPrice, planTraffic,
+  UPDATED, UPDATED_LABEL, UPDATED_MONTH,
+} from '../data/providers';
+import { faqSchema, itemListSchema } from '../data/schema';
 
 const providers = getProviders();
+const n = providers.length;
+const sogo = getProviderBySlug('sogocloud')!;
+const weifeng = getProviderBySlug('weifeng')!;
+const wuyou = getProviderBySlug('wuyou')!;
+const kuajie = getProviderBySlug('kuajieyun')!;
+const cheapestEntry = [...providers].filter((p) => p.entry).sort((a, b) => a.entry!.price - b.entry!.price)[0];
+const totalPlans = providers.reduce((s, p) => s + p.priced.length, 0);
 
-// Dynamic counts for Information Strip
-let totalPlans = 0;
-providers.forEach(p => totalPlans += p.plans?.length || 0);
+const picks = [
+  { p: sogo, tag: '综合首选', top: true, text: `${sogo.lineLabel} 双专线，${planPrice(sogo.entry!)} 就有 ${fmtGB(sogo.entry!.traffic)}，晚高峰稳、解锁 Netflix 和 ChatGPT，9 款套餐从轻度到全家都能选。` },
+  { p: weifeng, tag: '流量首选', text: `同价位流量最多：${planPrice(weifeng.entry!)} ${fmtGB(weifeng.entry!.traffic)}，¥57/月 500GB，追剧、多设备更划算。` },
+  { p: wuyou, tag: '预算首选', text: `月付最便宜：${planPrice(wuyou.entry!)} ${fmtGB(wuyou.entry!.traffic)}，年付 ${fmtPrice(wuyou.minYearly!.price)} 起，全 IPLC 专线。` },
+];
 
-const getPageCount = (dirPath) => {
-    try {
-        const fullPath = path.join(process.cwd(), 'src/pages', dirPath);
-        return fs.readdirSync(fullPath).filter(f => f.endsWith('.astro') || f.endsWith('.md')).filter(f => !f.startsWith('index')).length;
-    } catch(e) {
-        return 0;
-    }
-};
+const usageRows = USAGE.map((u) => {
+  const options = providers
+    .map((p) => ({ p, plan: cheapestFor(p, u.need) }))
+    .filter((x) => x.plan)
+    .sort((a, b) => monthlyEq(a.plan!)! - monthlyEq(b.plan!)!);
+  return { u, cheapest: options[0], sogo: { p: sogo, plan: cheapestFor(sogo, u.need) } };
+});
 
-const knowledgeCount = getPageCount('knowledge');
-const vpnCount = getPageCount('vpn');
-const tutorialCount = getPageCount('tutorial');
+const faq = [
+  { q: '2026 年机场推荐哪家？', a: `综合价格、线路和稳定性，${UPDATED_MONTH}本站首推 ${sogo.name}：${sogo.lineLabel} 双专线，基础版 ¥25/月 150GB，结算填优惠码 ${sogo.promo}。想要更多流量选微风（¥27/月 200GB），预算最低选无忧链接（¥19/月 100GB）。` },
+  { q: '便宜又好用的机场有哪些？', a: `月付最便宜的是 ${cheapestEntry.name}（${planPrice(cheapestEntry.entry!)} ${fmtGB(cheapestEntry.entry!.traffic)}），跨界云 ¥20/月 120GB 次之；${sogo.name} ¥25/月 150GB 是专线里最均衡的。只用来查资料的话，年付小包 ¥79–¥98/年 更省。` },
+  { q: '第一次买机场要注意什么？', a: '先买月付试用，晚上 8–11 点测一下常用网站再考虑年付；看清是 IPLC/IEPL 专线还是普通中转；确认全节点 1 倍率；结算时填优惠码。' },
+  { q: '机场一个月多少流量够用？', a: '只查资料、用 ChatGPT 约 50GB；每天看 1–2 小时视频约 150GB；常看 4K 约 300GB；全家多设备 600GB 以上。本页“按用量选机场”表格直接给出每档最便宜的套餐。' },
+  { q: '机场和 VPN 有什么区别？', a: '机场是基于代理协议的订阅服务，按流量计费、节点多、价格低，需要用 Clash 等客户端导入订阅；传统 VPN 按设备计费、设置简单但价格高。国内用户翻墙大多选机场。' },
+  { q: '买了机场怎么用？', a: '在机场官网用户中心复制订阅链接，导入客户端（电脑用 Clash Verge 或 V2rayN，iPhone 用小火箭，安卓用 Clash Meta），选一个节点开启即可。本站有 Windows、Mac、iPhone、安卓四篇图文教程。' },
+];
+
+const schemas = [itemListSchema(`${UPDATED_MONTH}机场推荐`, providers), faqSchema(faq)];
 ---
 
-<BaseLayout 
-    title="机场推荐与网络工具指南 | 机场知识、套餐测评与使用教程"
-    description="本站提供：机场套餐资料、Provider Review、机场知识、VPN 基础、Windows / macOS / iPhone / Android 教程。服务商线路、功能、价格等资料以官方整理为基础；实际体验可能因网络环境而异。"
+<BaseLayout
+  title={`机场推荐2026：${n}家好用机场排名、价格对比与新手教程（10月更新）`}
+  description={`2026机场推荐（${UPDATED_MONTH}更新）：${n}家IPLC/IEPL专线机场排名，月付¥${cheapestEntry.entry!.price}起，对比价格、流量、线路和优惠码，按用量推荐套餐，附便宜机场、性价比机场排行和Windows/iPhone/安卓使用教程。`}
+  structuredData={schemas}
 >
-    <!-- HERO SECTION -->
-    <div class="hero-section">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <div class="hero-eyebrow">2026 网络工具与机场资料库</div>
-                <h1 class="hero-title">机场推荐与网络工具新手指南</h1>
-                <p class="hero-desc">
-                    帮助新手了解机场、比较套餐、查看服务商资料并完成客户端配置。本站基于各服务商官方公开资料进行聚合整理，为您提供客观的选择参考。
-                </p>
-                <div class="hero-ctas">
-                    <a href="/recommend/" class="btn hero-btn-primary">查看 2026 机场推荐</a>
-                    <a href="/knowledge/what-is-jichang/" class="btn btn-outline hero-btn-secondary">新手先了解机场是什么</a>
-                </div>
-                
-                <!-- Information Strip -->
-                <div class="info-strip">
-                    <div class="info-item">
-                        <span class="info-num">{providers.length}</span>
-                        <span class="info-label">家服务商</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-num">{totalPlans}</span>
-                        <span class="info-label">个套餐整理</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-num">{knowledgeCount}</span>
-                        <span class="info-label">篇机场知识</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-num">{vpnCount}</span>
-                        <span class="info-label">篇VPN指南</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-num">{tutorialCount}</span>
-                        <span class="info-label">个设备教程</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="hero-visual">
-                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" class="network-svg">
-                    <!-- Soft Background Glows -->
-                    <circle cx="200" cy="200" r="150" fill="url(#glow1)" opacity="0.4" />
-                    <circle cx="280" cy="120" r="100" fill="url(#glow2)" opacity="0.3" />
-                    
-                    <!-- Network Connections -->
-                    <g stroke="#94a3b8" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="4,4">
-                        <line x1="100" y1="200" x2="200" y2="100" />
-                        <line x1="200" y1="100" x2="320" y2="180" />
-                        <line x1="320" y1="180" x2="250" y2="300" />
-                        <line x1="250" y1="300" x2="150" y2="280" />
-                        <line x1="150" y1="280" x2="100" y2="200" />
-                        <line x1="200" y1="100" x2="250" y2="300" />
-                    </g>
-                    
-                    <!-- Nodes -->
-                    <g fill="#ffffff" stroke="#2563eb" stroke-width="4">
-                        <circle cx="100" cy="200" r="10" />
-                        <circle cx="200" cy="100" r="12" />
-                        <circle cx="320" cy="180" r="14" stroke="#f59e0b" />
-                        <circle cx="250" cy="300" r="12" />
-                        <circle cx="150" cy="280" r="10" />
-                    </g>
-                    
-                    <!-- Mini Labels -->
-                    <g font-size="12" font-family="sans-serif" fill="#475569" font-weight="600">
-                        <rect x="115" y="190" width="40" height="20" rx="4" fill="#ffffff" opacity="0.8"/>
-                        <text x="120" y="204">节点</text>
-                        
-                        <rect x="215" y="90" width="40" height="20" rx="4" fill="#ffffff" opacity="0.8"/>
-                        <text x="220" y="104">订阅</text>
-                        
-                        <rect x="250" y="190" width="40" height="20" rx="4" fill="#ffffff" opacity="0.8"/>
-                        <text x="255" y="204">线路</text>
-                        
-                        <rect x="150" y="300" width="40" height="20" rx="4" fill="#ffffff" opacity="0.8"/>
-                        <text x="155" y="314">流量</text>
-                    </g>
+  <div class="container page">
+    <p class="eyebrow">更新于 <time datetime={UPDATED}>{UPDATED_LABEL}</time> · {n} 家机场 · {totalPlans} 个套餐</p>
+    <h1>机场推荐 2026：{n} 家好用机场排名与价格对比</h1>
+    <p class="lead">想找一个稳定、不贵、新手也会用的机场？我们把 {n} 家 IPLC / IEPL 专线机场的全部 {totalPlans} 个套餐放在一起比较：月付多少钱、每月多少流量、有没有不限时包、能不能看 Netflix 和用 ChatGPT。先看下面 3 个推荐，再按你的用量挑套餐。</p>
+    <Disclosure />
 
-                    <defs>
-                        <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="#bfdbfe" stop-opacity="1" />
-                            <stop offset="100%" stop-color="#bfdbfe" stop-opacity="0" />
-                        </radialGradient>
-                        <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="#e0e7ff" stop-opacity="1" />
-                            <stop offset="100%" stop-color="#e0e7ff" stop-opacity="0" />
-                        </radialGradient>
-                    </defs>
-                </svg>
+    <section class="section" aria-labelledby="picks">
+      <h2 id="picks">{UPDATED_MONTH}机场推荐：3 个最值得买的</h2>
+      <div class="picks">
+        {picks.map(({ p, tag, top, text }) => (
+          <div class={`pick ${top ? 'top' : ''}`}>
+            <span class={`pick-tag ${top ? '' : 'alt'}`}>{tag}</span>
+            <BrandName p={p} />
+            <div class="pick-price">{fmtPrice(p.entry!.price)}<small> /月起 · {fmtGB(p.entry!.traffic)}</small></div>
+            <p>{text}</p>
+            <div class="actions">
+              <a class="btn" href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">前往官网</a>
+              <a href={p.url}>看测评</a>
+              <Promo code={p.promo} />
             </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="top">
+      <h2 id="top">2026 机场推荐排行：{n} 家机场一表对比</h2>
+      <p>排名综合了价格、专线质量、流量档位和套餐灵活性。点机场名看详细测评，<a href="/recommend/">完整机场排行榜</a>里有每家的推荐理由。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">排名</th><th scope="col">机场</th><th scope="col">月付起步</th><th scope="col">年付最低</th><th scope="col">每月流量</th><th scope="col">线路</th><th scope="col">不限时包</th><th scope="col">优惠码</th><th scope="col"><span class="sr-only">操作</span></th></tr></thead>
+          <tbody>
+            {providers.map((p, i) => (
+              <tr class={i === 0 ? 'hl' : ''}>
+                <td><span class={`rank ${i === 0 ? 'rank-1' : ''}`}>{i + 1}</span></td>
+                <td><BrandName p={p} /></td>
+                <td class="num"><span class="price">{p.entry ? fmtPrice(p.entry.price) : '—'}</span> / {p.entry ? fmtGB(p.entry.traffic) : ''}</td>
+                <td class="num">{p.minYearly ? `${fmtPrice(p.minYearly.price)} / ${fmtGB(p.minYearly.traffic)}` : '—'}</td>
+                <td class="num">{fmtGB(p.minTraffic)}–{fmtGB(p.maxTraffic)}</td>
+                <td>{p.lineLabel}</td>
+                <td>{p.oneTime.length ? `有（${fmtPrice(p.oneTime[0].price)} 起）` : '无'}</td>
+                <td><code>{p.promo ?? '—'}</code></td>
+                <td><a class="btn btn-sm" href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">官网</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">“年付最低”为年付价格 / 每月流量。多数机场官网标注全节点 1 倍率；价格以官网结算页为准。</p>
+    </section>
+
+    <section class="section" aria-labelledby="usage">
+      <h2 id="usage">按用量选机场：每档最便宜的套餐</h2>
+      <p>先估算自己每月用多少流量，再看对应那一档。年付套餐已折成每月价格。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">你的用量</th><th scope="col">每月需要</th><th scope="col">最便宜的选择</th><th scope="col">{sogo.name}（专线首选）</th></tr></thead>
+          <tbody>
+            {usageRows.map(({ u, cheapest, sogo: s }) => (
+              <tr>
+                <td><strong>{u.label}</strong><br /><span class="muted">{u.desc}</span></td>
+                <td class="num">{u.need}GB+</td>
+                <td>{cheapest ? <><a href={cheapest.p.url}>{cheapest.p.name}</a> {cheapest.plan!.name}<br /><span class="num price">{usagePrice(cheapest.plan!)}</span> · {fmtGB(cheapest.plan!.traffic)}/月</> : '—'}</td>
+                <td>{s.plan ? <>{s.plan.name}<br /><span class="num price">{usagePrice(s.plan)}</span> · {fmtGB(s.plan.traffic)}/月</> : '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p>每月用量很少、一个月只用几次？买不限时流量包更省，比如 Firefly ¥100 买 100GB、无忧链接 ¥108 买 100GB，流量用完为止、不会过期。</p>
+    </section>
+
+    <section class="section" aria-labelledby="find">
+      <h2 id="find">按需求找机场</h2>
+      <div class="grid">
+        <a class="box" href="/recommend/"><strong>机场排行榜 →</strong><p class="muted" style="margin:.4rem 0 0">{n} 家机场综合排名，每家的推荐理由、优缺点和适合人群。</p></a>
+        <a class="box" href="/cheap/"><strong>便宜机场推荐 →</strong><p class="muted" style="margin:.4rem 0 0">月付 ¥{cheapestEntry.entry!.price} 起、年付 ¥79 起的低价机场和不限时包。</p></a>
+        <a class="box" href="/value/"><strong>性价比机场 →</strong><p class="muted" style="margin:.4rem 0 0">把每个套餐换算成每 GB 价格，按流量档排行。</p></a>
+        <a class="box" href="/compare/"><strong>机场对比 →</strong><p class="muted" style="margin:.4rem 0 0">{sogo.name} vs 微风、飞猫云 vs 微风等热门机场两两对比。</p></a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="newbie">
+      <h2 id="newbie">新手第一次用机场：3 步搞定</h2>
+      <ol class="list">
+        <li><strong>选机场、买月付</strong>：从上面的推荐里挑一家，第一次先买月付，结算页填优惠码。不懂什么是机场？先看 <a href="/knowledge/what-is-jichang/">机场是什么</a>。</li>
+        <li><strong>复制订阅链接</strong>：在机场官网的用户中心复制订阅链接，这一串链接就是你的“账号”，不要发给别人。详见 <a href="/knowledge/subscription/">订阅链接怎么用</a>。</li>
+        <li><strong>导入客户端</strong>：按设备看教程：<a href="/tutorial/windows/">Windows</a> · <a href="/tutorial/mac/">Mac</a> · <a href="/tutorial/ios/">iPhone</a> · <a href="/tutorial/android/">安卓</a>。导入后选一个香港或日本节点就能用。</li>
+      </ol>
+    </section>
+
+    <section class="section" aria-labelledby="how">
+      <h2 id="how">挑机场看这 5 点</h2>
+      <div class="grid">
+        <div class="box"><h3>1. 线路</h3><p class="muted" style="margin:0">IPLC / IEPL 专线不走拥堵的公网出口，晚高峰更稳。本站收录的 {n} 家都是专线机场。<a href="/knowledge/iplc-iepl/">IPLC 和 IEPL 区别</a></p></div>
+        <div class="box"><h3>2. 真实月付价</h3><p class="muted" style="margin:0">“¥7 起”通常是年付折算。比较时看月付价，或者把年付除以 12。</p></div>
+        <div class="box"><h3>3. 流量和倍率</h3><p class="muted" style="margin:0">同样 150GB，2 倍率节点只能用 75GB。<a href="/knowledge/traffic-multiplier/">流量倍率是什么</a></p></div>
+        <div class="box"><h3>4. 解锁</h3><p class="muted" style="margin:0">要看 Netflix、用 ChatGPT，选官网写明支持解锁的机场。</p></div>
+        <div class="box"><h3>5. 跑路风险</h3><p class="muted" style="margin:0">先月付，用稳了再年付，不要一次买两三年。<a href="/knowledge/risk-guide/">机场跑路防范</a></p></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="faq">
+      <h2 id="faq">机场推荐常见问题</h2>
+      {faq.map((f) => <div class="qa"><h3>{f.q}</h3><p>{f.a}</p></div>)}
+    </section>
+
+    <section class="section">
+      <div class="callout">
+        <p style="margin:0 0 .6rem"><strong>还没决定？</strong>大多数人选 {sogo.name} 基础版就够用：{planPrice(sogo.entry!)}，{planTraffic(sogo.entry!)}，{sogo.lineLabel} 专线。</p>
+        <div class="actions">
+          <a class="btn btn-lg" href={sogo.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">前往 {sogo.name} 官网</a>
+          <Promo code={sogo.promo} />
+          <a href={sogo.url}>先看 {sogo.name} 测评</a>
         </div>
-    </div>
-
-    <!-- PROVIDER SECTION -->
-    <div class="section-neutral">
-        <div class="container">
-            <div class="section-header">
-                <div>
-                    <h2>2026 热门机场快速查看</h2>
-                    <p class="section-subtitle">基于官方公开价格与线路资料整理的服务商摘要</p>
-                </div>
-                <a href="/recommend/" class="view-all-link">查看完整 8 家套餐、价格和流量对比 &rarr;</a>
-            </div>
-            
-            <div class="provider-grid">
-                {providers.map((provider) => (
-                    <div class={`provider-card-modern ${provider.rank === 1 ? 'provider-card-highlight' : ''}`}>
-                        {provider.rank === 1 && <div class="highlight-badge">重点查看</div>}
-                        <div class="provider-card-header">
-                            {provider.logo && 
-                                <div class="provider-logo-container">
-                                    <img src={provider.logo} alt={`${provider.name} Logo`} class="provider-logo" />
-                                </div>
-                            }
-                            <h3 class="provider-title">{provider.name}</h3>
-                        </div>
-                        <div class="provider-card-price">
-                            <span class="price-value">{provider.price}</span> 
-                            <span class="price-unit">{provider.priceUnit}</span>
-                        </div>
-                        <p class="provider-summary">
-                            {provider.routeInfo.length > 35 ? provider.routeInfo.substring(0, 35) + '...' : provider.routeInfo}
-                        </p>
-                        <a href={`/review/${provider.slug}/`} class="btn provider-card-btn">查看 {provider.name} 详情</a>
-                    </div>
-                ))}
-            </div>
-        </div>
-    </div>
-
-    <!-- NEW USER JOURNEY -->
-    <div class="section-white">
-        <div class="container">
-            <h2 class="text-center" style="margin-bottom: 2.5rem; text-align: center;">第一次使用？从这里开始</h2>
-            <div class="journey-steps">
-                <a href="/knowledge/what-is-jichang/" class="journey-step">
-                    <div class="step-number">01</div>
-                    <div class="step-content">
-                        <div class="step-title">了解机场是什么</div>
-                        <div class="step-desc">初学者必读的基础概念指南</div>
-                    </div>
-                </a>
-                <div class="step-arrow">&rarr;</div>
-                <a href="/knowledge/subscription/" class="journey-step">
-                    <div class="step-number">02</div>
-                    <div class="step-content">
-                        <div class="step-title">了解订阅与节点</div>
-                        <div class="step-desc">明白如何导入配置与切换线路</div>
-                    </div>
-                </a>
-                <div class="step-arrow">&rarr;</div>
-                <a href="/tutorial/" class="journey-step">
-                    <div class="step-number">03</div>
-                    <div class="step-content">
-                        <div class="step-title">选择你的设备</div>
-                        <div class="step-desc">Windows, Mac, iOS, Android</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- CORE TOPIC SECTION -->
-    <div class="section-blue-gray">
-        <div class="container">
-            <h2 style="margin-bottom: 2rem;">网站核心栏目</h2>
-            <div class="topic-grid">
-                
-                <a href="/knowledge/" class="topic-card topic-card-blue">
-                    <div class="topic-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                        </svg>
-                    </div>
-                    <h3>机场知识科普</h3>
-                    <p>什么是 IPLC/IEPL？什么是节点流量倍率？帮助新手快速了解机场领域的专有名词。</p>
-                    <div class="topic-link">浏览专栏 &rarr;</div>
-                </a>
-                
-                <a href="/tutorial/" class="topic-card topic-card-green">
-                    <div class="topic-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                            <line x1="8" y1="21" x2="16" y2="21"></line>
-                            <line x1="12" y1="17" x2="12" y2="21"></line>
-                        </svg>
-                    </div>
-                    <h3>客户端使用教程</h3>
-                    <p>提供 Windows、macOS、iOS (iPhone)、Android (安卓) 等全平台客户端的下载与配置指南。</p>
-                    <div class="topic-link">浏览专栏 &rarr;</div>
-                </a>
-                
-                <a href="/vpn/" class="topic-card topic-card-purple">
-                    <div class="topic-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        </svg>
-                    </div>
-                    <h3>VPN 基础与排障</h3>
-                    <p>VPN 经常断线、速度慢怎么办？VPN 和机场（Proxy）有什么区别？</p>
-                    <div class="topic-link">浏览专栏 &rarr;</div>
-                </a>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- TRUST / METHODOLOGY BLOCK -->
-    <div class="section-neutral" style="padding-bottom: 4rem;">
-        <div class="container">
-            <div class="trust-block">
-                <div class="trust-content">
-                    <h2>本站如何整理资料</h2>
-                    <ul class="trust-list">
-                        <li><strong>客观呈现：</strong> 所有价格、流量与线路信息均采集自服务商官方公开套餐。</li>
-                        <li><strong>统一度量：</strong> 换算并统一月付/年付逻辑，方便直观横向比较。</li>
-                        <li><strong>内容分离：</strong> 基础网络知识教程与商业推荐隔离，确保信息学习的纯粹性。</li>
-                        <li><strong>风险提示：</strong> 实际连接速度因当地网络环境而异，我们不作过度的全球绝对稳定性承诺。</li>
-                    </ul>
-                    <div style="margin-top: 1.5rem;">
-                        <a href="/recommend/" class="btn btn-outline" style="background-color: white;">查看完整机场对比</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
-
-<style>
-    /* HERO */
-    .hero-section {
-        background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
-        padding: 4rem 0 3rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .hero-container {
-        display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
-        gap: 2rem;
-        align-items: center;
-    }
-    .hero-eyebrow {
-        color: var(--primary);
-        font-weight: 600;
-        font-size: 0.9rem;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        margin-bottom: 1rem;
-    }
-    .hero-title {
-        font-size: clamp(1.75rem, 4vw, 2.75rem);
-        font-weight: 800;
-        color: #0f172a;
-        line-height: 1.2;
-        margin-bottom: 1.5rem;
-        letter-spacing: -0.02em;
-        border: none;
-        padding-bottom: 0;
-    }
-    .hero-desc {
-        font-size: 1.15rem;
-        color: var(--text-muted);
-        line-height: 1.7;
-        margin-bottom: 2.5rem;
-        max-width: 90%;
-    }
-    .hero-ctas {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 3rem;
-    }
-    .hero-btn-primary {
-        padding: 0.8rem 1.5rem;
-        font-size: 1.05rem;
-    }
-    .hero-btn-secondary {
-        padding: 0.8rem 1.5rem;
-        font-size: 1.05rem;
-        background: white;
-    }
-    
-    /* INFO STRIP */
-    .info-strip {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-        border-top: 1px solid var(--border-color);
-        padding-top: 2rem;
-    }
-    .info-item {
-        display: flex;
-        flex-direction: column;
-    }
-    .info-num {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: #0f172a;
-        line-height: 1;
-        margin-bottom: 0.25rem;
-    }
-    .info-label {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        font-weight: 500;
-    }
-
-    /* VISUAL */
-    .hero-visual {
-        position: relative;
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-    }
-    .network-svg {
-        width: 100%;
-        height: auto;
-    }
-
-    /* SECTION RHYTHM */
-    .section-neutral {
-        background-color: #ffffff;
-        padding: 4rem 0;
-    }
-    .section-white {
-        background-color: #ffffff;
-        padding: 4rem 0;
-        border-top: 1px solid var(--border-color);
-    }
-    .section-blue-gray {
-        background-color: #f8fafc;
-        padding: 4rem 0;
-        border-top: 1px solid var(--border-color);
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 2.5rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    .section-header h2 {
-        margin: 0 0 0.5rem 0;
-        border: none;
-        padding: 0;
-        font-size: 2rem;
-    }
-    .section-subtitle {
-        color: var(--text-muted);
-        margin: 0;
-        font-size: 1.05rem;
-    }
-    .view-all-link {
-        color: var(--primary);
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-    }
-
-    /* PROVIDER CARDS */
-    .provider-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1.5rem;
-    }
-    .provider-card-modern {
-        background: #ffffff;
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-    }
-    .provider-card-modern:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.06);
-    }
-    .provider-card-highlight {
-        border-color: #bfdbfe;
-        background: #f8fafc;
-    }
-    .highlight-badge {
-        position: absolute;
-        top: -12px;
-        right: 1.5rem;
-        background: var(--primary);
-        color: white;
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 0.3rem 0.75rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-        z-index: 10;
-    }
-    .provider-card-header {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        margin-bottom: 1.25rem;
-        gap: 0.75rem;
-    }
-    .provider-logo-container {
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-    }
-    .provider-logo {
-        max-height: 100%;
-        width: auto;
-        max-width: 160px;
-        object-fit: contain;
-    }
-    .provider-title {
-        margin: 0;
-        font-size: 1.25rem;
-        font-weight: 700;
-    }
-    .provider-card-price {
-        margin-bottom: 0.75rem;
-    }
-    .price-value {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--primary);
-    }
-    .price-unit {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-    }
-    .provider-summary {
-        font-size: 0.95rem;
-        color: var(--text-muted);
-        line-height: 1.5;
-        margin-bottom: 1.5rem;
-        flex-grow: 1;
-    }
-    .provider-card-btn {
-        width: 100%;
-        box-sizing: border-box;
-        text-align: center;
-        padding: 0.6rem;
-        margin-top: auto;
-    }
-
-    /* JOURNEY STEPS */
-    .journey-steps {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-    .journey-step {
-        flex: 1;
-        background: #ffffff;
-        border: 1px solid var(--border-color);
-        padding: 1.5rem;
-        border-radius: 12px;
-        text-decoration: none;
-        color: inherit;
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-    .journey-step:hover {
-        border-color: #cbd5e1;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    }
-    .step-number {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: #e2e8f0;
-        line-height: 1;
-    }
-    .step-title {
-        font-weight: 600;
-        font-size: 1.1rem;
-        color: var(--text-color);
-        margin-bottom: 0.25rem;
-    }
-    .step-desc {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-    }
-    .step-arrow {
-        color: #cbd5e1;
-        font-size: 1.5rem;
-    }
-
-    /* TOPIC CARDS */
-    .topic-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-    }
-    .topic-card {
-        padding: 2rem;
-        border-radius: 12px;
-        text-decoration: none;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        border: 1px solid transparent;
-        display: flex;
-        flex-direction: column;
-    }
-    .topic-card:hover {
-        transform: translateY(-4px);
-    }
-    .topic-card h3 {
-        margin: 1rem 0 0.5rem 0;
-        font-size: 1.25rem;
-        border: none;
-        padding: 0;
-    }
-    .topic-card p {
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-        flex-grow: 1;
-    }
-    .topic-icon {
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px;
-    }
-    .topic-link {
-        font-weight: 600;
-        font-size: 0.95rem;
-    }
-    
-    .topic-card-blue {
-        background-color: #eff6ff;
-        border-color: #dbeafe;
-    }
-    .topic-card-blue .topic-icon { background: #dbeafe; color: #2563eb; }
-    .topic-card-blue h3 { color: #1e3a8a; }
-    .topic-card-blue .topic-link { color: #2563eb; }
-    
-    .topic-card-green {
-        background-color: #f0fdf4;
-        border-color: #dcfce7;
-    }
-    .topic-card-green .topic-icon { background: #dcfce7; color: #16a34a; }
-    .topic-card-green h3 { color: #14532d; }
-    .topic-card-green .topic-link { color: #16a34a; }
-    
-    .topic-card-purple {
-        background-color: #f5f3ff;
-        border-color: #ede9fe;
-    }
-    .topic-card-purple .topic-icon { background: #ede9fe; color: #7c3aed; }
-    .topic-card-purple h3 { color: #4c1d95; }
-    .topic-card-purple .topic-link { color: #7c3aed; }
-
-    /* TRUST BLOCK */
-    .trust-block {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 3rem;
-    }
-    .trust-content h2 {
-        margin-top: 0;
-        border: none;
-        padding: 0;
-        font-size: 1.75rem;
-        margin-bottom: 1.5rem;
-    }
-    .trust-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-    .trust-list li {
-        color: var(--text-muted);
-        line-height: 1.6;
-        position: relative;
-        padding-left: 1.5rem;
-    }
-    .trust-list li::before {
-        content: '✓';
-        position: absolute;
-        left: 0;
-        top: 0;
-        color: var(--primary);
-        font-weight: bold;
-    }
-    .trust-list li strong {
-        color: var(--text-color);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 1024px) {
-        .provider-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        .hero-title { font-size: 2.25rem; }
-    }
-    @media (max-width: 768px) {
-        .hero-container {
-            grid-template-columns: 1fr;
-            text-align: center;
-        }
-        .hero-desc {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .hero-ctas {
-            justify-content: center;
-        }
-        .info-strip {
-            justify-content: center;
-        }
-        .hero-visual {
-            display: none; /* Hide on mobile per request */
-        }
-        
-        .provider-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .journey-steps {
-            flex-direction: column;
-        }
-        .step-arrow {
-            transform: rotate(90deg);
-        }
-        .topic-grid {
-            grid-template-columns: 1fr;
-        }
-        .trust-list {
-            grid-template-columns: 1fr;
-        }
-    }
-    @media (max-width: 480px) {
-        .provider-grid {
-            grid-template-columns: 1fr;
-        }
-        .hero-ctas {
-            flex-direction: column;
-        }
-        .info-strip {
-            gap: 1rem;
-        }
-    }
-</style>

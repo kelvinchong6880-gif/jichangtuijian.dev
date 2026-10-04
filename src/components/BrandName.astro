@@ -1,0 +1,6 @@
+---
+import type { Provider } from '../data/providers';
+interface Props { p: Provider }
+const { p } = Astro.props;
+---
+<a class="brand" href={p.url}>{p.logo && <img src={p.logo} alt="" width="28" height="28" loading="lazy" decoding="async" />}<span>{p.name}</span></a>

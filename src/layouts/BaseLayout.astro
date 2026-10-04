@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../data/config';
+import { articleSchema } from '../data/schema';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
@@ -7,42 +8,116 @@ import '../styles/global.css';
 export interface Props {
   title?: string;
   description?: string;
-  canonicalUrl?: string;
   noindex?: boolean;
+  ogType?: 'website' | 'article';
+  structuredData?: object[];
+  /** 面包屑（不含首页），例如 [{ name: '机场测评', path: '/review/' }] */
+  breadcrumbs?: { name: string; path: string }[];
+  /** 页面自带可见面包屑时设为 true，只输出结构化数据 */
+  hideCrumbs?: boolean;
+  /** 自动输出 Article 结构化数据 */
+  article?: boolean;
 }
 
-const { 
-  title = SITE.title, 
+const {
+  title = SITE.title,
   description = SITE.description,
-  canonicalUrl = new URL(Astro.url.pathname, SITE.domain).href,
-  noindex = false
+  noindex = false,
+  ogType = 'website',
+  structuredData = [],
+  breadcrumbs = [],
+  hideCrumbs = false,
+  article = false,
 } = Astro.props;
+
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonicalUrl = new URL(path, SITE.domain).href;
+const ogImage = `${SITE.domain}/og.png`;
+const isHome = path === '/';
+
+const baseSchemas: object[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE.name,
+    url: `${SITE.domain}/`,
+    logo: `${SITE.domain}/favicon.svg`,
+  },
+];
+if (isHome) {
+  baseSchemas.push({ '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: `${SITE.domain}/`, inLanguage: 'zh-CN' });
+}
+if (breadcrumbs.length) {
+  baseSchemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [{ name: '机场推荐', path: '/' }, ...breadcrumbs].map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: b.name,
+      item: `${SITE.domain}${b.path}`,
+    })),
+  });
+}
+if (article) baseSchemas.push(articleSchema(title, description, path));
+const schemas = [...baseSchemas, ...structuredData].filter(Boolean);
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="generator" content={Astro.generator} />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
-  {noindex && <meta name="robots" content="noindex, follow" />}
-
   <meta name="description" content={description} />
-  
   <link rel="canonical" href={canonicalUrl} />
-  
+  <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <meta name="theme-color" content="#2563eb" />
+
+  <meta property="og:site_name" content={SITE.name} />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:type" content={ogType} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonicalUrl} />
-  <meta property="og:type" content="website" />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 </head>
 <body>
+  <a class="skip-link" href="#main">跳到正文</a>
   <Header />
-  <main class="main-content">
+  <main id="main" class="main-content">
+    {breadcrumbs.length > 0 && !hideCrumbs && (
+      <nav class="container crumbs" aria-label="面包屑">
+        <a href="/">机场推荐</a>
+        {breadcrumbs.map((b, i) => (
+          <>
+            <span aria-hidden="true">›</span>
+            {i === breadcrumbs.length - 1 ? <span aria-current="page">{b.name}</span> : <a href={b.path}>{b.name}</a>}
+          </>
+        ))}
+      </nav>
+    )}
     <slot />
   </main>
   <Footer />
+  <script is:inline>
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('[data-copy]');
+      if (!b) return;
+      var t = b.getAttribute('data-copy');
+      var done = function () { var o = b.textContent; b.textContent = '已复制'; setTimeout(function () { b.textContent = o; }, 1500); };
+      if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, done); else done();
+    });
+  </script>
 </body>
 </html>

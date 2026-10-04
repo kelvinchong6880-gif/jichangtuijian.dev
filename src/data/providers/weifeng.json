@@ -18,8 +18,7 @@
   ],
   "deviceInfo": "不限制设备同时接入",
   "officialDescription": "主打低延迟 IPLC 专线，覆盖多地节点，套餐配置灵活，包括常规月付及大容量永久不限时套餐。",
-  "source": "Desktop/官网套餐价格和基本资料",
-  "lastVerified": "2026-09",
+  "lastVerified": "2026-10-04",
   "plans": [
     {
       "name": "清风",
@@ -52,5 +51,14 @@
       "traffic": "570GB永久"
     }
   ],
-  "logo": "/images/providers/weifeng.png"
+  "logo": "/images/providers/weifeng.webp",
+  "promo": "weifeng90",
+  "lines": [
+    "IPLC"
+  ],
+  "streaming": null,
+  "ai": null,
+  "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+  "verdict": "同价位流量最多：¥27/月 200GB、¥57/月 500GB，适合追剧和多设备",
+  "bestFor": "每月用 200GB 以上、看视频多的人"
 }

@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../data/config';
 ---
 
-<BaseLayout 
+<BaseLayout breadcrumbs={[{"name": "机场知识", "path": "/knowledge/"}]} hideCrumbs 
     title="机场知识科普：节点、订阅、流量与线路新手指南"
     description="新手必读的机场百科大全。详解机场是什么、如何选择节点、流量倍率计算、IPLC/IEPL专线科普，以及防范机场跑路的避坑指南。"
 >
