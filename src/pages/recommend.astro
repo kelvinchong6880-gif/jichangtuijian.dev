@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Disclosure from '../components/Disclosure.astro';
 import ProviderCard from '../components/ProviderCard.astro';
 import BrandName from '../components/BrandName.astro';
-import { getProviders, perGB, fmtGB, fmtPrice, planPrice, UPDATED, UPDATED_LABEL, UPDATED_MONTH } from '../data/providers';
+import { getProviders, perGB, fmtGB, fmtPrice, planPrice, UPDATED, UPDATED_LABEL, UPDATED_MONTH, UPDATED_TAG } from '../data/providers';
 import { faqSchema, itemListSchema, articleSchema } from '../data/schema';
 
 const providers = getProviders();
@@ -37,7 +37,7 @@ const subs = [
   },
 ];
 
-const title = `机场排行榜2026：${n}家机场综合排名与推荐理由（10月更新）`;
+const title = `机场排行榜2026：${n}家机场综合排名与推荐理由（${UPDATED_TAG}）`;
 const description = `2026机场排行榜（${UPDATED_MONTH}更新）：${n}家IPLC/IEPL专线机场综合排名，逐家给出推荐理由、价格、流量、解锁和适合人群，附月付最便宜、每GB最便宜、大流量、不限时包4个分榜。`;
 
 const faq = [

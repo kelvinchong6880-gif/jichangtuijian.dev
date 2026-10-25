@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import TopPicks from '../../components/TopPicks.astro';
 import BrandName from '../../components/BrandName.astro';
-import { getProviders, getProviderBySlug, perGB, monthlyEq, fmtGB, fmtPrice, UPDATED, UPDATED_LABEL, UPDATED_MONTH, type Plan, type Provider } from '../../data/providers';
+import { getProviders, getProviderBySlug, perGB, monthlyEq, fmtGB, fmtPrice, UPDATED, UPDATED_LABEL, UPDATED_MONTH, UPDATED_TAG, type Plan, type Provider } from '../../data/providers';
 import { faqSchema, itemListSchema, articleSchema } from '../../data/schema';
 
 const providers = getProviders();
@@ -16,8 +16,18 @@ const yearly = flat((p) => p.yearly).sort((a, b) => a.plan.price - b.plan.price)
 const oneTime = flat((p) => p.oneTime).sort((a, b) => a.plan.price - b.plan.price);
 const lowest = under30[0];
 const lowestYear = yearly[0];
+// 按预算：折合月价不超过预算的周期套餐里，流量最多的 3 个
+const periodic = flat((p) => p.priced.filter((x) => x.billing !== 'One-Time' && x.traffic));
+const budgets = [10, 20, 30, 50].map((b) => ({
+  b,
+  rows: periodic
+    .filter(({ plan }) => monthlyEq(plan)! <= b)
+    .sort((x, y) => y.plan.traffic! - x.plan.traffic! || monthlyEq(x.plan)! - monthlyEq(y.plan)!)
+    .filter(({ p }, i, arr) => arr.findIndex((x) => x.p === p) === i)
+    .slice(0, 3),
+}));
 
-const title = `便宜机场推荐2026：月付¥${lowest.plan.price}起、年付¥${lowestYear.plan.price}起的低价专线机场`;
+const title = `便宜机场推荐2026：月付¥${lowest.plan.price}起、年付¥${lowestYear.plan.price}起的专线机场（${UPDATED_TAG}）`;
 const description = `2026便宜机场推荐（${UPDATED_MONTH}更新）：${n}家IPLC专线机场的最低价套餐，月付¥${lowest.plan.price}起、年付¥${lowestYear.plan.price}起、不限时包¥${oneTime[0].plan.price}起，分月付¥30以内、年付小包、不限时流量包三张表，附学生党推荐和优惠码。`;
 
 const faq = [
@@ -26,6 +36,8 @@ const faq = [
   { q: '学生没什么钱，有学生套餐吗？', a: `有。飞猫云的“学生版”¥84/年，每月 50GB；其他机场的年付小包也差不多：${yearly.slice(0, 3).map(({ p, plan }) => `${p.name} ${fmtPrice(plan.price)}/年`).join('、')}。查资料、用 ChatGPT 完全够。` },
   { q: '便宜机场会不会很卡、根本用不了？', a: `本页 ${n} 家都是专线机场，¥19–¥25 的入门套餐和贵的套餐走的是同一种线路，主要差别是流量多少，不是速度。真正容易卡的是不写线路、价格低得离谱的小机场。` },
   { q: '一个月只用几次，怎么最省？', a: `买“不过期”的流量包：一次付钱，流量用完为止，不会每月清零。最便宜的是 ${oneTime[0].p.name} ${fmtPrice(oneTime[0].plan.price)} ${fmtGB(oneTime[0].plan.traffic)}。` },
+  { q: '有没有免费机场？为什么不推荐？', a: '网上有免费节点和“免费试用”，但免费节点通常限速、人多、经常失效，还可能记录你的访问数据。专线机场最便宜一年不到 ¥100，按月算只要几块钱，长期用比折腾免费节点省心得多。' },
+  { q: '便宜机场能看 YouTube 和 Netflix 吗？', a: `能。本页大多数机场的入门套餐和贵的套餐用的是同一批节点，看 YouTube 1080P 没问题；看 Netflix 要选官网写明支持流媒体解锁的，比如 ${providers.filter((p) => p.streaming).slice(0, 3).map((p) => p.name).join("、")}。注意每月 40–60GB 的年付小包不适合天天看视频。` },
 ];
 const schemas = [itemListSchema(`${UPDATED_MONTH}便宜机场推荐`, providers), faqSchema(faq), articleSchema(title, description, '/cheap/')];
 ---
@@ -43,6 +55,21 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}便宜机场推荐`, providers)
       title="便宜机场推荐 Top 6（综合排名）"
       firstReason="¥25/月就能用上 150GB IPLC/IEPL 双专线，年付小包 ¥98/年；晚高峰稳定、解锁 Netflix 和 ChatGPT，是“便宜又不卡”最均衡的选择。"
     />
+
+    <section class="section" id="budget">
+      <h2>按预算选便宜机场：每月 ¥10 / ¥20 / ¥30 / ¥50 能买到什么</h2>
+      <p>年付、季付已折成每月价格。每档列出流量最多的 3 个套餐。</p>
+      <div class="grid">
+        {budgets.map(({ b, rows }) => (
+          <div class="box">
+            <h3>每月 ¥{b} 以内</h3>
+            <ol class="list">
+              {rows.map(({ p, plan }) => <li><a href={p.url}>{p.name}</a> {plan.name}：<span class="num"><span class="price">{fmtPrice(monthlyEq(plan)!)}/月</span> · {fmtGB(plan.traffic)}</span>{plan.billing !== 'Monthly' && <span class="muted">（{fmtPrice(plan.price)}/{plan.billing === 'Yearly' ? '年' : '季'}）</span>}</li>)}
+            </ol>
+          </div>
+        ))}
+      </div>
+    </section>
 
     <section class="section" id="monthly">
       <h2>月付 ¥30 以内的便宜机场</h2>
@@ -83,6 +110,22 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}便宜机场推荐`, providers)
             {oneTime.map(({ p, plan }) => (
               <tr class={p.slug === 'sogocloud' ? 'hl' : ''}><td><BrandName p={p} /></td><td>{plan.name}</td><td class="num price">{fmtPrice(plan.price)}</td><td class="num">{fmtGB(plan.traffic)}</td><td class="num">¥{perGB(plan)!.toFixed(2)}</td></tr>
             ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>便宜机场、免费机场和低价小机场的区别</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col"></th><th scope="col">本页便宜专线机场</th><th scope="col">低价小机场</th><th scope="col">免费节点</th></tr></thead>
+          <tbody>
+            <tr><td><strong>价格</strong></td><td>月付 ¥{lowest.plan.price} 起 / 年付 ¥{lowestYear.plan.price} 起</td><td>几块钱一个月</td><td>免费</td></tr>
+            <tr><td><strong>线路</strong></td><td>IPLC / IEPL 专线</td><td>多为公网直连，常不写线路</td><td>公网，人多拥堵</td></tr>
+            <tr><td><strong>晚高峰</strong></td><td>稳定</td><td>容易卡、掉线</td><td>经常连不上</td></tr>
+            <tr><td><strong>流量倍率</strong></td><td>多数 1 倍</td><td>常见 2–3 倍</td><td>限速限量</td></tr>
+            <tr><td><strong>适合</strong></td><td>长期日常使用</td><td>临时备用</td><td>不建议使用</td></tr>
           </tbody>
         </table>
       </div>

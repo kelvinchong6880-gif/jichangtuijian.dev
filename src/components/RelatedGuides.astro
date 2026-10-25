@@ -1,0 +1,17 @@
+---
+// 文章页底部：指向 3 个核心推荐页的正文内链（锚文本即目标关键词），数据随 providers 自动更新。
+import { getProviders, perGB, fmtGB, fmtPrice, planPrice, UPDATED_MONTH } from '../data/providers';
+
+const providers = getProviders();
+const top = providers[0];
+const cheapest = [...providers].filter((p) => p.entry).sort((a, b) => a.entry!.price - b.entry!.price)[0];
+const value = [...providers].filter((p) => p.bestValue).sort((a, b) => perGB(a.bestValue!)! - perGB(b.bestValue!)!)[0];
+---
+<section class="container section" aria-labelledby="related-guides">
+  <h2 id="related-guides">看完了，该选哪个机场？</h2>
+  <div class="grid">
+    <a class="box" href="/"><strong>机场推荐 →</strong><p class="muted" style="margin:.4rem 0 0">{UPDATED_MONTH}更新的 {providers.length} 家专线机场排名，新手首选 {top.name}（{planPrice(top.entry!)}，{fmtGB(top.entry!.traffic)}）。</p></a>
+    <a class="box" href="/cheap/"><strong>便宜机场推荐 →</strong><p class="muted" style="margin:.4rem 0 0">月付最低 {cheapest.name} {fmtPrice(cheapest.entry!.price)}，另有年付小包和不过期流量包。</p></a>
+    <a class="box" href="/value/"><strong>性价比机场推荐 →</strong><p class="muted" style="margin:.4rem 0 0">每 GB 单价排行，最低约 ¥{perGB(value.bestValue!)!.toFixed(2)}/GB（{value.name}）。</p></a>
+  </div>
+</section>

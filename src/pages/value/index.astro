@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import TopPicks from '../../components/TopPicks.astro';
 import BrandName from '../../components/BrandName.astro';
-import { getProviders, getProviderBySlug, perGB, monthlyEq, fmtGB, fmtPrice, planPrice, billingLabel, UPDATED, UPDATED_LABEL, UPDATED_MONTH } from '../../data/providers';
+import { getProviders, getProviderBySlug, perGB, monthlyEq, fmtGB, fmtPrice, planPrice, billingLabel, UPDATED, UPDATED_LABEL, UPDATED_MONTH, UPDATED_TAG } from '../../data/providers';
 import { faqSchema, itemListSchema, articleSchema } from '../../data/schema';
 
 const providers = getProviders();
@@ -21,8 +21,18 @@ const tiers = [
 }));
 const brandBest = [...providers].filter((p) => p.bestValue).sort((a, b) => perGB(a.bestValue!)! - perGB(b.bestValue!)!);
 const champ = brandBest[0];
+// 一年花多少钱：每家在年预算内（折合月价 × 12）能买到的最大月流量
+const yearBudgets = [300, 600];
+const budgetRows = providers.map((p) => ({
+  p,
+  picks: yearBudgets.map((b) =>
+    p.priced
+      .filter((x) => x.billing !== 'One-Time' && x.traffic && monthlyEq(x)! * 12 <= b)
+      .sort((x, y) => y.traffic! - x.traffic! || monthlyEq(x)! - monthlyEq(y)!)[0] ?? null,
+  ),
+})).sort((a, b) => (b.picks[0]?.traffic ?? 0) - (a.picks[0]?.traffic ?? 0) || (b.picks[1]?.traffic ?? 0) - (a.picks[1]?.traffic ?? 0));
 
-const title = `性价比机场推荐2026：${n}家专线机场每GB价格排行（10月更新）`;
+const title = `性价比机场推荐2026：${n}家专线机场每GB价格排行（${UPDATED_TAG}）`;
 const description = `2026性价比机场推荐（${UPDATED_MONTH}更新）：把${n}家IPLC/IEPL专线机场的每个套餐换算成每GB价格，按150GB、300GB、500GB、1TB流量分档排行，最低约¥${perGB(champ.bestValue!)!.toFixed(2)}/GB，附年付和长期付费省钱方法。`;
 
 const faq = [
@@ -56,6 +66,24 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}性价比机场推荐`, provide
           <tbody>
             {brandBest.map((p, i) => (
               <tr class={p.slug === 'sogocloud' ? 'hl' : ''}><td><span class="rank">{i + 1}</span></td><td><BrandName p={p} /></td><td>{p.bestValue!.name}</td><td class="num">{planPrice(p.bestValue!)}</td><td class="num">{fmtGB(p.bestValue!.traffic)}</td><td class="num price">¥{perGB(p.bestValue!)!.toFixed(3)}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="budget">
+      <h2>同样的钱买多少流量：一年 ¥{yearBudgets[0]} / ¥{yearBudgets[1]} 预算对比</h2>
+      <p>把月付、季付、年付都按一年总花费算，看每家在这个预算内每月最多能用多少流量。流量越多越划算。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">机场</th>{yearBudgets.map((b) => <th scope="col">一年 ¥{b} 以内</th>)}</tr></thead>
+          <tbody>
+            {budgetRows.map(({ p, picks }) => (
+              <tr class={p.slug === 'sogocloud' ? 'hl' : ''}>
+                <td><BrandName p={p} /></td>
+                {picks.map((x) => <td class="num">{x ? <><span class="price">{fmtGB(x.traffic)}/月</span><br /><span class="muted">{x.name} · 一年 {fmtPrice(monthlyEq(x)! * 12)}</span></> : '—'}</td>)}
+              </tr>
             ))}
           </tbody>
         </table>

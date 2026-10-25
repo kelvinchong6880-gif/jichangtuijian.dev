@@ -27,9 +27,13 @@ export interface Provider extends RawProvider {
 }
 
 /* ---------- 站点常量 ---------- */
-export const UPDATED = '2026-10-04';
-export const UPDATED_LABEL = '2026 年 10 月 4 日';
-export const UPDATED_MONTH = '2026年10月';
+import { UPDATED } from './updated.mjs';
+export { UPDATED };
+const [UY, UM, UD] = UPDATED.split('-').map(Number);
+export const UPDATED_LABEL = `${UY} 年 ${UM} 月 ${UD} 日`;
+export const UPDATED_MONTH = `${UY}年${UM}月`;
+/** 标题后缀，例如“10月更新” */
+export const UPDATED_TAG = `${UM}月更新`;
 
 /* ---------- 解析 ---------- */
 function parseBilling(price: string): Billing {

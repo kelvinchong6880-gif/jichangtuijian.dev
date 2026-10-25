@@ -1,7 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-
-const LASTMOD = '2026-10-04';
+import { UPDATED as LASTMOD } from './src/data/updated.mjs';
 const PRIORITY = [
   [/^https:\/\/jichangtuijian\.pro\/$/, 1.0],
   [/\/(recommend|cheap|value|compare)\/$/, 0.9],

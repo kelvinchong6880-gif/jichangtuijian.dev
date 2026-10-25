@@ -4,7 +4,7 @@
 
 ## 改数据
 - 机场价格 / 流量 / 优惠码 / 推荐理由：`src/data/providers/*.json`
-- 更新日期：`src/data/providers.ts` 顶部的 `UPDATED`，以及 `astro.config.mjs` 的 `LASTMOD`
+- 更新日期：只改 `src/data/updated.mjs` 里的 `UPDATED`（页面“更新于”、标题“X月更新”、结构化数据和 sitemap 会一起变）
 
 首页、排行榜（/recommend/）、便宜机场（/cheap/）、性价比机场（/value/）、机场对比（/compare/）和测评页（/review/）都从这些数据自动计算。
 

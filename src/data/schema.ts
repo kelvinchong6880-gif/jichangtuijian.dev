@@ -1,4 +1,5 @@
 import { SITE } from './config';
+import { UPDATED } from './updated.mjs';
 import type { Provider } from './providers';
 
 export const faqSchema = (faq: { q: string; a: string }[]) => ({
@@ -22,7 +23,7 @@ export const articleSchema = (headline: string, description: string, path: strin
   description,
   inLanguage: 'zh-CN',
   datePublished: published,
-  dateModified: '2026-10-04T00:00:00+08:00',
+  dateModified: `${UPDATED}T00:00:00+08:00`,
   author: { '@type': 'Organization', name: SITE.author, url: `${SITE.domain}/` },
   publisher: { '@type': 'Organization', name: SITE.name, url: `${SITE.domain}/`, logo: { '@type': 'ImageObject', url: `${SITE.domain}/favicon.svg` } },
   image: `${SITE.domain}/og.png`,

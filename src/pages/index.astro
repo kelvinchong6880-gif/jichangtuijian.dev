@@ -4,8 +4,8 @@ import Disclosure from '../components/Disclosure.astro';
 import Promo from '../components/Promo.astro';
 import BrandName from '../components/BrandName.astro';
 import {
-  getProviders, getProviderBySlug, USAGE, cheapestFor, usagePrice, monthlyEq, fmtGB, fmtPrice, planPrice, planTraffic,
-  UPDATED, UPDATED_LABEL, UPDATED_MONTH,
+  getProviders, getProviderBySlug, USAGE, cheapestFor, usagePrice, monthlyEq, perGB, fmtGB, fmtPrice, planPrice, planTraffic,
+  UPDATED, UPDATED_LABEL, UPDATED_MONTH, UPDATED_TAG, type Plan, type Provider,
 } from '../data/providers';
 import { faqSchema, itemListSchema } from '../data/schema';
 
@@ -32,6 +32,24 @@ const usageRows = USAGE.map((u) => {
   return { u, cheapest: options[0], sogo: { p: sogo, plan: cheapestFor(sogo, u.need) } };
 });
 
+// 按人群推荐：全部从套餐数据里挑，价格变了自动换人
+const allPlans = providers.flatMap((p) => p.priced.map((plan) => ({ p, plan })));
+const byMonthly = (list: { p: Provider; plan: Plan }[]) => [...list].sort((a, b) => monthlyEq(a.plan)! - monthlyEq(b.plan)!)[0];
+const byPerGB = (list: { p: Provider; plan: Plan }[]) => [...list].sort((a, b) => perGB(a.plan)! - perGB(b.plan)!)[0];
+const student = byMonthly(allPlans.filter(({ plan }) => plan.billing === 'Yearly'));
+const video = byMonthly(providers.filter((p) => p.streaming).map((p) => ({ p, plan: cheapestFor(p, 300)! })).filter((x) => x.plan));
+const aiPick = byMonthly(providers.filter((p) => p.ai && p.entry).map((p) => ({ p, plan: p.entry! })));
+const family = byPerGB(allPlans.filter(({ plan }) => plan.billing !== 'One-Time' && (plan.traffic ?? 0) >= 1000));
+const occasional = allPlans.filter(({ plan }) => plan.billing === 'One-Time').sort((a, b) => a.plan.price - b.plan.price || b.plan.traffic! - a.plan.traffic!)[0];
+const personas = [
+  { who: '第一次买机场的新手', p: sogo, plan: sogo.entry!, why: `${sogo.lineLabel} 双专线，晚高峰稳；套餐从 60GB 到 1TB 都有，以后不用换机场。` },
+  { who: '学生党 / 只查资料', ...student, why: `年付小包一次付清，折合每月约 ${fmtPrice(monthlyEq(student.plan)!)}，查资料、用 ChatGPT 够用。` },
+  { who: '用 ChatGPT、Claude 等 AI', ...aiPick, why: '官网写明支持 AI 解锁的机场里月付最便宜的一档。' },
+  { who: '追剧、看 Netflix / 4K', ...video, why: '支持流媒体解锁、每月 300GB 以上的套餐里折合月价最低。' },
+  { who: '全家共用、经常下载', ...family, why: `每月 1TB 以上的套餐里每 GB 最便宜，约 ¥${perGB(family.plan)!.toFixed(3)}/GB。` },
+  { who: '一个月只用几次', ...occasional, why: '不限时流量包里总价最低，一次付钱，流量用完为止、不会每月清零。' },
+];
+
 const faq = [
   { q: '新手第一次买机场，推荐哪家？', a: `直接选 ${sogo.name} 基础版：¥25/月、每月 150GB，${sogo.lineLabel} 专线晚上也稳，能看 Netflix、用 ChatGPT。结算时填优惠码 ${sogo.promo}。先买一个月，用顺了再考虑年付。` },
   { q: '机场是什么意思？跟 VPN 是一回事吗？', a: '机场就是提供翻墙节点的订阅服务，买完给你一条订阅链接，导入 Clash、小火箭这类客户端就能用。和传统 VPN 比，机场更便宜、节点更多、按流量收费，所以国内大多数人用的是机场。' },
@@ -39,13 +57,15 @@ const faq = [
   { q: '一个月多少流量够我用？', a: '只查资料、用 ChatGPT 约 50GB；每天刷 1–2 小时视频约 150GB；常看 4K 约 300GB；全家一起用 600GB 以上。不确定就先买 150GB 的，下个月再调整。' },
   { q: '买了之后怎么用？难不难？', a: '不难，三步：在机场官网复制订阅链接 → 打开客户端粘贴导入 → 选一个香港或日本节点打开开关。本站有 Windows、Mac、iPhone、安卓的图文教程，跟着做 10 分钟左右就能用上。' },
   { q: '机场会不会跑路？钱会不会白花？', a: '任何机场都有停运的可能，所以新手最稳妥的做法是：先买月付，不要一次买两三年；选运营时间长、套餐写得清楚的机场。本站更多建议见“机场跑路防范”一文。' },
+  { q: '便宜机场推荐哪家？', a: `只看月付价格，最便宜的是 ${cheapestEntry.name} ${planPrice(cheapestEntry.entry!)}（${fmtGB(cheapestEntry.entry!.traffic)}）；想要便宜又稳，选 ${sogo.name} 基础版 ${planPrice(sogo.entry!)}。学生党可以看年付小包，${student.p.name} ${planPrice(student.plan)} 起。完整列表见本站“便宜机场推荐”。` },
+  { q: '性价比最高的机场是哪家？', a: `看你每月用多少。300GB 左右推荐 ${sogo.name} 优选版（¥45/月 350GB）；每月 1TB 以上，${family.p.name} ${family.plan.name} 每 GB 最便宜（${planPrice(family.plan)} ${fmtGB(family.plan.traffic)}）。各流量档的每 GB 排行见本站“性价比机场推荐”。` },
 ];
 
 const schemas = [itemListSchema(`${UPDATED_MONTH}机场推荐`, providers), faqSchema(faq)];
 ---
 
 <BaseLayout
-  title={`机场推荐2026：${n}家好用机场排名、价格对比与新手教程（10月更新）`}
+  title={`机场推荐2026：${n}家好用机场排名与价格对比（${UPDATED_TAG}）`}
   description={`2026机场推荐（${UPDATED_MONTH}更新）：${n}家IPLC/IEPL专线机场排名，月付¥${cheapestEntry.entry!.price}起，对比价格、流量、线路和优惠码，按用量推荐套餐，附便宜机场、性价比机场排行和Windows/iPhone/安卓使用教程。`}
   structuredData={schemas}
 >
@@ -119,6 +139,26 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}机场推荐`, providers), faqS
         </table>
       </div>
       <p>每月用量很少、一个月只用几次？买不限时流量包更省，比如 Firefly ¥100 买 100GB、无忧链接 ¥108 买 100GB，流量用完为止、不会过期。</p>
+    </section>
+
+    <section class="section" aria-labelledby="persona">
+      <h2 id="persona">不同人群的机场推荐</h2>
+      <p>不知道自己算哪种？对号入座就行。下表按当前价格自动挑选，价格变了会跟着换。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">你是</th><th scope="col">推荐机场</th><th scope="col">推荐套餐</th><th scope="col">为什么</th></tr></thead>
+          <tbody>
+            {personas.map(({ who, p, plan, why }) => (
+              <tr>
+                <td><strong>{who}</strong></td>
+                <td><BrandName p={p} /></td>
+                <td class="num">{plan.name}<br /><span class="price">{planPrice(plan)}</span> · {planTraffic(plan)}</td>
+                <td style="min-width:220px">{why}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="section" aria-labelledby="find">
