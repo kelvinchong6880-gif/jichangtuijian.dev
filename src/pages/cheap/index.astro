@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import TopPicks from '../../components/TopPicks.astro';
 import BrandName from '../../components/BrandName.astro';
-import { getProviders, getProviderBySlug, perGB, monthlyEq, fmtGB, fmtPrice, UPDATED, UPDATED_LABEL, UPDATED_MONTH, UPDATED_TAG, type Plan, type Provider } from '../../data/providers';
+import { getProviders, getProviderBySlug, perGB, monthlyEq, cheapestFor, USAGE, fmtGB, fmtPrice, planPrice, UPDATED, UPDATED_LABEL, UPDATED_MONTH, UPDATED_TAG, type Plan, type Provider } from '../../data/providers';
 import { faqSchema, itemListSchema, articleSchema } from '../../data/schema';
 
 const providers = getProviders();
@@ -26,6 +26,17 @@ const budgets = [10, 20, 30, 50].map((b) => ({
     .filter(({ p }, i, arr) => arr.findIndex((x) => x.p === p) === i)
     .slice(0, 3),
 }));
+// 每家最便宜的三种买法
+const brandCheapest = [...providers].sort((a, b) => (a.entry?.price ?? 1e9) - (b.entry?.price ?? 1e9));
+// 按用途：满足用量的最便宜周期套餐 + 够用一个月的最低价不限时包（oneTime 已按价格排序）
+const usageCheap = USAGE.map((u) => {
+  const best = providers
+    .map((p) => ({ p, plan: cheapestFor(p, u.need) }))
+    .filter((x) => x.plan)
+    .sort((a, b) => monthlyEq(a.plan!)! - monthlyEq(b.plan!)!)[0];
+  const pack = oneTime.find(({ plan }) => (plan.traffic ?? 0) >= u.need);
+  return { u, best, pack };
+});
 
 const title = `便宜机场推荐2026：月付¥${lowest.plan.price}起、年付¥${lowestYear.plan.price}起的专线机场（${UPDATED_TAG}）`;
 const description = `2026便宜机场推荐（${UPDATED_MONTH}更新）：${n}家IPLC专线机场的最低价套餐，月付¥${lowest.plan.price}起、年付¥${lowestYear.plan.price}起、不限时包¥${oneTime[0].plan.price}起，分月付¥30以内、年付小包、不限时流量包三张表，附学生党推荐和优惠码。`;
@@ -53,26 +64,75 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}便宜机场推荐`, providers)
       list={providers.slice(0, 6)}
       mode="cheap"
       title="便宜机场推荐 Top 6（综合排名）"
+      intro="便宜不等于越低价越好。这份榜单在价格之外，还考虑了线路是否稳定、晚高峰卡不卡、能不能看 Netflix 和用 ChatGPT，挑出 6 家“便宜又能长期用”的机场。"
       firstReason="¥25/月就能用上 150GB IPLC/IEPL 双专线，年付小包 ¥98/年；晚高峰稳定、解锁 Netflix 和 ChatGPT，是“便宜又不卡”最均衡的选择。"
     />
 
     <section class="section" id="budget">
       <h2>按预算选便宜机场：每月 ¥10 / ¥20 / ¥30 / ¥50 能买到什么</h2>
-      <p>年付、季付已折成每月价格。每档列出流量最多的 3 个套餐。</p>
-      <div class="grid">
-        {budgets.map(({ b, rows }) => (
-          <div class="box">
-            <h3>每月 ¥{b} 以内</h3>
-            <ol class="list">
-              {rows.map(({ p, plan }) => <li><a href={p.url}>{p.name}</a> {plan.name}：<span class="num"><span class="price">{fmtPrice(monthlyEq(plan)!)}/月</span> · {fmtGB(plan.traffic)}</span>{plan.billing !== 'Monthly' && <span class="muted">（{fmtPrice(plan.price)}/{plan.billing === 'Yearly' ? '年' : '季'}）</span>}</li>)}
-            </ol>
-          </div>
-        ))}
+      <p>先想好每个月最多愿意花多少钱，再看这个预算里谁给的流量最多。年付、季付已折成每月价格，每档列出流量最多的 3 个套餐（同一家只列一次）。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">每月预算</th><th scope="col">第 1 名</th><th scope="col">第 2 名</th><th scope="col">第 3 名</th></tr></thead>
+          <tbody>
+            {budgets.map(({ b, rows }) => (
+              <tr>
+                <td><strong>¥{b} 以内</strong></td>
+                {[0, 1, 2].map((i) => {
+                  const r = rows[i];
+                  return <td class="num">{r ? <><a href={r.p.url}>{r.p.name}</a> {r.plan.name}<br /><span class="price">{fmtGB(r.plan.traffic)}/月</span> · {fmtPrice(monthlyEq(r.plan)!)}/月{r.plan.billing !== 'Monthly' && <span class="muted">（{planPrice(r.plan)}）</span>}</> : '—'}</td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="brands">
+      <h2>{n} 家机场最便宜的套餐一览</h2>
+      <p>每家机场都有月付、年付、不限时三种买法，最低价差别很大。下表把每家三种买法的最低价放在一起，按月付价格从低到高排列，方便一眼看出谁的门槛最低。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">机场</th><th scope="col">最低月付</th><th scope="col">最低年付</th><th scope="col">最低不限时包</th><th scope="col">优惠码</th></tr></thead>
+          <tbody>
+            {brandCheapest.map((p) => (
+              <tr class={p.slug === 'sogocloud' ? 'hl' : ''}>
+                <td><BrandName p={p} /></td>
+                <td class="num">{p.entry ? <><span class="price">{planPrice(p.entry)}</span><br /><span class="muted">{fmtGB(p.entry.traffic)}/月</span></> : '—'}</td>
+                <td class="num">{p.minYearly ? <>{planPrice(p.minYearly)}<br /><span class="muted">{fmtGB(p.minYearly.traffic)}/月 · 折合 {fmtPrice(monthlyEq(p.minYearly)!)}/月</span></> : '—'}</td>
+                <td class="num">{p.oneTime.length ? <>{fmtPrice(p.oneTime[0].price)}<br /><span class="muted">{fmtGB(p.oneTime[0].traffic)} 不过期</span></> : '无'}</td>
+                <td><code>{p.promo ?? '—'}</code></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="usage">
+      <h2>按用途选：每种用量最省钱的买法</h2>
+      <p>同样的用量，按月买和买不限时包哪个更省？下表左边是满足用量的最便宜订阅套餐，右边是够用一个月的最便宜不限时包。每月都要用选订阅；隔几个月才用一次选不限时包。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">用途</th><th scope="col">每月需要</th><th scope="col">最便宜订阅</th><th scope="col">不限时包替代</th></tr></thead>
+          <tbody>
+            {usageCheap.map(({ u, best, pack }) => (
+              <tr>
+                <td><strong>{u.label}</strong><br /><span class="muted">{u.desc}</span></td>
+                <td class="num">{u.need}GB+</td>
+                <td>{best ? <><a href={best.p.url}>{best.p.name}</a> {best.plan!.name}<br /><span class="num price">{fmtPrice(monthlyEq(best.plan!)!)}/月</span> · {fmtGB(best.plan!.traffic)}</> : '—'}</td>
+                <td>{pack ? <><a href={pack.p.url}>{pack.p.name}</a> {pack.plan.name}<br /><span class="num">{fmtPrice(pack.plan.price)} · {fmtGB(pack.plan.traffic)}</span> <span class="muted">（约够 {Math.floor(pack.plan.traffic! / u.need)} 个月）</span></> : '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
 
     <section class="section" id="monthly">
       <h2>月付 ¥30 以内的便宜机场</h2>
+      <p>第一次买机场最推荐月付：不用一次掏一年的钱，用得不满意下个月换一家就行。下面是所有 ¥30 以内的月付套餐，按价格从低到高排列，“每 GB”越低越划算。</p>
       <div class="tbl-wrap">
         <table class="tbl">
           <thead><tr><th scope="col">机场</th><th scope="col">套餐</th><th scope="col">月付</th><th scope="col">每月流量</th><th scope="col">每 GB</th><th scope="col">优惠码</th><th scope="col"><span class="sr-only">操作</span></th></tr></thead>
@@ -117,6 +177,7 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}便宜机场推荐`, providers)
 
     <section class="section">
       <h2>便宜机场、免费机场和低价小机场的区别</h2>
+      <p>搜“便宜机场”会看到很多几块钱甚至免费的选择。价格看起来差不多，但线路、稳定性和流量算法差很多，下表帮你分清楚。</p>
       <div class="tbl-wrap">
         <table class="tbl">
           <thead><tr><th scope="col"></th><th scope="col">本页便宜专线机场</th><th scope="col">低价小机场</th><th scope="col">免费节点</th></tr></thead>
@@ -133,17 +194,24 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}便宜机场推荐`, providers)
 
     <section class="section">
       <h2>买便宜机场的 4 个提醒</h2>
-      <ol class="list">
-        <li><strong>看清“¥7 起”是不是年付折算</strong>：很多机场首页写的起步价是年付除以 12。</li>
-        <li><strong>看线路和倍率</strong>：不写线路、节点 2–3 倍扣流量的低价机场，实际并不便宜。<a href="/knowledge/traffic-multiplier/">流量倍率是什么</a></li>
-        <li><strong>先月付后年付</strong>：便宜机场也先买一个月，晚高峰用稳了再长付。<a href="/knowledge/risk-guide/">机场跑路防范</a></li>
-        <li><strong>结算时填优惠码</strong>：上面表格里的优惠码在结算页填写。</li>
-      </ol>
+      <p>买便宜机场最容易踩的坑，不是买贵了，而是“看着便宜、实际不划算”。下单前对照这 4 条检查一遍。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">提醒</th><th scope="col">为什么</th><th scope="col">怎么做</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. 看清“¥7 起”</strong></td><td>很多机场首页写的起步价是年付除以 12</td><td>比较时看真实月付价，或把年付价除以 12 再比</td></tr>
+            <tr><td><strong>2. 看线路和倍率</strong></td><td>节点 2–3 倍扣流量，150GB 实际只能用 50–75GB</td><td>选写明线路、1 倍率的机场。<a href="/knowledge/traffic-multiplier/">流量倍率是什么</a></td></tr>
+            <tr><td><strong>3. 先月付后年付</strong></td><td>低价机场停运的风险更高</td><td>先买一个月，晚高峰用稳了再长付。<a href="/knowledge/risk-guide/">机场跑路防范</a></td></tr>
+            <tr><td><strong>4. 填优惠码</strong></td><td>不填就是原价</td><td>结算页填写本页表格里的优惠码</td></tr>
+          </tbody>
+        </table>
+      </div>
       <p>想比较“同样的钱能买多少流量”，看 <a href="/value/">性价比机场</a>；想看综合排名，看 <a href="/recommend/">机场排行榜</a>。</p>
     </section>
 
     <section class="section">
       <h2>便宜机场常见问题</h2>
+      <p>预算有限的新手最关心的几个问题，答案里的价格会随本站数据自动更新。</p>
       {faq.map((f) => <div class="qa"><h3>{f.q}</h3><p>{f.a}</p></div>)}
     </section>
   </div>

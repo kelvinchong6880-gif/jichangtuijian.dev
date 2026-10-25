@@ -5,7 +5,7 @@ import Promo from '../components/Promo.astro';
 import BrandName from '../components/BrandName.astro';
 import {
   getProviders, getProviderBySlug, USAGE, cheapestFor, usagePrice, monthlyEq, perGB, fmtGB, fmtPrice, planPrice, planTraffic,
-  UPDATED, UPDATED_LABEL, UPDATED_MONTH, UPDATED_TAG, type Plan, type Provider,
+  unlockText, UPDATED, UPDATED_LABEL, UPDATED_MONTH, UPDATED_TAG, type Plan, type Provider,
 } from '../data/providers';
 import { faqSchema, itemListSchema } from '../data/schema';
 
@@ -50,6 +50,12 @@ const personas = [
   { who: '一个月只用几次', ...occasional, why: '不限时流量包里总价最低，一次付钱，流量用完为止、不会每月清零。' },
 ];
 
+// 价格矩阵：每家在各用量档最便宜的周期套餐（折合月价）
+const matrixNeeds = [50, 150, 300, 600, 1000];
+const matrix = providers.map((p) => ({ p, cells: matrixNeeds.map((need) => cheapestFor(p, need)) }));
+const matrixMin = matrixNeeds.map((_, i) => Math.min(...matrix.map((r) => (r.cells[i] ? monthlyEq(r.cells[i]!)! : Infinity))));
+const unlockedCount = providers.filter((p) => p.streaming && p.ai).length;
+
 const faq = [
   { q: '新手第一次买机场，推荐哪家？', a: `直接选 ${sogo.name} 基础版：¥25/月、每月 150GB，${sogo.lineLabel} 专线晚上也稳，能看 Netflix、用 ChatGPT。结算时填优惠码 ${sogo.promo}。先买一个月，用顺了再考虑年付。` },
   { q: '机场是什么意思？跟 VPN 是一回事吗？', a: '机场就是提供翻墙节点的订阅服务，买完给你一条订阅链接，导入 Clash、小火箭这类客户端就能用。和传统 VPN 比，机场更便宜、节点更多、按流量收费，所以国内大多数人用的是机场。' },
@@ -77,6 +83,7 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}机场推荐`, providers), faqS
 
     <section class="section" aria-labelledby="picks">
       <h2 id="picks">{UPDATED_MONTH}机场推荐：3 个最值得买的</h2>
+      <p>不想看长表格，就从这 3 家里选：{sogo.name} 适合大多数人，{weifeng.name} 同价流量最多，{wuyou.name} 月付门槛最低。三家都是专线机场，第一次买建议先月付试用。</p>
       <div class="picks">
         {picks.map(({ p, tag, top, text }) => (
           <div class={`pick ${top ? 'top' : ''}`}>
@@ -120,6 +127,30 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}机场推荐`, providers), faqS
       <p class="muted">“年付最低”为年付价格 / 每月流量。多数机场官网标注全节点 1 倍率；价格以官网结算页为准。</p>
     </section>
 
+    <section class="section" aria-labelledby="specs">
+      <h2 id="specs">{n} 家机场核心参数一览</h2>
+      <p>价格之外，新手最常问的是：节点有哪些地区、能不能看 Netflix 和用 ChatGPT、能同时登几台设备。下表按各家官网信息整理，“官网未标注”表示官网没写，不代表一定不支持。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">机场</th><th scope="col">线路</th><th scope="col">节点地区</th><th scope="col">流媒体 / AI 解锁</th><th scope="col">设备数</th><th scope="col">套餐数</th><th scope="col">适合</th></tr></thead>
+          <tbody>
+            {providers.map((p, i) => (
+              <tr class={i === 0 ? 'hl' : ''}>
+                <td><BrandName p={p} /></td>
+                <td>{p.lineLabel}</td>
+                <td style="min-width:200px">{p.nodeRegions ?? '—'}</td>
+                <td>{unlockText(p)}</td>
+                <td>{p.deviceInfo ?? '—'}</td>
+                <td class="num">{p.priced.length} 个</td>
+                <td style="min-width:180px">{p.bestFor}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">{n} 家里有 {unlockedCount} 家官网同时写明支持流媒体和 ChatGPT 解锁。</p>
+    </section>
+
     <section class="section" aria-labelledby="usage">
       <h2 id="usage">按用量选机场：每档最便宜的套餐</h2>
       <p>先估算自己每月用多少流量，再看对应那一档。年付套餐已折成每月价格。</p>
@@ -139,6 +170,24 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}机场推荐`, providers), faqS
         </table>
       </div>
       <p>每月用量很少、一个月只用几次？买不限时流量包更省，比如 Firefly ¥100 买 100GB、无忧链接 ¥108 买 100GB，流量用完为止、不会过期。</p>
+    </section>
+
+    <section class="section" aria-labelledby="matrix">
+      <h2 id="matrix">机场价格对照表：每家每档用量要花多少钱</h2>
+      <p>同一个用量，不同机场的价格可能差一倍。下表列出每家满足该用量的最便宜套餐，年付、季付已折成每月价格，<strong>标色的是这一档最便宜的</strong>。“—”表示这家没有这么大的套餐。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">机场</th>{matrixNeeds.map((need) => <th scope="col">每月 {fmtGB(need)}+</th>)}</tr></thead>
+          <tbody>
+            {matrix.map(({ p, cells }) => (
+              <tr>
+                <td><BrandName p={p} /></td>
+                {cells.map((c, i) => <td class="num">{c ? <><span class={monthlyEq(c)! === matrixMin[i] ? 'price' : ''}>{fmtPrice(monthlyEq(c)!)}/月</span><br /><span class="muted">{c.name} · {fmtGB(c.traffic)}</span></> : '—'}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="section" aria-labelledby="persona">
@@ -163,6 +212,7 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}机场推荐`, providers), faqS
 
     <section class="section" aria-labelledby="find">
       <h2 id="find">按需求找机场</h2>
+      <p>首页只放最常用的信息。只在意价格、只在意每 GB 单价，或者在两家之间犹豫，可以直接看下面的专题页，每页都有完整表格。</p>
       <div class="grid">
         <a class="box" href="/recommend/"><strong>机场排行榜 →</strong><p class="muted" style="margin:.4rem 0 0">{n} 家机场综合排名，每家的推荐理由、优缺点和适合人群。</p></a>
         <a class="box" href="/cheap/"><strong>便宜机场推荐 →</strong><p class="muted" style="margin:.4rem 0 0">月付 ¥{cheapestEntry.entry!.price} 起、年付 ¥79 起的低价机场和不限时包。</p></a>
@@ -173,26 +223,73 @@ const schemas = [itemListSchema(`${UPDATED_MONTH}机场推荐`, providers), faqS
 
     <section class="section" aria-labelledby="newbie">
       <h2 id="newbie">新手第一次用机场：3 步搞定</h2>
-      <ol class="list">
-        <li><strong>选机场、买月付</strong>：从上面的推荐里挑一家，第一次先买月付，结算页填优惠码。不懂什么是机场？先看 <a href="/knowledge/what-is-jichang/">机场是什么</a>。</li>
-        <li><strong>复制订阅链接</strong>：在机场官网的用户中心复制订阅链接，这一串链接就是你的“账号”，不要发给别人。详见 <a href="/knowledge/subscription/">订阅链接怎么用</a>。</li>
-        <li><strong>导入客户端</strong>：按设备看教程：<a href="/tutorial/windows/">Windows</a> · <a href="/tutorial/mac/">Mac</a> · <a href="/tutorial/ios/">iPhone</a> · <a href="/tutorial/android/">安卓</a>。导入后选一个香港或日本节点就能用。</li>
-      </ol>
+      <p>从下单到能用，一般 10 分钟左右。整个过程不需要懂技术，照着下表做就行。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">步骤</th><th scope="col">做什么</th><th scope="col">注意</th><th scope="col">参考</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. 选机场、买月付</strong></td><td>从上面的推荐里挑一家，注册后买一个月</td><td>结算页填优惠码；第一次不要买年付</td><td><a href="/knowledge/what-is-jichang/">机场是什么</a></td></tr>
+            <tr><td><strong>2. 复制订阅链接</strong></td><td>在机场官网用户中心复制订阅链接</td><td>这串链接等于你的账号，不要发给别人</td><td><a href="/knowledge/subscription/">订阅链接怎么用</a></td></tr>
+            <tr><td><strong>3. 导入客户端</strong></td><td>打开客户端粘贴订阅，选香港或日本节点，打开开关</td><td>连不上先换节点，再检查系统时间</td><td><a href="/tutorial/">使用教程</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="clients">
+      <h2 id="clients">各设备用什么客户端</h2>
+      <p>机场只提供节点，要在手机或电脑上装一个客户端才能用。下面是各平台常用的客户端，具体以机场后台推荐的为准，下载时认准官方渠道。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">设备</th><th scope="col">常用客户端</th><th scope="col">去哪下载</th><th scope="col">教程</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Windows</strong></td><td>Clash Verge Rev、v2rayN</td><td>GitHub Release 或机场后台</td><td><a href="/tutorial/windows/">Windows 教程</a></td></tr>
+            <tr><td><strong>Mac</strong></td><td>Clash Verge Rev</td><td>GitHub Release 或机场后台</td><td><a href="/tutorial/mac/">Mac 教程</a></td></tr>
+            <tr><td><strong>iPhone / iPad</strong></td><td>Shadowrocket（小火箭）、Stash</td><td>非国区 App Store</td><td><a href="/tutorial/ios/">iPhone 教程</a></td></tr>
+            <tr><td><strong>安卓</strong></td><td>Clash Meta for Android、v2rayNG</td><td>GitHub Release 或机场后台</td><td><a href="/tutorial/android/">安卓教程</a></td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="section" aria-labelledby="how">
       <h2 id="how">挑机场看这 5 点</h2>
-      <div class="grid">
-        <div class="box"><h3>1. 线路</h3><p class="muted" style="margin:0">IPLC / IEPL 专线不走拥堵的公网出口，晚高峰更稳。本站收录的 {n} 家都是专线机场。<a href="/knowledge/iplc-iepl/">IPLC 和 IEPL 区别</a></p></div>
-        <div class="box"><h3>2. 真实月付价</h3><p class="muted" style="margin:0">“¥7 起”通常是年付折算。比较时看月付价，或者把年付除以 12。</p></div>
-        <div class="box"><h3>3. 流量和倍率</h3><p class="muted" style="margin:0">同样 150GB，2 倍率节点只能用 75GB。<a href="/knowledge/traffic-multiplier/">流量倍率是什么</a></p></div>
-        <div class="box"><h3>4. 解锁</h3><p class="muted" style="margin:0">要看 Netflix、用 ChatGPT，选官网写明支持解锁的机场。</p></div>
-        <div class="box"><h3>5. 跑路风险</h3><p class="muted" style="margin:0">先月付，用稳了再年付，不要一次买两三年。<a href="/knowledge/risk-guide/">机场跑路防范</a></p></div>
+      <p>机场的宣传都差不多，真正拉开差距的是下面 5 项。自己挑机场时，逐项对照就不容易踩坑。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col">看什么</th><th scope="col">怎么判断</th><th scope="col">本站 {n} 家情况</th><th scope="col">延伸阅读</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. 线路</strong></td><td>IPLC / IEPL 专线不走拥堵的公网出口，晚高峰更稳</td><td>全部是专线，{sogo.name} 为双专线</td><td><a href="/knowledge/iplc-iepl/">IPLC 和 IEPL 区别</a></td></tr>
+            <tr><td><strong>2. 真实月付价</strong></td><td>“¥7 起”通常是年付折算，比较时看月付价</td><td>月付 {fmtPrice(cheapestEntry.entry!.price)} 起，主流 ¥24–¥27</td><td><a href="/cheap/">便宜机场推荐</a></td></tr>
+            <tr><td><strong>3. 流量和倍率</strong></td><td>2 倍率节点 150GB 只能用 75GB</td><td>官网多标注 1 倍率</td><td><a href="/knowledge/traffic-multiplier/">流量倍率是什么</a></td></tr>
+            <tr><td><strong>4. 解锁</strong></td><td>要看 Netflix、用 ChatGPT，选官网写明支持的</td><td>{unlockedCount} 家写明支持</td><td><a href="/knowledge/node/">节点怎么选</a></td></tr>
+            <tr><td><strong>5. 跑路风险</strong></td><td>先月付，用稳了再年付，不要一次买两三年</td><td>全部支持月付</td><td><a href="/knowledge/risk-guide/">机场跑路防范</a></td></tr>
+          </tbody>
+        </table>
       </div>
+    </section>
+
+    <section class="section" aria-labelledby="vs">
+      <h2 id="vs">机场、VPN 和免费节点有什么区别</h2>
+      <p>很多人分不清机场和 VPN。简单说：机场按流量卖节点，便宜、节点多；传统 VPN 一键连接但更贵；免费节点不花钱但基本不能长期用。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th scope="col"></th><th scope="col">机场（本站推荐）</th><th scope="col">传统 VPN</th><th scope="col">免费节点</th></tr></thead>
+          <tbody>
+            <tr><td><strong>价格</strong></td><td>¥{cheapestEntry.entry!.price}–¥30/月为主</td><td>多为每月 $5–$13</td><td>免费</td></tr>
+            <tr><td><strong>使用方式</strong></td><td>订阅链接导入客户端</td><td>官方 App 一键连接</td><td>手动找节点导入</td></tr>
+            <tr><td><strong>节点数量</strong></td><td>几十个，覆盖港台日新美</td><td>视品牌而定</td><td>少且经常失效</td></tr>
+            <tr><td><strong>晚高峰</strong></td><td>专线较稳</td><td>受封锁影响大</td><td>基本不可用</td></tr>
+            <tr><td><strong>适合</strong></td><td>国内日常使用</td><td>出国、隐私保护</td><td>临时应急</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>更详细的对比见 <a href="/vpn/vpn-vs-proxy/">VPN 和机场的区别</a>。</p>
     </section>
 
     <section class="section" aria-labelledby="faq">
       <h2 id="faq">机场推荐常见问题</h2>
+      <p>下面是新手买机场前问得最多的问题，答案里的价格会跟随本站数据自动更新。</p>
       {faq.map((f) => <div class="qa"><h3>{f.q}</h3><p>{f.a}</p></div>)}
     </section>
 

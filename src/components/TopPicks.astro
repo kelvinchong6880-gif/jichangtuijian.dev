@@ -4,8 +4,8 @@ import Promo from './Promo.astro';
 import BrandName from './BrandName.astro';
 import { perGB, fmtGB, fmtPrice, planPrice, type Provider } from '../data/providers';
 
-interface Props { list: Provider[]; mode: 'cheap' | 'value'; title: string; firstReason: string }
-const { list, mode, title, firstReason } = Astro.props;
+interface Props { list: Provider[]; mode: 'cheap' | 'value'; title: string; intro?: string; firstReason: string }
+const { list, mode, title, intro, firstReason } = Astro.props;
 const [first, ...rest] = list;
 const priceText = (p: Provider) =>
   mode === 'cheap'
@@ -14,6 +14,7 @@ const priceText = (p: Provider) =>
 ---
 <section class="section" id="picks">
   <h2>{title}</h2>
+  {intro && <p>{intro}</p>}
   <div class="callout">
     <p style="margin:0 0 .4rem"><span class="rank rank-1" style="margin-right:.4rem">1</span><strong>首选：<a href={first.url}>{first.name}</a></strong> · {first.lineLabel} 专线</p>
     <p class="num" style="margin:0 0 .4rem"><span class="price">{priceText(first)}</span></p>
